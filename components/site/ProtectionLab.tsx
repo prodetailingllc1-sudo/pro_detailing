@@ -3,6 +3,7 @@
 import { ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
+import type { CSSProperties } from 'react';
 import { useState } from 'react';
 
 import { PpfWordmark } from '@/components/site/PpfWordmark';
@@ -11,8 +12,12 @@ import { services } from '@/lib/site-data';
 export function ProtectionLab() {
   const [activeId, setActiveId] =
     useState<(typeof services)[number]['id']>('tint');
+  const [tintSplit, setTintSplit] = useState(50);
   const active =
     services.find((service) => service.id === activeId) ?? services[0];
+  const tintRevealStyle = {
+    '--lab-tint-split': `${tintSplit}%`,
+  } as CSSProperties & Record<'--lab-tint-split', string>;
 
   return (
     <div className="protection-lab">
@@ -44,14 +49,63 @@ export function ProtectionLab() {
         id={`system-${active.id}`}
         aria-labelledby={`system-tab-${active.id}`}
       >
-        <div className="lab-photo">
-          <Image
-            src={active.image}
-            alt=""
-            width="1800"
-            height="1200"
-            sizes="(max-width: 780px) 100vw, 65vw"
-          />
+        <div
+          className={`lab-photo ${active.id === 'tint' ? 'has-tint-reveal' : ''}`}
+        >
+          {active.id === 'tint' ? (
+            <div className="lab-tint-reveal" style={tintRevealStyle}>
+              <Image
+                className="lab-tint-clear"
+                src="/gallery/local-tint-white-sedan-night-clear.webp"
+                alt="White sedan comparison with clear glass on the left and tinted glass on the right"
+                width="1600"
+                height="1200"
+                draggable={false}
+                sizes="(max-width: 780px) 100vw, 65vw"
+              />
+              <span className="lab-tint-dark-layer" aria-hidden="true">
+                <Image
+                  src={active.image}
+                  alt=""
+                  width="1600"
+                  height="1200"
+                  draggable={false}
+                  sizes="(max-width: 780px) 100vw, 65vw"
+                />
+              </span>
+              <span
+                className="lab-tint-label lab-tint-label-clear"
+                aria-hidden="true"
+              >
+                Clear
+              </span>
+              <span
+                className="lab-tint-label lab-tint-label-dark"
+                aria-hidden="true"
+              >
+                Tinted
+              </span>
+              <span className="lab-tint-divider" aria-hidden="true" />
+              <input
+                type="range"
+                min="18"
+                max="82"
+                step="1"
+                value={tintSplit}
+                aria-label="Adjust the clear and tinted glass comparison"
+                aria-valuetext={`${tintSplit}% clear, ${100 - tintSplit}% tinted`}
+                onChange={(event) => setTintSplit(Number(event.target.value))}
+              />
+            </div>
+          ) : (
+            <Image
+              src={active.image}
+              alt=""
+              width="1800"
+              height="1200"
+              sizes="(max-width: 780px) 100vw, 65vw"
+            />
+          )}
           <div className="scan-line" aria-hidden="true" />
           <span className="lab-readout">SYSTEM / {active.step}</span>
         </div>
