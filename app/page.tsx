@@ -216,6 +216,62 @@ export default function Home() {
               View all work <ArrowRight aria-hidden="true" />
             </Link>
           </div>
+          <div className="work-film-feature" id="pro-fleet-film">
+            <div className="work-film-copy">
+              <p className="overline">PRO original film · 00:34</p>
+              <h3>GLS Maybach. BMW M8. AMG GLE 63.</h3>
+              <p>
+                Three standout vehicles, one PRO standard. Watch the original
+                PRO Detailing fleet film in its complete portrait frame.
+              </p>
+              <ul className="work-film-models" aria-label="Vehicles in the film">
+                <li>Mercedes-Maybach GLS</li>
+                <li>BMW M8</li>
+                <li>Mercedes-AMG GLE 63</li>
+              </ul>
+              <Link className="text-link" href={quoteHref()}>
+                Bring us your vehicle <ArrowRight aria-hidden="true" />
+              </Link>
+            </div>
+
+            <figure className="work-film-frame">
+              <div className="work-film-monitor-bar" aria-hidden="true">
+                <span>
+                  <i /> Original portfolio footage
+                </span>
+                <span>PRO / FILM 001</span>
+              </div>
+              <div className="work-film-screen">
+                <video
+                  controls
+                  playsInline
+                  preload="metadata"
+                  aria-describedby="pro-fleet-film-caption"
+                >
+                  <source
+                    src="/assets/pro-signature-fleet.mp4"
+                    type="video/mp4"
+                  />
+                  <track
+                    default
+                    kind="captions"
+                    label="English"
+                    src="/assets/pro-signature-fleet.vtt"
+                    srcLang="en"
+                  />
+                  Your browser does not support this video. You can{' '}
+                  <Link href="/assets/pro-signature-fleet.mp4">
+                    open the film here
+                  </Link>
+                  .
+                </video>
+              </div>
+              <figcaption id="pro-fleet-film-caption">
+                <span>Manassas, Virginia</span>
+                <span>Full frame · sound available</span>
+              </figcaption>
+            </figure>
+          </div>
           <div className="home-gallery">
             {homeGallery.map((item, index) => (
               <Link

@@ -5698,3 +5698,292 @@ body {
     object-position: 46% center;
   }
 }
+
+/* V8 original fleet film — full-frame, fast-loading portfolio proof */
+.work-film-feature {
+  position: relative;
+  isolation: isolate;
+  min-height: 650px;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+  gap: clamp(2rem, 7vw, 7rem);
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 87% 13%, rgba(156, 245, 0, 0.13), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 44%),
+    #0c0f0d;
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.38),
+    inset 0 0 0 1px rgba(156, 245, 0, 0.025);
+}
+
+.work-film-feature::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.17;
+  background-image:
+    linear-gradient(rgba(156, 245, 0, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(156, 245, 0, 0.14) 1px, transparent 1px);
+  background-size: 68px 68px;
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent 72%);
+  mask-image: linear-gradient(90deg, #000, transparent 72%);
+}
+
+.work-film-feature::after {
+  content: 'PRO / MOTION ARCHIVE';
+  position: absolute;
+  z-index: -1;
+  bottom: -0.12em;
+  left: 0.02em;
+  color: rgba(255, 255, 255, 0.017);
+  font-size: clamp(4.5rem, 12vw, 11rem);
+  font-weight: 850;
+  letter-spacing: -0.08em;
+  line-height: 0.72;
+  white-space: nowrap;
+}
+
+.work-film-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 690px;
+  padding: clamp(2rem, 5vw, 5rem) 0 clamp(2rem, 5vw, 5rem)
+    clamp(2rem, 5vw, 5rem);
+}
+
+.work-film-copy h3 {
+  max-width: 10ch;
+  margin: 0;
+  font-size: clamp(3rem, 6vw, 6.7rem);
+  letter-spacing: -0.065em;
+  line-height: 0.88;
+}
+
+.work-film-copy > p:not(.overline) {
+  max-width: 590px;
+  margin: 1.5rem 0;
+  color: var(--muted-foreground);
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.work-film-models {
+  margin: 0 0 1.8rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+}
+
+.work-film-models li {
+  padding: 0.48rem 0.68rem;
+  border: 1px solid rgba(156, 245, 0, 0.28);
+  border-radius: 999px;
+  color: #cdd6cf;
+  background: rgba(156, 245, 0, 0.045);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.61rem;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.work-film-frame {
+  position: relative;
+  width: calc(100% - 2rem);
+  max-width: 410px;
+  margin: 3rem 2rem 3rem 0;
+  justify-self: end;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 26px;
+  background: #060807;
+  box-shadow:
+    -30px 45px 80px rgba(0, 0, 0, 0.58),
+    0 0 45px rgba(156, 245, 0, 0.075);
+  transform: perspective(1200px) rotateY(-4deg) rotateX(1deg);
+  transform-style: preserve-3d;
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.45s ease;
+}
+
+.work-film-frame::before,
+.work-film-frame::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 14px -14px -14px 14px;
+  border: 1px solid rgba(156, 245, 0, 0.18);
+  border-radius: inherit;
+  transform: translateZ(-28px);
+}
+
+.work-film-frame::after {
+  inset: 28px -28px -28px 28px;
+  border-color: rgba(255, 255, 255, 0.07);
+  transform: translateZ(-52px);
+}
+
+.work-film-feature:hover .work-film-frame {
+  box-shadow:
+    -35px 55px 95px rgba(0, 0, 0, 0.64),
+    0 0 60px rgba(156, 245, 0, 0.11);
+  transform: perspective(1200px) rotateY(-1deg) translateY(-5px);
+}
+
+.work-film-monitor-bar,
+.work-film-frame figcaption {
+  min-height: 48px;
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  color: #7e8981;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.work-film-monitor-bar > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #c9d1cb;
+}
+
+.work-film-monitor-bar i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 14px rgba(156, 245, 0, 0.9);
+}
+
+.work-film-screen {
+  position: relative;
+  overflow: hidden;
+  border-block: 1px solid rgba(255, 255, 255, 0.1);
+  background: #020403;
+}
+
+.work-film-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  bottom: 0;
+  width: 1px;
+  pointer-events: none;
+  opacity: 0.55;
+  background: linear-gradient(transparent, var(--lime) 18%, var(--lime) 82%, transparent);
+}
+
+.work-film-screen video {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  display: block;
+  object-fit: contain;
+  background: #020403;
+}
+
+.work-film-screen video:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: -4px;
+}
+
+.work-film-frame figcaption {
+  min-height: 54px;
+}
+
+.work-film-frame figcaption span:last-child {
+  color: var(--lime);
+  text-align: right;
+}
+
+@media (max-width: 920px) {
+  .work-film-feature {
+    grid-template-columns: minmax(0, 1fr) minmax(290px, 360px);
+    gap: 2rem;
+  }
+
+  .work-film-copy h3 {
+    font-size: clamp(2.8rem, 6.7vw, 5rem);
+  }
+}
+
+@media (max-width: 780px) {
+  .work-film-feature {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    border-radius: 24px;
+  }
+
+  .work-film-copy {
+    padding: 2.4rem 1.2rem 0;
+  }
+
+  .work-film-copy h3 {
+    max-width: 11ch;
+    font-size: clamp(2.7rem, 12vw, 4.6rem);
+  }
+
+  .work-film-frame {
+    width: calc(100% - 2.4rem);
+    max-width: 380px;
+    margin: 0 auto 2.4rem;
+    justify-self: center;
+    transform: none;
+  }
+
+  .work-film-feature:hover .work-film-frame {
+    transform: translateY(-3px);
+  }
+}
+
+@media (max-width: 480px) {
+  .work-film-feature {
+    margin-inline: -0.25rem;
+    border-radius: 20px;
+  }
+
+  .work-film-copy {
+    padding-inline: 1rem;
+  }
+
+  .work-film-models {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .work-film-frame {
+    width: calc(100% - 2rem);
+    margin-bottom: 1.8rem;
+    border-radius: 20px;
+  }
+
+  .work-film-monitor-bar,
+  .work-film-frame figcaption {
+    padding-inline: 0.7rem;
+    font-size: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-film-frame {
+    transition: none;
+    transform: none;
+  }
+
+  .work-film-feature:hover .work-film-frame {
+    transform: none;
+  }
+}
