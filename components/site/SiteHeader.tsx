@@ -148,7 +148,7 @@ export function SiteHeader() {
             aria-controls="desktop-services-dropdown"
             onClick={() => setServicesOpen((value) => !value)}
           >
-            All {servicePathCount} Services
+            All Services
             <ChevronDown aria-hidden="true" size={15} />
           </button>
           {servicesOpen ? (
