@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/components/site/SafeLink';
 
 import { BrandUniverse } from '@/components/site/BrandUniverse';
 import { HeroExperience } from '@/components/site/HeroExperience';

@@ -7,7 +7,7 @@ import {
   ThermometerSun,
 } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';

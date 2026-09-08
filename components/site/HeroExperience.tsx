@@ -1,65 +1,16 @@
-'use client';
-
-import { ArrowRight, ChevronDown, MapPin, ShieldCheck } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, MapPin, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRef } from 'react';
+
+import Link from '@/components/site/SafeLink';
 
 import { quoteHref } from '@/lib/site-data';
 
 export function HeroExperience() {
-  const heroRef = useRef<HTMLElement>(null);
-
-  function moveScene(event: React.PointerEvent<HTMLElement>) {
-    if (event.pointerType === 'touch') return;
-
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-    const hero = heroRef.current;
-
-    hero?.style.setProperty('--scene-x', `${x * 18}px`);
-    hero?.style.setProperty('--scene-y', `${y * 14}px`);
-    hero?.style.setProperty('--scene-rx', `${y * -5}deg`);
-    hero?.style.setProperty('--scene-ry', `${x * 7}deg`);
-    hero?.style.setProperty('--glow-x', `${(x + 0.5) * 100}%`);
-    hero?.style.setProperty('--glow-y', `${(y + 0.5) * 100}%`);
-  }
-
-  function resetScene() {
-    const hero = heroRef.current;
-    hero?.style.setProperty('--scene-x', '0px');
-    hero?.style.setProperty('--scene-y', '0px');
-    hero?.style.setProperty('--scene-rx', '0deg');
-    hero?.style.setProperty('--scene-ry', '0deg');
-    hero?.style.setProperty('--glow-x', '72%');
-    hero?.style.setProperty('--glow-y', '38%');
-  }
-
   return (
-    <section
-      className="hero-shell hero-v2"
-      id="top"
-      ref={heroRef}
-      onPointerMove={moveScene}
-      onPointerLeave={resetScene}
-    >
-      <div className="hero-media" aria-hidden="true">
-        <Image
-          src="/assets/hero-studio.webp"
-          alt=""
-          width="1800"
-          height="1200"
-          priority
-          sizes="100vw"
-        />
-        <div className="hero-wash" />
-        <div className="hero-grid" />
-        <div className="hero-cursor-light" />
-      </div>
-
-      <div className="hero-v2-layout shell">
-        <div className="hero-content hero-v2-copy">
+    <section className="hero-shell hero-v3" id="top">
+      <div className="hero-v3-light" aria-hidden="true" />
+      <div className="hero-v3-layout shell">
+        <div className="hero-content hero-v3-copy">
           <Image
             className="hero-primary-mark"
             src="/assets/pro-detailing-wordmark-optimized.webp"
@@ -70,11 +21,10 @@ export function HeroExperience() {
             sizes="(max-width: 780px) 82vw, 520px"
           />
           <p className="eyebrow">
-            <span /> Manassas, Virginia · Studio 38.793° N
+            <span /> Automotive appearance & protection · Manassas, VA
           </p>
           <h1>
-            High-spec window tint, ceramic coating & auto detailing in
-            Manassas, VA.
+            Window tint, ceramic coating & paint protection in Manassas.
           </h1>
           <p className="hero-copy">
             One vehicle-protection studio for LLumar tint, Ceramic Pro coating,
@@ -99,72 +49,50 @@ export function HeroExperience() {
           </div>
         </div>
 
-        <div className="hero-machine" aria-hidden="true">
-          <div className="machine-orbit machine-orbit-one" />
-          <div className="machine-orbit machine-orbit-two" />
-          <div className="machine-console">
-            <div className="machine-console-head">
-              <span>PRO / VEHICLE SYSTEM</span>
-              <span>LIVE 01</span>
-            </div>
-            <div className="machine-car-stage">
-              <div className="machine-scan" />
-              <Image
-                src="/vehicles/sedan.webp"
-                alt=""
-                width="1536"
-                height="1024"
-                priority
-                sizes="(max-width: 780px) 92vw, 52vw"
-              />
-              <div className="machine-floor" />
-            </div>
-            <div className="machine-readouts">
-              <span>
-                <small>GLASS</small>
-                <strong>LLUMAR</strong>
-              </span>
-              <span>
-                <small>PAINT</small>
-                <strong>COAT · FILM</strong>
-              </span>
-              <span>
-                <small>FINISH</small>
-                <strong>DETAIL</strong>
-              </span>
-            </div>
+        <div className="hero-showroom">
+          <div className="hero-showroom-rule" aria-hidden="true" />
+          <div className="hero-vehicle-frame">
+            <Image
+              src="/vehicles/coupe.webp"
+              alt="White performance coupe presented against a dark studio background"
+              width="1536"
+              height="1024"
+              priority
+              sizes="(max-width: 920px) 94vw, 56vw"
+            />
           </div>
-          <div className="machine-chip machine-chip-top">
-            <span /> APPEARANCE
-          </div>
-          <div className="machine-chip machine-chip-bottom">
-            PROTECTION / DMV
+          <div className="hero-vehicle-note">
+            <span>PRO / MANASSAS</span>
+            <div>
+              <strong>Built around your vehicle.</strong>
+              <p>Product, preparation and coverage confirmed before work.</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="hero-proof hero-v2-proof" aria-label="PRO services">
-        <div>
-          <strong>PRO Tints</strong>
-          <span>LLumar glass systems</span>
-        </div>
-        <div>
-          <strong>PRO Ceramic</strong>
-          <span>Ceramic Pro finish care</span>
-        </div>
-        <div>
-          <strong>PRO PPF</strong>
-          <span>Impact-zone film coverage</span>
-        </div>
-        <div>
-          <strong>PRO Detailing</strong>
-          <span>Interior · exterior · finish</span>
-        </div>
-      </div>
-
-      <a className="scroll-cue" href="#brand-systems">
-        <ChevronDown aria-hidden="true" /> Explore the PRO system
-      </a>
+      <nav className="hero-service-links shell" aria-label="Explore our services">
+        <Link href="/our-services/window-tinting">
+          <small>01</small>
+          <span><strong>PRO Tints</strong>LLumar window film</span>
+          <ArrowUpRight aria-hidden="true" />
+        </Link>
+        <Link href="/our-services/ceramic-coating">
+          <small>02</small>
+          <span><strong>PRO Ceramic</strong>Ceramic Pro coating</span>
+          <ArrowUpRight aria-hidden="true" />
+        </Link>
+        <Link href="/our-services/paint-protection-film">
+          <small>03</small>
+          <span><strong>PRO PPF</strong>Paint protection film</span>
+          <ArrowUpRight aria-hidden="true" />
+        </Link>
+        <Link href="/our-services/auto-detailing">
+          <small>04</small>
+          <span><strong>PRO Detailing</strong>Interior & exterior care</span>
+          <ArrowUpRight aria-hidden="true" />
+        </Link>
+      </nav>
     </section>
   );
 }

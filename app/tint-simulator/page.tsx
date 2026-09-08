@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { ArrowRight, Eye, Gauge, Info, Layers3 } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { TintStudio } from '@/components/site/TintStudio';

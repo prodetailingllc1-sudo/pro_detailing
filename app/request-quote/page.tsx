@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { ArrowLeft, Check, Clock3, MessageSquareText } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/components/site/SafeLink';
 
 import { HighLevelLeadCapture } from '@/components/site/HighLevelLeadCapture';
 import { business, SITE_ORIGIN } from '@/lib/site-data';
