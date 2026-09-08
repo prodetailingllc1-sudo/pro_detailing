@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Wrench,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
@@ -82,15 +83,24 @@ export function AdditionalServicePage({
               </a>
             </div>
           </div>
-          <div className="service-console" aria-hidden="true">
-            <div className="service-console-shadow" />
+          <div className="service-console">
+            <div className="service-console-shadow" aria-hidden="true" />
             <div className="service-console-card">
+              <Image
+                className="service-console-image"
+                src={service.image}
+                alt={service.imageAlt}
+                fill
+                sizes="(min-width: 1050px) 42vw, (min-width: 780px) 520px, 94vw"
+                priority
+              />
+              <div className="service-console-scrim" aria-hidden="true" />
               <div className="service-console-top">
                 <span>PRO SERVICE / ACTIVE</span>
                 <i />
               </div>
               <div className="service-console-main">
-                <Icon />
+                <Icon aria-hidden="true" />
                 <span>{service.eyebrow}</span>
                 <strong>{service.shortName}</strong>
               </div>

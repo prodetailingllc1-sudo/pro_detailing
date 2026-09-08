@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import type { GalleryItem } from '@/lib/site-data';
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 72;
 const SWIPE_THRESHOLD = 56;
 
 type GalleryClientProps = {

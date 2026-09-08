@@ -7,6 +7,8 @@ export type ExtendedService = {
   description: string;
   serviceType: string;
   quoteService: string;
+  image: string;
+  imageAlt: string;
   sourceUrl?: string;
   highlights: readonly {
     title: string;
@@ -40,6 +42,9 @@ export const additionalServices: readonly ExtendedService[] = [
       'Bring professional interior and exterior care to a suitable home, office or fleet location. Availability, access, weather and the final scope are confirmed before dispatch.',
     serviceType: 'Mobile automotive detailing',
     quoteService: 'mobile-detailing',
+    image: '/generated/service-mobile-detailing.webp',
+    imageAlt:
+      'Professional mobile detailer cleaning a luxury SUV at a residential driveway with service equipment nearby.',
     sourceUrl:
       'https://pro-detailing.co/best-mobile-car-detailing-in-northern-virginia/',
     highlights: [
@@ -131,6 +136,9 @@ export const additionalServices: readonly ExtendedService[] = [
       'Plan heat, glare, UV, privacy or decorative film around each room and glass type. Every project starts with an on-site glass and compatibility assessment.',
     serviceType: 'Residential window film consultation and installation',
     quoteService: 'residential-tint',
+    image: '/generated/service-residential-window-tinting.webp',
+    imageAlt:
+      'Professional installer applying solar-control film to a large window inside a modern home.',
     highlights: [
       {
         title: 'Solar comfort',
@@ -220,6 +228,9 @@ export const additionalServices: readonly ExtendedService[] = [
       'Bundle routine oil, fluids, filters, brakes and diagnostic needs into a clear vehicle-specific maintenance plan. Final parts, fluids and price are confirmed by VIN and inspection.',
     serviceType: 'Automotive maintenance and oil change',
     quoteService: 'maintenance',
+    image: '/generated/service-maintenance-oil-change.webp',
+    imageAlt:
+      'Technician inspecting a modern luxury sedan with its hood open in a spotless service bay.',
     sourceUrl: 'https://pro-detailing.co/our-services/maintenance-oil-change/',
     highlights: [
       {
@@ -354,6 +365,9 @@ export const additionalServices: readonly ExtendedService[] = [
       'Request a tire change, rotation, flat-repair assessment or related brake check. Tire fitment, repairability and the final scope are confirmed after inspection.',
     serviceType: 'Automotive tire change, rotation and flat repair service',
     quoteService: 'tires',
+    image: '/generated/service-tire-service.webp',
+    imageAlt:
+      'Technician safely torquing a performance wheel on a luxury vehicle in a professional service bay.',
     sourceUrl: 'https://pro-detailing.co/our-services/maintenance-oil-change/',
     highlights: [
       {
@@ -467,6 +481,9 @@ export const additionalServices: readonly ExtendedService[] = [
       'Request a windshield chip or crack assessment, or replacement for front, side or rear glass. Fitment, repairability, adhesive and sensor requirements are confirmed first.',
     serviceType: 'Automotive glass repair and windshield replacement',
     quoteService: 'auto-glass',
+    image: '/generated/service-auto-glass.webp',
+    imageAlt:
+      'Auto-glass technician using a precision resin bridge to repair a windshield chip.',
     sourceUrl: 'https://pro-detailing.co/windshield-repair-vs-replacement/',
     highlights: [
       {
@@ -562,6 +579,9 @@ export const additionalServices: readonly ExtendedService[] = [
     serviceType:
       'Automotive locksmith, car key replacement and fob programming',
     quoteService: 'key-replacement',
+    image: '/generated/service-key-replacement.webp',
+    imageAlt:
+      'Automotive locksmith programming a modern smart key beside a luxury sedan.',
     sourceUrl: 'https://pro-detailing.co/our-services/key-replacement/',
     highlights: [
       {

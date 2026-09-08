@@ -11,6 +11,7 @@ import {
   SunMedium,
   Wrench,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
@@ -151,7 +152,15 @@ export default function ServicesPage() {
               const Icon = coreIcons[index];
               return (
                 <Link href={service.href} key={service.id}>
-                  <span>{service.step}</span>
+                  <div className="service-network-card-media">
+                    <Image
+                      src={service.image}
+                      alt={service.imageAlt}
+                      fill
+                      sizes="(min-width: 1050px) 30vw, (min-width: 520px) 46vw, 92vw"
+                    />
+                    <span>SYSTEM / {service.step}</span>
+                  </div>
                   <Icon aria-hidden="true" />
                   <h2>{service.name}</h2>
                   <p>{service.description}</p>
@@ -180,7 +189,15 @@ export default function ServicesPage() {
               const Icon = additionalIcons[service.slug];
               return (
                 <Link href={`/our-services/${service.slug}`} key={service.slug}>
-                  <span>{String(index + 5).padStart(2, '0')}</span>
+                  <div className="service-network-card-media">
+                    <Image
+                      src={service.image}
+                      alt={service.imageAlt}
+                      fill
+                      sizes="(min-width: 1050px) 30vw, (min-width: 520px) 46vw, 92vw"
+                    />
+                    <span>SYSTEM / {String(index + 5).padStart(2, '0')}</span>
+                  </div>
                   <Icon aria-hidden="true" />
                   <h2>{service.name}</h2>
                   <p>{service.description}</p>
@@ -195,9 +212,18 @@ export default function ServicesPage() {
               target="_blank"
               rel="noreferrer"
             >
-              <span>
-                {String(visibleAdditional.length + 5).padStart(2, '0')}
-              </span>
+              <div className="service-network-card-media">
+                <Image
+                  src="/gallery/pro-service-private-jet-cleaning.webp"
+                  alt="Private jet positioned for specialist exterior and cabin care."
+                  fill
+                  sizes="(min-width: 1050px) 30vw, (min-width: 520px) 46vw, 92vw"
+                />
+                <span>
+                  SYSTEM /{' '}
+                  {String(visibleAdditional.length + 5).padStart(2, '0')}
+                </span>
+              </div>
               <Plane aria-hidden="true" />
               <h2>Aircraft Detailing</h2>
               <p>
