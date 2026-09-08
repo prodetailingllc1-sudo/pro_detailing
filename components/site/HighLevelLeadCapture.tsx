@@ -13,14 +13,14 @@ const serviceOptions: readonly (readonly [string, string])[] = [
   ['ceramic', 'Ceramic coating'],
   ['ppf', 'Paint protection film'],
   ['detailing', 'Auto detailing'],
+  ['maintenance', 'Maintenance & oil change'],
+  ['tires', 'Tire change, rotation & flat repair'],
+  ['auto-glass', 'Auto glass repair & replacement'],
+  ['key-replacement', 'Automotive locksmith & car keys'],
   ...(siteFeatures.mobileDetailing
     ? ([['mobile-detailing', 'Mobile detailing']] as const)
     : []),
   ['residential-tint', 'Residential window tint'],
-  ['maintenance', 'Maintenance & oil change'],
-  ['tires', 'Tire service'],
-  ['auto-glass', 'Auto glass'],
-  ['key-replacement', 'Key replacement'],
 ];
 
 const vehicleOptions = [
@@ -39,9 +39,9 @@ const goalOptions = [
   'Easier maintenance & gloss',
   'Deep interior/exterior reset',
   'Routine maintenance or oil service',
-  'Tire or brake safety concern',
-  'Replace damaged auto glass',
-  'Replace or program a key',
+  'Change, rotate or repair a tire',
+  'Repair or replace damaged auto glass',
+  'Lockout, replacement key or fob programming',
   'Home heat, glare or privacy',
   'I need a recommendation',
 ];
@@ -54,9 +54,9 @@ const serviceGoalDefaults: Record<string, string> = {
   'mobile-detailing': 'Deep interior/exterior reset',
   'residential-tint': 'Home heat, glare or privacy',
   maintenance: 'Routine maintenance or oil service',
-  tires: 'Tire or brake safety concern',
-  'auto-glass': 'Replace damaged auto glass',
-  'key-replacement': 'Replace or program a key',
+  tires: 'Change, rotate or repair a tire',
+  'auto-glass': 'Repair or replace damaged auto glass',
+  'key-replacement': 'Lockout, replacement key or fob programming',
 };
 
 type SubmitState = 'idle' | 'sending' | 'success' | 'error';

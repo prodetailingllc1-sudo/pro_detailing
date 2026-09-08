@@ -10,6 +10,7 @@ import { siteFeatures } from '@/lib/site-config';
 
 const links = [
   { href: '/our-services', label: 'All Services' },
+  { href: '/our-services#vehicle-care', label: 'Vehicle Care' },
   { href: '/our-services/window-tinting', label: 'Tint' },
   { href: '/our-services/ceramic-coating', label: 'Ceramic' },
   { href: '/our-services/paint-protection-film', label: 'PPF' },
@@ -26,6 +27,22 @@ const mobileServiceLinks = [
     label: 'Paint protection film',
   },
   { href: '/our-services/auto-detailing', label: 'Auto detailing' },
+  {
+    href: '/our-services/maintenance-oil-change',
+    label: 'Maintenance & oil change',
+  },
+  {
+    href: '/our-services/tire-service',
+    label: 'Tire change, rotation & flat repair',
+  },
+  {
+    href: '/our-services/auto-glass',
+    label: 'Auto glass repair & replacement',
+  },
+  {
+    href: '/our-services/key-replacement',
+    label: 'Automotive locksmith & car keys',
+  },
   ...(siteFeatures.mobileDetailing
     ? [{ href: '/our-services/mobile-detailing', label: 'Mobile detailing' }]
     : []),
@@ -33,13 +50,6 @@ const mobileServiceLinks = [
     href: '/our-services/residential-window-tinting',
     label: 'Residential window tint',
   },
-  {
-    href: '/our-services/maintenance-oil-change',
-    label: 'Maintenance & oil change',
-  },
-  { href: '/our-services/tire-service', label: 'Tire service' },
-  { href: '/our-services/auto-glass', label: 'Auto glass' },
-  { href: '/our-services/key-replacement', label: 'Key replacement' },
 ];
 
 export function SiteHeader() {

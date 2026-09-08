@@ -55,18 +55,24 @@ export function Footer() {
         </div>
         <div>
           <p className="footer-label">Maintenance & more</p>
+          <Link href="/our-services/maintenance-oil-change">
+            Maintenance &amp; oil change
+          </Link>
+          <Link href="/our-services/tire-service">
+            Tire change, rotation &amp; flat repair
+          </Link>
+          <Link href="/our-services/auto-glass">
+            Auto glass repair &amp; replacement
+          </Link>
+          <Link href="/our-services/key-replacement">
+            Automotive locksmith &amp; car keys
+          </Link>
           {siteFeatures.mobileDetailing ? (
             <Link href="/our-services/mobile-detailing">Mobile detailing</Link>
           ) : null}
           <Link href="/our-services/residential-window-tinting">
             Residential window tint
           </Link>
-          <Link href="/our-services/maintenance-oil-change">
-            Maintenance &amp; oil change
-          </Link>
-          <Link href="/our-services/tire-service">Tire service</Link>
-          <Link href="/our-services/auto-glass">Auto glass</Link>
-          <Link href="/our-services/key-replacement">Key replacement</Link>
           <Link href="/request-quote">Request a quote</Link>
         </div>
         <div>

@@ -7,9 +7,9 @@ const service = additionalServices.find(
 )!;
 
 export const metadata = createPageMetadata({
-  title: 'Tire Service Manassas, VA | PRO Detailing',
+  title: 'Tire Change & Flat Repair Manassas, VA | PRO Detailing',
   description:
-    'Request tire inspection, rotation, flat-repair assessment or tire-and-brake safety service from PRO Detailing in Manassas, Virginia.',
+    'Request a tire change, rotation, flat-repair assessment or tire-and-brake safety service from PRO Detailing in Manassas, Virginia.',
   path: '/our-services/tire-service',
 });
 

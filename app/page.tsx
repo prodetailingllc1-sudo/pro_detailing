@@ -45,7 +45,7 @@ import {
 export const metadata = createPageMetadata({
   title: 'Window Tint & Ceramic Coating Manassas, VA | PRO Detailing',
   description:
-    'Visit PRO Detailing in Manassas for LLumar window tint, Ceramic Pro coating and professional auto detailing. Preview tint options and request a quote.',
+    'Visit PRO Detailing in Manassas for LLumar tint, Ceramic Pro, PPF, detailing, maintenance, tire service, auto glass and automotive locksmith support.',
   path: '/',
 });
 
@@ -97,7 +97,32 @@ const additionalServiceIcons: Record<string, typeof CarFront> = {
   'key-replacement': KeyRound,
 };
 
+const additionalServicePriority = [
+  'maintenance-oil-change',
+  'tire-service',
+  'auto-glass',
+  'key-replacement',
+] as const;
+
 export default function Home() {
+  const visibleAdditionalServices = [...additionalServices]
+    .filter(
+      (service) =>
+        service.slug !== 'mobile-detailing' || siteFeatures.mobileDetailing,
+    )
+    .sort((first, second) => {
+      const firstIndex = additionalServicePriority.indexOf(
+        first.slug as (typeof additionalServicePriority)[number],
+      );
+      const secondIndex = additionalServicePriority.indexOf(
+        second.slug as (typeof additionalServicePriority)[number],
+      );
+      return (
+        (firstIndex === -1 ? 100 : firstIndex) -
+        (secondIndex === -1 ? 100 : secondIndex)
+      );
+    });
+
   const homeSchema = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -176,31 +201,22 @@ export default function Home() {
             </Link>
           </div>
           <div className="home-service-network-grid">
-            {additionalServices
-              .filter(
-                (service) =>
-                  service.slug !== 'mobile-detailing' ||
-                  siteFeatures.mobileDetailing,
-              )
-              .map((service, index) => {
-                const Icon = additionalServiceIcons[service.slug];
-                return (
-                  <Link
-                    href={`/our-services/${service.slug}`}
-                    key={service.slug}
-                  >
-                    <div>
-                      <span>{String(index + 5).padStart(2, '0')}</span>
-                      <Icon aria-hidden="true" />
-                    </div>
-                    <h3>{service.name}</h3>
-                    <p>{service.description}</p>
-                    <strong>
-                      Explore <ArrowRight aria-hidden="true" />
-                    </strong>
-                  </Link>
-                );
-              })}
+            {visibleAdditionalServices.map((service, index) => {
+              const Icon = additionalServiceIcons[service.slug];
+              return (
+                <Link href={`/our-services/${service.slug}`} key={service.slug}>
+                  <div>
+                    <span>{String(index + 5).padStart(2, '0')}</span>
+                    <Icon aria-hidden="true" />
+                  </div>
+                  <h3>{service.name}</h3>
+                  <p>{service.description}</p>
+                  <strong>
+                    Explore <ArrowRight aria-hidden="true" />
+                  </strong>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

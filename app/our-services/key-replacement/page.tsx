@@ -7,9 +7,9 @@ const service = additionalServices.find(
 )!;
 
 export const metadata = createPageMetadata({
-  title: 'Car Key Replacement Manassas, VA | PRO Detailing',
+  title: 'Automotive Locksmith & Car Keys Manassas, VA | PRO Detailing',
   description:
-    'Request car-key replacement, duplication or programming from PRO Detailing in Manassas. Compatibility and proof requirements are confirmed first.',
+    'Request automotive lockout help, car-key cutting, duplication, replacement or fob programming from PRO Detailing in Manassas.',
   path: '/our-services/key-replacement',
 });
 

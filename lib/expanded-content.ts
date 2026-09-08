@@ -346,19 +346,19 @@ export const additionalServices: readonly ExtendedService[] = [
   },
   {
     slug: 'tire-service',
-    name: 'Tire & Brake Safety Service',
+    name: 'Tire Change, Rotation & Flat Repair',
     shortName: 'Tire service',
-    eyebrow: 'Tires · brakes · road readiness',
-    title: 'Tire Service in Manassas, VA',
+    eyebrow: 'Tire change · rotation · flat repair',
+    title: 'Tire Change, Rotation & Flat Repair in Manassas, VA',
     description:
-      'Start with tread, pressure, visible damage and brake condition. Tire rotation, flat repair and related brake work are confirmed only after the wheel-and-tire assembly is inspected.',
-    serviceType: 'Automotive tire and brake service',
+      'Request a tire change, rotation, flat-repair assessment or related brake check. Tire fitment, repairability and the final scope are confirmed after inspection.',
+    serviceType: 'Automotive tire change, rotation and flat repair service',
     quoteService: 'tires',
     sourceUrl: 'https://pro-detailing.co/our-services/maintenance-oil-change/',
     highlights: [
       {
-        title: 'Tire rotation',
-        copy: 'Review wear patterns and rotate compatible tires according to the approved plan.',
+        title: 'Tire change & rotation',
+        copy: 'Share the tire size and concern so fitment can be checked before an approved change or rotation.',
       },
       {
         title: 'Flat repair assessment',
@@ -374,6 +374,7 @@ export const additionalServices: readonly ExtendedService[] = [
         group: 'Tire care',
         items: [
           'Tread and pressure check',
+          'Tire-change and fitment review',
           'Tire rotation',
           'Flat-tire repair assessment',
         ],
@@ -389,13 +390,13 @@ export const additionalServices: readonly ExtendedService[] = [
     ],
     pathways: [
       {
-        name: 'Tire Condition Check',
+        name: 'Tire Change or Rotation',
         label: 'Safety pathway',
-        copy: 'A focused review before rotation, repair or a longer trip.',
+        copy: 'A focused fitment and condition review before an approved tire change or rotation.',
         includes: [
           'Tread and pressure check',
-          'Visible damage review',
-          'Rotation compatibility',
+          'Tire size and visible damage review',
+          'Change or rotation compatibility',
         ],
       },
       {
@@ -447,6 +448,10 @@ export const additionalServices: readonly ExtendedService[] = [
         'No. Tire size, directionality, staggered fitment and manufacturer guidance can change the pattern or prevent rotation.',
       ],
       [
+        'Can I request a tire change?',
+        'Yes. Share the vehicle, current tire size and reason for the change. The team confirms fitment, tire availability and the final scope before booking.',
+      ],
+      [
         'Are tires included in the detailing package?',
         'Wheel and tire appearance care may be part of detailing, but mechanical tire inspection, rotation and repair are separate services.',
       ],
@@ -454,19 +459,19 @@ export const additionalServices: readonly ExtendedService[] = [
   },
   {
     slug: 'auto-glass',
-    name: 'Auto Glass & Windshield Replacement',
+    name: 'Auto Glass Repair & Replacement',
     shortName: 'Auto glass',
-    eyebrow: 'Glass service · fitment confirmed',
-    title: 'Auto Glass & Windshield Replacement in Manassas, VA',
+    eyebrow: 'Chip repair · replacement · mobile glass',
+    title: 'Auto Glass Repair & Replacement in Manassas, VA',
     description:
-      'Request front windshield, side-window or rear-glass replacement with vehicle-specific fitment, adhesive and sensor requirements confirmed before service.',
-    serviceType: 'Automotive glass and windshield replacement',
+      'Request a windshield chip or crack assessment, or replacement for front, side or rear glass. Fitment, repairability, adhesive and sensor requirements are confirmed first.',
+    serviceType: 'Automotive glass repair and windshield replacement',
     quoteService: 'auto-glass',
-    sourceUrl: 'https://pro-detailing.co/our-services/windshield-replacement/',
+    sourceUrl: 'https://pro-detailing.co/windshield-repair-vs-replacement/',
     highlights: [
       {
-        title: 'Vehicle-specific glass',
-        copy: 'Year, make, model, trim and installed options are checked before ordering.',
+        title: 'Chip & crack assessment',
+        copy: 'Damage size, depth and location are reviewed before repair or replacement is recommended.',
       },
       {
         title: 'Mobile availability',
@@ -478,6 +483,16 @@ export const additionalServices: readonly ExtendedService[] = [
       },
     ],
     pathways: [
+      {
+        name: 'Chip & Crack Repair',
+        label: 'Repair assessment',
+        copy: 'For eligible windshield chips or cracks that may be safely stabilized without replacing the glass.',
+        includes: [
+          'Damage size and location review',
+          'Repairability assessment',
+          'Repair or replacement recommendation',
+        ],
+      },
       {
         name: 'Windshield Replacement',
         label: 'Front glass',
@@ -491,18 +506,12 @@ export const additionalServices: readonly ExtendedService[] = [
       {
         name: 'Side & Rear Glass',
         label: 'Body glass',
-        copy: 'For broken or damaged door, quarter or back glass.',
+        copy: 'For broken or damaged door, quarter or back glass, with eligible mobile service confirmed by location.',
         includes: [
           'Opening and glass identification',
           'Interior debris review',
-          'Fitment and availability confirmation',
+          'Fitment and mobile availability confirmation',
         ],
-      },
-      {
-        name: 'Mobile Glass Request',
-        label: 'Location service',
-        copy: 'For compatible replacements at a suitable home, office or fleet location.',
-        includes: ['Location review', 'Weather check', 'Safe cure plan'],
       },
     ],
     process: [
@@ -515,8 +524,8 @@ export const additionalServices: readonly ExtendedService[] = [
         copy: 'Review trim, sensors, options and part availability.',
       },
       {
-        title: 'Replace',
-        copy: 'Install the confirmed glass with the appropriate system.',
+        title: 'Repair or replace',
+        copy: 'Complete the confirmed repair or install the correct replacement glass.',
       },
       {
         title: 'Handoff',
@@ -524,6 +533,10 @@ export const additionalServices: readonly ExtendedService[] = [
       },
     ],
     faqs: [
+      [
+        'Can a windshield chip or crack be repaired?',
+        'Some damage can be repaired. Size, depth, location, contamination and proximity to the edge or driver-assistance camera determine whether repair is appropriate.',
+      ],
       [
         'Do you replace more than windshields?',
         'The current service menu covers front windshields, rear glass and side windows. Exact fitment and availability are confirmed.',
@@ -540,13 +553,14 @@ export const additionalServices: readonly ExtendedService[] = [
   },
   {
     slug: 'key-replacement',
-    name: 'Car Key Replacement & Programming',
-    shortName: 'Key replacement',
-    eyebrow: 'Keys · fobs · mobile support',
-    title: 'Car Key Replacement in Manassas, VA',
+    name: 'Automotive Locksmith & Car Keys',
+    shortName: 'Locksmith & car keys',
+    eyebrow: 'Lockouts · keys · fob programming',
+    title: 'Automotive Locksmith & Car Key Service in Manassas, VA',
     description:
-      'Request vehicle-key cutting, duplication, fob programming or lockout support. Compatibility, proof-of-ownership requirements and availability are confirmed first.',
-    serviceType: 'Automotive key replacement and fob programming',
+      'Request lockout assistance, car-key cutting or duplication, key replacement and fob programming. Vehicle compatibility, ownership requirements and availability are confirmed first.',
+    serviceType:
+      'Automotive locksmith, car key replacement and fob programming',
     quoteService: 'key-replacement',
     sourceUrl: 'https://pro-detailing.co/our-services/key-replacement/',
     highlights: [
@@ -559,39 +573,39 @@ export const additionalServices: readonly ExtendedService[] = [
         copy: 'Remote, smart, proximity and push-to-start compatibility is confirmed before service.',
       },
       {
-        title: 'Mobile & lockout',
-        copy: 'Eligible on-site key and lockout requests are evaluated by location and vehicle.',
+        title: 'Lockout assistance',
+        copy: 'Eligible mobile lockout requests are evaluated by location, vehicle and proof of ownership.',
       },
     ],
     pathways: [
       {
+        name: 'Vehicle Lockout Assistance',
+        label: 'Automotive locksmith',
+        copy: 'Request damage-conscious entry support after the vehicle and ownership details are verified.',
+        includes: [
+          'Vehicle and location review',
+          'Ownership verification',
+          'Availability confirmation',
+        ],
+      },
+      {
         name: 'Duplicate or Replace',
-        label: 'Key service',
+        label: 'Car key service',
         copy: 'Start from an existing key or request a replacement when the original is unavailable.',
         includes: [
           'Vehicle and key identification',
           'Ownership verification',
-          'Cut/program scope',
+          'Cut and programming scope',
         ],
       },
       {
         name: 'Fob Programming',
         label: 'Electronic key',
-        copy: 'Confirm the correct fob type and programming path for the vehicle.',
+        copy: 'Confirm the correct remote, smart-key or push-to-start fob and programming path for the vehicle.',
         includes: [
           'Compatibility check',
           'Programming requirement',
           'Function test',
-        ],
-      },
-      {
-        name: 'Mobile Key Support',
-        label: 'On-site request',
-        copy: 'For compatible key or lockout needs at an approved location.',
-        includes: [
-          'Location and vehicle review',
-          'Ownership verification',
-          'Availability confirmation',
         ],
       },
     ],

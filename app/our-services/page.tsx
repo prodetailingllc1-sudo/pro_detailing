@@ -23,8 +23,8 @@ import { createPageMetadata } from '@/lib/metadata';
 export const metadata = createPageMetadata({
   title: 'Automotive Services Manassas, VA | PRO Detailing',
   description: siteFeatures.mobileDetailing
-    ? 'Explore tint, ceramic coating, PPF, detailing, maintenance, tires, glass, keys, mobile detailing, home tint and aircraft care in Northern Virginia.'
-    : 'Explore tint, ceramic coating, PPF, detailing, maintenance, tires, glass, keys, home tint and aircraft care in Northern Virginia.',
+    ? 'Explore tint, Ceramic Pro, PPF, detailing, maintenance, tire change and repair, auto glass, locksmith, mobile detailing and home tint in Northern Virginia.'
+    : 'Explore tint, Ceramic Pro, PPF, detailing, maintenance, tire change and repair, auto glass, automotive locksmith and home tint in Northern Virginia.',
   path: '/our-services',
 });
 
@@ -38,31 +38,105 @@ const additionalIcons: Record<string, typeof CarFront> = {
   'key-replacement': KeyRound,
 };
 
+const vehicleCareOrder = [
+  'maintenance-oil-change',
+  'tire-service',
+  'auto-glass',
+  'key-replacement',
+] as const;
+
 export default function ServicesPage() {
-  const visibleAdditional = additionalServices.filter(
+  const availableAdditional = additionalServices.filter(
     (service) =>
       service.slug !== 'mobile-detailing' || siteFeatures.mobileDetailing,
   );
+  const vehicleCareServices = vehicleCareOrder.flatMap((slug) => {
+    const service = availableAdditional.find((item) => item.slug === slug);
+    return service ? [service] : [];
+  });
+  const specialtyServices = availableAdditional.filter(
+    (service) =>
+      !vehicleCareOrder.includes(
+        service.slug as (typeof vehicleCareOrder)[number],
+      ),
+  );
+  const visibleAdditional = [...vehicleCareServices, ...specialtyServices];
+
+  const directoryItems = [
+    ...vehicleCareServices.map((service) => ({
+      href: `/our-services/${service.slug}`,
+      name: service.name,
+      group: 'Vehicle care',
+    })),
+    ...services.map((service) => ({
+      href: service.href,
+      name: service.name,
+      group: 'Appearance & protection',
+    })),
+    ...specialtyServices.map((service) => ({
+      href: `/our-services/${service.slug}`,
+      name: service.name,
+      group:
+        service.slug === 'residential-window-tinting' ? 'Property' : 'Mobile',
+    })),
+    {
+      href: 'https://proaviationcare.com/',
+      name: 'Aircraft Detailing',
+      group: 'Aircraft care',
+    },
+  ];
 
   return (
     <main id="main-content" className="services-index-page">
       <section className="services-index-hero">
-        <div className="shell">
-          <p className="eyebrow">
-            <span /> Complete PRO service network
-          </p>
-          <h1>
-            One trusted starting point for appearance, protection and vehicle
-            care.
-          </h1>
-          <p>
-            Start with the outcome or issue. Each page explains what is
-            available, what must be inspected and how to request the right scope
-            without guessing online.
-          </p>
-          <Link className="button button-primary" href={quoteHref()}>
-            Start a service request <ArrowRight aria-hidden="true" />
-          </Link>
+        <div className="shell services-index-hero-layout">
+          <div className="services-index-hero-copy">
+            <p className="eyebrow">
+              <span /> Complete PRO service network
+            </p>
+            <h1>Every service. One PRO standard.</h1>
+            <p>
+              Find appearance, protection, maintenance, tire, glass, locksmith,
+              mobile and property services without hunting through the site.
+            </p>
+            <Link className="button button-primary" href={quoteHref()}>
+              Start a service request <ArrowRight aria-hidden="true" />
+            </Link>
+          </div>
+
+          <nav
+            className="services-quick-directory"
+            aria-labelledby="complete-service-directory"
+          >
+            <div className="services-quick-directory-head">
+              <div>
+                <span>ALL SERVICES / LIVE DIRECTORY</span>
+                <h2 id="complete-service-directory">
+                  Choose exactly what you need.
+                </h2>
+              </div>
+              <small>
+                {String(directoryItems.length).padStart(2, '0')} paths
+              </small>
+            </div>
+            <div className="services-quick-directory-grid">
+              {directoryItems.map((item) => (
+                <Link
+                  href={item.href}
+                  key={item.href}
+                  target={item.href.startsWith('http') ? '_blank' : undefined}
+                  rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
+                >
+                  <span aria-hidden="true" />
+                  <div>
+                    <small>{item.group}</small>
+                    <strong>{item.name}</strong>
+                  </div>
+                  <ArrowRight aria-hidden="true" />
+                </Link>
+              ))}
+            </div>
+          </nav>
         </div>
       </section>
 
@@ -91,11 +165,14 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="section service-network-section service-network-secondary">
+      <section
+        className="section service-network-section service-network-secondary"
+        id="vehicle-care"
+      >
         <div className="shell">
           <SectionIntro
-            eyebrow="More ways we can help"
-            title="Maintenance, mobility, glass, keys, property film and aircraft care—clearly separated."
+            eyebrow="Vehicle care & specialized support"
+            title="Maintenance, tire, glass and locksmith services—easy to find and request."
             copy="These services use consultation-led pathways because parts, location, compatibility and condition change the final work."
           />
           <div className="service-network-grid">
