@@ -59,8 +59,8 @@ export function ProtectionLab() {
             className="service-mark"
             src={active.mark}
             alt=""
-            width="1100"
-            height="470"
+            width={active.markWidth}
+            height={active.markHeight}
           />
           <p className="overline">Configured around your vehicle</p>
           <h3>{active.name}</h3>

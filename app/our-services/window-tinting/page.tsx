@@ -13,9 +13,9 @@ import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
 import { TintStudio } from '@/components/site/TintStudio';
 import {
-  business,
   filmLines,
   processSteps,
+  quoteHref,
   SITE_ORIGIN,
 } from '@/lib/site-data';
 
@@ -84,10 +84,10 @@ export default function WindowTintingPage() {
           <div className="service-hero-copy">
             <Image
               className="service-hero-mark"
-              src="/brand/pro-tints.png"
+              src="/brand/pro-tints-optimized.webp"
               alt="PRO Tints"
               width="1100"
-              height="470"
+              height="204"
             />
             <p className="eyebrow">
               <span /> PRO Tints by PRO Detailing LLC
@@ -102,9 +102,9 @@ export default function WindowTintingPage() {
               <a className="button button-primary" href="#studio">
                 Preview LLumar shades <ArrowRight aria-hidden="true" />
               </a>
-              <a className="button button-ghost" href={business.bookingUrl}>
+              <Link className="button button-ghost" href={quoteHref('tint')}>
                 Request a tint quote
-              </a>
+              </Link>
             </div>
           </div>
           <aside
@@ -250,14 +250,14 @@ export default function WindowTintingPage() {
               title="Treat each glass area as a separate decision."
               copy="Your configuration can balance a consistent look with comfort, visibility and finished-window guidance."
             />
-            <a className="button button-primary" href={business.bookingUrl}>
+            <Link className="button button-primary" href={quoteHref('tint')}>
               Request a vehicle-specific quote <ArrowRight aria-hidden="true" />
-            </a>
+            </Link>
           </div>
           <div className="coverage-diagram">
             <div className="coverage-car">
               <Image
-                src="/vehicles/sedan.png"
+                src="/vehicles/sedan.webp"
                 alt="Sedan glass-zone diagram"
                 width="1536"
                 height="1024"

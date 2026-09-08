@@ -5,7 +5,11 @@ import { ArrowRight, Check, Focus, Layers3, ShieldCheck } from 'lucide-react';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
-import { business, processSteps, SITE_ORIGIN } from '@/lib/site-data';
+import {
+  processSteps,
+  quoteHref,
+  SITE_ORIGIN,
+} from '@/lib/site-data';
 
 export const metadata: Metadata = {
   title: { absolute: 'Paint Protection Film Manassas, VA | PRO PPF' },
@@ -87,10 +91,10 @@ export default function PaintProtectionFilmPage() {
           <div className="service-hero-copy">
             <Image
               className="service-hero-mark"
-              src="/brand/pro-ppf.png"
+              src="/brand/pro-ppf-optimized.webp"
               alt="PRO PPF"
               width="1100"
-              height="470"
+              height="207"
             />
             <p className="eyebrow">
               <span /> Impact protection · planned panel by panel
@@ -105,9 +109,9 @@ export default function PaintProtectionFilmPage() {
               <a className="button button-primary" href="#coverage">
                 Plan your coverage <ArrowRight aria-hidden="true" />
               </a>
-              <a className="button button-ghost" href={business.bookingUrl}>
+              <Link className="button button-ghost" href={quoteHref('ppf')}>
                 Request a PPF quote
-              </a>
+              </Link>
             </div>
           </div>
           <aside
@@ -189,14 +193,14 @@ export default function PaintProtectionFilmPage() {
                 in the quote
               </li>
             </ul>
-            <a className="button button-primary" href={business.bookingUrl}>
+            <Link className="button button-primary" href={quoteHref('ppf')}>
               Request an inspection <ArrowRight aria-hidden="true" />
-            </a>
+            </Link>
           </div>
           <div className="coverage-diagram ppf-coverage-diagram">
             <div className="coverage-car">
               <Image
-                src="/vehicles/coupe.png"
+                src="/vehicles/coupe.webp"
                 alt="Coupe used to illustrate paint protection film coverage planning"
                 width="1536"
                 height="1024"

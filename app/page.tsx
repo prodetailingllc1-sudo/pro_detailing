@@ -12,6 +12,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { BrandUniverse } from '@/components/site/BrandUniverse';
+import { HeroExperience } from '@/components/site/HeroExperience';
 import { ProtectionLab } from '@/components/site/ProtectionLab';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
@@ -20,6 +22,7 @@ import {
   business,
   galleryItems,
   processSteps,
+  quoteHref,
   reviews,
   serviceAreas,
   SITE_ORIGIN,
@@ -87,63 +90,7 @@ export default function Home() {
 
   return (
     <main id="main-content">
-      <section className="hero-shell" id="top">
-        <div className="hero-media" aria-hidden="true">
-          <Image
-            src="/assets/hero-studio.webp"
-            alt=""
-            width="1800"
-            height="1200"
-            priority
-            sizes="100vw"
-          />
-          <div className="hero-wash" />
-          <div className="hero-grid" />
-        </div>
-        <div className="hero-content shell">
-          <p className="eyebrow">
-            <span /> Manassas, Virginia · Vehicle appearance & protection
-          </p>
-          <h1>
-            Premium Window Tint, Ceramic Coating & Auto Detailing in Manassas,
-            VA
-          </h1>
-          <p className="hero-copy">
-            A modern protection studio for drivers who care about the finish.
-            Explore LLumar tint, Ceramic Pro coating, paint protection film and
-            meticulous detailing—then configure the right plan for your vehicle.
-          </p>
-          <div className="hero-actions">
-            <Link className="button button-primary" href="/tint-simulator">
-              Build your tint <ArrowRight aria-hidden="true" />
-            </Link>
-            <a className="button button-ghost" href={business.bookingUrl}>
-              Request an appointment
-            </a>
-          </div>
-          <div className="hero-proof" aria-label="Studio highlights">
-            <div>
-              <strong>CTX · IRX · AIR</strong>
-              <span>Confirmed LLumar film choices</span>
-            </div>
-            <div>
-              <strong>Real work</strong>
-              <span>Our vehicles, not stock photography</span>
-            </div>
-            <div>
-              <strong>7501 Gary Rd</strong>
-              <span>Manassas studio</span>
-            </div>
-          </div>
-        </div>
-        <div className="hero-side-note" aria-hidden="true">
-          <span>PRO / 38.793</span>
-          <span>77.537 / VA</span>
-        </div>
-        <a className="scroll-cue" href="#systems">
-          <span /> Configure your protection system
-        </a>
-      </section>
+      <HeroExperience />
 
       <section className="signal-strip" aria-label="Protection priorities">
         <div className="shell signal-grid">
@@ -168,6 +115,8 @@ export default function Home() {
         </div>
       </section>
 
+      <BrandUniverse />
+
       <section className="section systems-section" id="systems">
         <div className="shell">
           <SectionIntro
@@ -182,10 +131,10 @@ export default function Home() {
       <section className="section feature-split c63-feature">
         <div className="feature-image">
           <Image
-            src="/c63/IMG_2082.jpeg"
+            src="/c63/IMG_2082.webp"
             alt="White Mercedes-AMG C63 in profile outside the studio"
-            width="4032"
-            height="3024"
+            width="1650"
+            height="2200"
             sizes="(max-width: 780px) 100vw, 55vw"
           />
           <div className="image-coordinate">
@@ -217,9 +166,9 @@ export default function Home() {
               handoff
             </li>
           </ul>
-          <a className="text-link" href={business.bookingUrl}>
+          <Link className="text-link" href={quoteHref()}>
             Start a vehicle consultation <ArrowRight aria-hidden="true" />
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -296,9 +245,9 @@ export default function Home() {
         <div className="shell review-layout">
           <div>
             <SectionIntro
-              eyebrow="What drivers remember"
-              title="Clear advice. Careful work. A finish worth looking back at."
-              copy="A few themes shared by PRO Detailing customers. Visit our Google profile for current public reviews."
+              eyebrow="Google-sourced customer feedback"
+              title="The details customers notice after the handoff."
+              copy="These concise review highlights are paraphrased from Google-sourced feedback published on the current pro-detailing.co website."
             />
             <a
               className="text-link"
@@ -311,13 +260,26 @@ export default function Home() {
           </div>
           <div className="review-stack">
             {reviews.map((review, index) => (
-              <figure key={review.name}>
-                <span>0{index + 1}</span>
-                <blockquote>“{review.quote}”</blockquote>
-                <figcaption>
-                  {review.name} · {review.service}
-                </figcaption>
-              </figure>
+              <article className="review-card" key={review.name}>
+                <div className="review-card-top">
+                  <span>0{index + 1}</span>
+                  <small>GOOGLE REVIEW HIGHLIGHT</small>
+                </div>
+                <p>{review.summary}</p>
+                <div className="review-author">
+                  <span aria-hidden="true">
+                    {review.name
+                      .split(' ')
+                      .map((part) => part[0])
+                      .join('')
+                      .slice(0, 2)}
+                  </span>
+                  <div>
+                    <strong>{review.name}</strong>
+                    <small>{review.service}</small>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
         </div>

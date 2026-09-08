@@ -1,6 +1,6 @@
 import { ArrowRight, Phone } from 'lucide-react';
 
-import { business } from '@/lib/site-data';
+import { business, quoteHref } from '@/lib/site-data';
 
 export function QuoteBand({
   eyebrow = 'Your vehicle. Your priorities.',
@@ -23,7 +23,7 @@ export function QuoteBand({
           <p>{copy}</p>
         </div>
         <div className="quote-actions">
-          <a className="button button-primary" href={business.bookingUrl}>
+          <a className="button button-primary" href={quoteHref()}>
             Request an appointment <ArrowRight aria-hidden="true" />
           </a>
           <a className="button button-ghost" href={`tel:${business.phoneHref}`}>

@@ -157,7 +157,7 @@ export function TintStudio({ compact = false }: { compact?: boolean }) {
           <div className="stage-light" aria-hidden="true" />
           <Image
             className="vehicle-base"
-            src={`/vehicles/${vehicle}.png`}
+            src={`/vehicles/${vehicle}.webp`}
             alt={`${vehicles.find(([id]) => id === vehicle)?.[1]} tint appearance preview`}
             width="1536"
             height="1024"

@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/our-services/auto-detailing',
     '/tint-simulator',
     '/gallery',
+    '/request-quote',
   ];
 
   return paths.map((path, index) => ({

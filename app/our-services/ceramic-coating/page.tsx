@@ -14,7 +14,12 @@ import {
 import { CeramicLab } from '@/components/site/CeramicLab';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
-import { business, galleryItems, SITE_ORIGIN } from '@/lib/site-data';
+import {
+  business,
+  galleryItems,
+  quoteHref,
+  SITE_ORIGIN,
+} from '@/lib/site-data';
 
 const ceramicCoatingUrl = `${SITE_ORIGIN}/our-services/ceramic-coating`;
 
@@ -180,10 +185,10 @@ export default function CeramicCoatingPage() {
           <div className="service-hero-copy">
             <Image
               className="service-hero-mark"
-              src="/brand/pro-ceramic.png"
+              src="/brand/pro-ceramic-optimized.webp"
               alt="PRO ceramic coating service"
               width="1100"
-              height="470"
+              height="174"
             />
             <p className="eyebrow">
               <span /> Inspection-led paint protection
@@ -198,9 +203,12 @@ export default function CeramicCoatingPage() {
               <a className="button button-primary" href="#coating-lab">
                 Explore the process <ArrowRight aria-hidden="true" />
               </a>
-              <a className="button button-ghost" href={business.bookingUrl}>
+              <Link
+                className="button button-ghost"
+                href={quoteHref('ceramic')}
+              >
                 Request a coating quote
-              </a>
+              </Link>
             </div>
           </div>
           <aside
@@ -393,9 +401,12 @@ export default function CeramicCoatingPage() {
             </table>
           </div>
           <div className="comparison-actions">
-            <a className="button button-primary" href={business.bookingUrl}>
+            <Link
+              className="button button-primary"
+              href={quoteHref('ceramic')}
+            >
               Compare options for my vehicle <ArrowRight aria-hidden="true" />
-            </a>
+            </Link>
             <Link className="text-link" href="/#quote">
               Ask about paint protection film <ArrowRight aria-hidden="true" />
             </Link>

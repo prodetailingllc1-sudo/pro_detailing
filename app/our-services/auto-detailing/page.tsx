@@ -12,7 +12,12 @@ import {
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
-import { business, galleryItems, SITE_ORIGIN } from '@/lib/site-data';
+import {
+  business,
+  galleryItems,
+  quoteHref,
+  SITE_ORIGIN,
+} from '@/lib/site-data';
 
 export const metadata: Metadata = {
   title: { absolute: 'Auto Detailing Manassas, VA | PRO Detailing' },
@@ -131,10 +136,10 @@ export default function AutoDetailingPage() {
           <div className="service-hero-copy">
             <Image
               className="service-hero-mark"
-              src="/brand/pro-detailing.png"
+              src="/brand/pro-detailing-optimized.webp"
               alt="PRO Detailing"
               width="1100"
-              height="470"
+              height="154"
             />
             <p className="eyebrow">
               <span /> Interior · exterior · finish
@@ -150,9 +155,12 @@ export default function AutoDetailingPage() {
               <a className="button button-primary" href="#workflow">
                 See the studio workflow <ArrowRight aria-hidden="true" />
               </a>
-              <a className="button button-ghost" href={business.bookingUrl}>
+              <Link
+                className="button button-ghost"
+                href={quoteHref('detailing')}
+              >
                 Request a detailing quote
-              </a>
+              </Link>
             </div>
           </div>
           <aside

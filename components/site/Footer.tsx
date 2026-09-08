@@ -10,10 +10,10 @@ export function Footer() {
       <div className="footer-grid shell">
         <div className="footer-brand">
           <Image
-            src="/assets/pro-detailing-wordmark.png"
+            src="/assets/pro-detailing-wordmark-optimized.webp"
             alt="PRO Detailing"
-            width="2135"
-            height="736"
+            width="900"
+            height="126"
           />
           <p>
             Premium vehicle appearance and protection, configured and installed
@@ -48,6 +48,7 @@ export function Footer() {
           <Link href="/our-services/auto-detailing">Auto detailing</Link>
           <Link href="/tint-simulator">PRO Tints Studio</Link>
           <Link href="/gallery">Real work gallery</Link>
+          <Link href="/request-quote">Request a vehicle quote</Link>
         </div>
         <div>
           <p className="footer-label">Studio</p>
@@ -64,6 +65,12 @@ export function Footer() {
             Appointments available Monday–Saturday. Call to confirm
             availability.
           </small>
+          <a href={business.privacyUrl} target="_blank" rel="noreferrer">
+            Privacy policy
+          </a>
+          <a href={business.termsUrl} target="_blank" rel="noreferrer">
+            Terms &amp; conditions
+          </a>
         </div>
         <div>
           <p className="footer-label">Service area</p>

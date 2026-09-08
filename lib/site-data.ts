@@ -14,10 +14,18 @@ export const business = {
   mapsUrl:
     'https://www.google.com/maps/search/?api=1&query=7501+Gary+Rd%2C+Manassas%2C+VA+20109',
   bookingUrl: 'https://pro-detailing.co/booking/',
+  privacyUrl: 'https://pro-detailing.co/privacy-policy/',
+  termsUrl: 'https://pro-detailing.co/terms-conditions/',
   instagram: 'https://www.instagram.com/pro_detailingcrew',
   facebook: 'https://www.facebook.com/prodetailingcrew',
   google: 'https://maps.app.goo.gl/oU1kDUrJY6wh1YBR7',
 } as const;
+
+export function quoteHref(service?: string) {
+  return service
+    ? `/request-quote?service=${encodeURIComponent(service)}`
+    : '/request-quote';
+}
 
 export const services = [
   {
@@ -30,7 +38,9 @@ export const services = [
     href: '/our-services/window-tinting',
     cta: 'Explore LLumar tint',
     image: '/gallery/white-suv-profile.webp',
-    mark: '/brand/pro-tints.png',
+    mark: '/brand/pro-tints-optimized.webp',
+    markWidth: 1100,
+    markHeight: 204,
     facts: [
       'CTX · IRX · AIR',
       'Vehicle-specific guidance',
@@ -47,7 +57,9 @@ export const services = [
     href: '/our-services/ceramic-coating',
     cta: 'Explore ceramic coating',
     image: '/gallery/glossy-black-coupe.webp',
-    mark: '/brand/pro-ceramic.png',
+    mark: '/brand/pro-ceramic-optimized.webp',
+    markWidth: 1100,
+    markHeight: 174,
     facts: ['Paint inspection', 'Surface preparation', 'Aftercare plan'],
   },
   {
@@ -60,7 +72,9 @@ export const services = [
     href: '/our-services/paint-protection-film',
     cta: 'Ask about PPF',
     image: '/gallery/polished-suv-front.webp',
-    mark: '/brand/pro-ppf.png',
+    mark: '/brand/pro-ppf-optimized.webp',
+    markWidth: 1100,
+    markHeight: 207,
     facts: ['Coverage consultation', 'Panel-specific fit', 'Clear finish'],
   },
   {
@@ -73,11 +87,13 @@ export const services = [
     href: '/our-services/auto-detailing',
     cta: 'Plan your detail',
     image: '/gallery/foam-covered-saloon.webp',
-    mark: '/brand/pro-detailing.png',
+    mark: '/brand/pro-detailing-optimized.webp',
+    markWidth: 1100,
+    markHeight: 154,
     facts: [
       'Interior reset',
       'Exterior decontamination',
-      'Studio or mobile consultation',
+      'Vehicle-specific consultation',
     ],
   },
 ] as const;
@@ -153,56 +169,56 @@ const currentSiteGallery: GalleryItem[] = Object.values(sitePhotos).map(
 const c63Gallery: GalleryItem[] = [
   {
     id: 'owner-c63-front',
-    src: '/c63/IMG_4159.jpeg',
+    src: '/c63/IMG_4159.webp',
     alt: 'Front view of a white Mercedes-AMG C63 with a gloss carbon-fibre hood outside the studio.',
     caption: 'The owner’s C63, carbon hood detail.',
-    width: 3800,
-    height: 4492,
+    width: 1861,
+    height: 2200,
     group: 'owner-c63',
   },
   {
     id: 'owner-c63-night',
-    src: '/c63/IMG_0437.jpeg',
+    src: '/c63/IMG_0437.webp',
     alt: 'White Mercedes-AMG C63 photographed at night beside two dark vehicles.',
     caption: 'C63 after dark.',
-    width: 4032,
-    height: 3024,
+    width: 1650,
+    height: 2200,
     group: 'owner-c63',
   },
   {
     id: 'owner-c63-profile',
-    src: '/c63/IMG_2082.jpeg',
+    src: '/c63/IMG_2082.webp',
     alt: 'White Mercedes-AMG C63 in side profile with black wheels, tinted glass and a rear wing.',
     caption: 'White C63 in full profile.',
-    width: 4032,
-    height: 3024,
+    width: 1650,
+    height: 2200,
     group: 'owner-c63',
   },
   {
     id: 'owner-c63-studio',
-    src: '/c63/IMG_5126.jpeg',
+    src: '/c63/IMG_5126.webp',
     alt: 'White Mercedes-AMG C63 viewed from above outside an automotive studio at sunset.',
     caption: 'C63 at the studio near sunset.',
-    width: 5712,
-    height: 4284,
+    width: 1650,
+    height: 2200,
     group: 'owner-c63',
   },
   {
     id: 'owner-c63-night-front',
-    src: '/c63/IMG_0558.jpeg',
+    src: '/c63/IMG_0558.webp',
     alt: 'White Mercedes-AMG C63 with a carbon-fibre hood photographed under bright lights at night.',
     caption: 'Carbon and white under night lighting.',
-    width: 5712,
-    height: 4284,
+    width: 1650,
+    height: 2200,
     group: 'owner-c63',
   },
   {
     id: 'owner-c63-sunset',
-    src: '/c63/IMG_9260.jpeg',
+    src: '/c63/IMG_9260.webp',
     alt: 'White Mercedes-AMG C63 parked below a pink and blue sunset sky.',
     caption: 'C63 under a Northern Virginia sunset.',
-    width: 5712,
-    height: 4284,
+    width: 1650,
+    height: 2200,
     group: 'owner-c63',
   },
 ];
@@ -269,19 +285,37 @@ export const reviews = [
   {
     name: 'Ronnie Clark',
     service: 'Window tint',
-    quote:
-      'Great tint work and helpful guidance on Northern Virginia tint rules.',
+    summary:
+      'Highlighted the tint work, practical recommendations and helpful guidance about Northern Virginia tint rules.',
+  },
+  {
+    name: 'Jean Bonner',
+    service: 'Mobile detailing',
+    summary:
+      'Praised the on-time arrival, equipped team and a vehicle left spotless inside and out.',
+  },
+  {
+    name: 'Aqeel Manj',
+    service: 'SUV detailing',
+    summary:
+      'Called out the professional team, deep interior clean and renewed exterior finish on an SUV.',
   },
   {
     name: 'Wendell Bartee',
     service: 'Window tint',
-    quote:
-      'The customer service stood out, and the finished car looked amazing.',
+    summary:
+      'Highlighted attentive customer service and how much better the vehicle looked after tinting.',
+  },
+  {
+    name: 'Elena',
+    service: 'Window tint',
+    summary:
+      'Described a professional tint installation that matched the requested look.',
   },
   {
     name: 'Carol Ojeda-Muro',
     service: 'Full detail',
-    quote:
-      'Professional from start to finish—the car looked brand new at pickup.',
+    summary:
+      'Praised the professional experience and a car that looked renewed at pickup after a full detail.',
   },
 ] as const;

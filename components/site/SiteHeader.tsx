@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { business } from '@/lib/site-data';
+import { business, quoteHref } from '@/lib/site-data';
 
 const links = [
   { href: '/our-services/window-tinting', label: 'LLumar Tint' },
@@ -30,10 +30,11 @@ export function SiteHeader() {
       <Link className="header-brand" href="/" aria-label="PRO Detailing home">
         <Image
           className="brand-mark"
-          src="/assets/pro-detailing-wordmark.png"
+          src="/assets/pro-detailing-wordmark-optimized.webp"
           alt="PRO Detailing — Automotive Appearance and Protection"
-          width="2135"
-          height="736"
+          width="900"
+          height="126"
+          priority
         />
       </Link>
       <nav className="desktop-nav" aria-label="Primary navigation">
@@ -72,9 +73,9 @@ export function SiteHeader() {
         <a href="https://proaviationcare.com/" target="_blank" rel="noreferrer">
           Aircraft Care ↗
         </a>
-        <a className="button button-primary" href={business.bookingUrl}>
+        <Link className="button button-primary" href={quoteHref()}>
           Request an appointment
-        </a>
+        </Link>
       </nav>
     </header>
   );
@@ -86,9 +87,9 @@ export function MobileActions() {
       <a href={`tel:${business.phoneHref}`}>
         <Phone aria-hidden="true" size={17} /> Call
       </a>
-      <a className="is-primary" href={business.bookingUrl}>
+      <Link className="is-primary" href={quoteHref()}>
         Request quote <span aria-hidden="true">↗</span>
-      </a>
+      </Link>
     </div>
   );
 }

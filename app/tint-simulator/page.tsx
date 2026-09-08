@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { TintStudio } from '@/components/site/TintStudio';
-import { business } from '@/lib/site-data';
 
 export const metadata: Metadata = {
   title: {
@@ -41,7 +40,7 @@ const simulatorFaqs = [
   ],
   [
     'Can I send this configuration with a quote request?',
-    `Use Copy Build, then paste the configuration into the appointment request at ${business.bookingUrl}. We will confirm it against your actual vehicle.`,
+    'Use Copy Build, then paste the configuration into the vehicle request. We will confirm it against your actual vehicle.',
   ],
 ] as const;
 
@@ -53,10 +52,10 @@ export default function TintSimulatorPage() {
         <div className="shell simulator-intro">
           <div>
             <Image
-              src="/brand/pro-tints.png"
+              src="/brand/pro-tints-optimized.webp"
               alt="PRO Tints"
               width="1100"
-              height="470"
+              height="204"
             />
             <p className="eyebrow">
               <span /> Interactive window-film lab
