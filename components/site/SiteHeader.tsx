@@ -8,11 +8,14 @@ import { useEffect, useRef, useState } from 'react';
 import { business, quoteHref } from '@/lib/site-data';
 import { siteFeatures } from '@/lib/site-config';
 
-const links = [
-  { href: '/our-services/window-tinting', label: 'Tint' },
+const primaryLinks = [
+  { href: '/our-services/auto-detailing', label: 'Detailing' },
+  { href: '/our-services/window-tinting', label: 'Tints' },
   { href: '/our-services/ceramic-coating', label: 'Ceramic' },
   { href: '/our-services/paint-protection-film', label: 'PPF' },
-  { href: '/our-services/auto-detailing', label: 'Detailing' },
+];
+
+const resourceLinks = [
   { href: '/blog', label: 'Guides' },
   { href: '/reviews', label: 'Reviews' },
 ];
@@ -128,6 +131,11 @@ export function SiteHeader() {
         />
       </Link>
       <nav className="desktop-nav" aria-label="Primary navigation">
+        {primaryLinks.map((link) => (
+          <Link href={link.href} key={link.href}>
+            {link.label}
+          </Link>
+        ))}
         <div
           ref={servicesMenuRef}
           className="desktop-services-menu"
@@ -199,7 +207,7 @@ export function SiteHeader() {
             </div>
           ) : null}
         </div>
-        {links.map((link) => (
+        {resourceLinks.map((link) => (
           <Link href={link.href} key={link.href}>
             {link.label}
           </Link>
