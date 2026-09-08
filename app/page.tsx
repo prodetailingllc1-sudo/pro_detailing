@@ -9,6 +9,7 @@ import {
   KeyRound,
   MapPin,
   PanelsTopLeft,
+  Plane,
   Phone,
   ShieldCheck,
   Sparkles,
@@ -97,7 +98,23 @@ const additionalServiceIcons: Record<string, typeof CarFront> = {
   'key-replacement': KeyRound,
 };
 
+const homeServiceOrder = [
+  'maintenance-oil-change',
+  'tire-service',
+  'auto-glass',
+  'key-replacement',
+  'mobile-detailing',
+  'residential-window-tinting',
+] as const;
+
 export default function Home() {
+  const homeCareServices = homeServiceOrder.flatMap((slug) => {
+    if (slug === 'mobile-detailing' && !siteFeatures.mobileDetailing) return [];
+
+    const service = additionalServices.find((item) => item.slug === slug);
+    return service ? [service] : [];
+  });
+
   const homeSchema = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -148,6 +165,94 @@ export default function Home() {
 
       <BrandUniverse />
 
+      <section className="section home-service-network">
+        <div className="shell">
+          <div className="section-title-row">
+            <SectionIntro
+              eyebrow="Complete vehicle & property care"
+              title="More PRO services, clearly connected."
+              copy={
+                siteFeatures.mobileDetailing
+                  ? 'Choose maintenance, tire service, auto glass, automotive locksmith, mobile detailing or residential tint. Aircraft care opens through the dedicated Pro Aviation Care site.'
+                  : 'Choose maintenance, tire service, auto glass, automotive locksmith or residential tint. Aircraft care opens through the dedicated Pro Aviation Care site.'
+              }
+            />
+            <Link className="button button-ghost" href="/our-services">
+              View every service <ArrowRight aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="home-service-network-grid">
+            {homeCareServices.map((service, index) => {
+              const Icon = additionalServiceIcons[service.slug];
+              return (
+                <Link
+                  className="home-service-card"
+                  href={`/our-services/${service.slug}`}
+                  key={service.slug}
+                >
+                  <div className="home-service-card-media">
+                    <Image
+                      src={service.image}
+                      alt={service.imageAlt}
+                      fill
+                      sizes="(min-width: 1051px) 24vw, (min-width: 781px) 46vw, 92vw"
+                    />
+                    <span>CARE / {String(index + 5).padStart(2, '0')}</span>
+                  </div>
+                  <div className="home-service-card-top">
+                    <span>{String(index + 5).padStart(2, '0')}</span>
+                    <Icon aria-hidden="true" />
+                  </div>
+                  <h3>{service.name}</h3>
+                  <p>{service.description}</p>
+                  <strong>
+                    Explore service <ArrowRight aria-hidden="true" />
+                  </strong>
+                </Link>
+              );
+            })}
+            <Link
+              aria-label="Open the Pro Aviation Care website in a new tab"
+              className={`home-service-card home-service-card-aviation ${
+                siteFeatures.mobileDetailing
+                  ? ''
+                  : 'home-service-card-aviation-wide'
+              }`.trim()}
+              href="https://proaviationcare.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="home-service-card-media">
+                <Image
+                  src="/gallery/pro-service-private-jet-cleaning.webp"
+                  alt="Private jet positioned for specialist exterior and cabin care."
+                  fill
+                  sizes="(min-width: 1051px) 48vw, 92vw"
+                />
+                <span>
+                  AVIATION /{' '}
+                  {String(homeCareServices.length + 5).padStart(2, '0')}
+                </span>
+              </div>
+              <div className="home-service-card-top">
+                <span>
+                  {String(homeCareServices.length + 5).padStart(2, '0')}
+                </span>
+                <Plane aria-hidden="true" />
+              </div>
+              <h3>Pro Aviation Care</h3>
+              <p>
+                Dedicated exterior, cabin and presentation care for private,
+                corporate and charter aircraft across the DMV region.
+              </p>
+              <strong>
+                Open aviation site <ArrowUpRight aria-hidden="true" />
+              </strong>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="section systems-section" id="systems">
         <div className="shell">
           <SectionIntro
@@ -156,52 +261,6 @@ export default function Home() {
             copy="Start with the outcome you want. We’ll help determine the product, coverage and preparation after inspecting your vehicle."
           />
           <ProtectionLab />
-        </div>
-      </section>
-
-      <section className="section home-service-network">
-        <div className="shell">
-          <div className="section-title-row">
-            <SectionIntro
-              eyebrow="Beyond appearance & protection"
-              title="More than appearance. A complete care network."
-              copy={
-                siteFeatures.mobileDetailing
-                  ? 'Maintenance, tire care, auto glass, keys, mobile detailing and residential window film now have clear paths of their own.'
-                  : 'Maintenance, tire care, auto glass, keys and residential window film now have clear paths of their own.'
-              }
-            />
-            <Link className="button button-ghost" href="/our-services">
-              View every service <ArrowRight aria-hidden="true" />
-            </Link>
-          </div>
-          <div className="home-service-network-grid">
-            {additionalServices
-              .filter(
-                (service) =>
-                  service.slug !== 'mobile-detailing' ||
-                  siteFeatures.mobileDetailing,
-              )
-              .map((service, index) => {
-                const Icon = additionalServiceIcons[service.slug];
-                return (
-                  <Link
-                    href={`/our-services/${service.slug}`}
-                    key={service.slug}
-                  >
-                    <div>
-                      <span>{String(index + 5).padStart(2, '0')}</span>
-                      <Icon aria-hidden="true" />
-                    </div>
-                    <h3>{service.name}</h3>
-                    <p>{service.description}</p>
-                    <strong>
-                      Explore <ArrowRight aria-hidden="true" />
-                    </strong>
-                  </Link>
-                );
-              })}
-          </div>
         </div>
       </section>
 
@@ -539,46 +598,6 @@ export default function Home() {
               Don’t see your city? Call—these are our core nearby communities,
               not a limit on who we can help.
             </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="section aircraft-section">
-        <div className="shell aircraft-card">
-          <div className="aircraft-code" aria-hidden="true">
-            <span>ALT</span>
-            <strong>PRO</strong>
-            <span>01</span>
-          </div>
-          <div>
-            <p className="eyebrow">
-              <span /> Separate specialist division
-            </p>
-            <h2>Aircraft care, handled by Pro Aviation Care.</h2>
-            <p>
-              Pro Aviation Care provides aircraft detailing, restoration and
-              presentation care for private, corporate and charter aircraft
-              across Washington DC, Virginia and Maryland. Pro Aviation Care is
-              a DBA of Pro Detailing LLC.
-            </p>
-            <div className="hero-actions">
-              <a
-                className="button button-primary"
-                href="https://proaviationcare.com/services.html"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Explore aircraft services <ArrowUpRight aria-hidden="true" />
-              </a>
-              <a
-                className="button button-ghost"
-                href="https://proaviationcare.com/dispatch.html"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Request ramp dispatch
-              </a>
-            </div>
           </div>
         </div>
       </section>

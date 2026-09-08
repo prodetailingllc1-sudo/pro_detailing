@@ -3268,6 +3268,10 @@ h3 {
   perspective: 1400px;
 }
 
+.home-service-network-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .home-service-network-grid > a,
 .service-network-grid > a,
 .home-blog-grid > a,
@@ -3300,7 +3304,7 @@ h3 {
 }
 
 .home-service-network-grid > a {
-  min-height: 330px;
+  min-height: 500px;
   padding: clamp(1.4rem, 2.6vw, 2.2rem);
   display: flex;
   flex-direction: column;
@@ -3321,7 +3325,7 @@ h3 {
   box-shadow: 0 0 60px rgba(156, 245, 0, 0.05);
 }
 
-.home-service-network-grid > a > div,
+.home-service-network-grid > a > .home-service-card-top,
 .home-blog-grid > a > div {
   display: flex;
   align-items: center;
@@ -3332,6 +3336,55 @@ h3 {
   letter-spacing: 0.12em;
 }
 
+.home-service-card-media {
+  position: relative;
+  height: clamp(150px, 13vw, 190px);
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 15px;
+  background: #070a08;
+}
+
+.home-service-card-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(3, 5, 4, 0.88));
+}
+
+.home-service-card-media img {
+  object-fit: cover;
+  filter: saturate(0.9) contrast(1.03);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.home-service-network-grid > a:hover .home-service-card-media img,
+.home-service-network-grid > a:focus-visible .home-service-card-media img {
+  transform: scale(1.035);
+}
+
+.home-service-card-media > span {
+  position: absolute;
+  z-index: 1;
+  right: 0.8rem;
+  bottom: 0.7rem;
+  color: var(--lime);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  font-weight: 760;
+  letter-spacing: 0.09em;
+}
+
+.home-service-card-aviation {
+  grid-column: span 2;
+}
+
+.home-service-card-aviation-wide {
+  grid-column: span 3;
+}
+
 .home-service-network-grid svg,
 .home-blog-grid svg {
   width: 28px;
@@ -3339,7 +3392,7 @@ h3 {
 }
 
 .home-service-network-grid h3 {
-  margin: 3rem 0 0.75rem;
+  margin: 1.2rem 0 0.75rem;
   color: #f4f7f4;
   font-size: clamp(1.35rem, 2vw, 2rem);
 }
@@ -4566,11 +4619,20 @@ h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .home-service-card-aviation-wide {
+    grid-column: span 2;
+  }
+
   .extended-service-hero-layout,
   .blog-hero-layout,
   .reviews-hero-layout,
   .article-layout {
     grid-template-columns: 1fr;
+  }
+
+  .home-service-card-aviation,
+  .home-service-card-aviation-wide {
+    grid-column: auto;
   }
 
   .service-console,
@@ -8304,14 +8366,15 @@ body {
   max-width: 100%;
   min-width: 0;
   gap: clamp(0.55rem, 1.2vw, 0.9rem);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .ppf-wordmark-copy {
   min-width: 0;
   flex: 1 1 0;
   gap: clamp(0.28rem, 0.5vw, 0.42rem);
-  overflow: hidden;
+  overflow: visible;
+  padding-inline-end: 0.22em;
   filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.44));
 }
 
@@ -8349,7 +8412,7 @@ body {
 }
 
 .brand-card-logo > .ppf-wordmark-card {
-  width: min(100%, 550px);
+  width: min(calc(100% - 0.8rem), 550px);
   height: var(--brand-logo-height);
   justify-content: flex-start;
   gap: clamp(0.55rem, 1vw, 0.78rem);
@@ -8362,7 +8425,7 @@ body {
 }
 
 .brand-card-logo > .ppf-wordmark-card .ppf-wordmark-copy strong {
-  font-size: clamp(3.1rem, 4.15vw, 4rem);
+  font-size: clamp(2.3rem, 3.55vw, 3.55rem);
   line-height: 0.78;
 }
 
@@ -8410,7 +8473,7 @@ body {
   }
 
   .brand-card-logo > .ppf-wordmark-card .ppf-wordmark-copy strong {
-    font-size: clamp(2.75rem, 12.2vw, 3.25rem);
+    font-size: clamp(2.15rem, 10.8vw, 2.8rem);
   }
 
   .lab-copy .ppf-wordmark.service-mark {
