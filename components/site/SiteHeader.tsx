@@ -68,6 +68,8 @@ const desktopServiceGroups = [
   { label: 'At your location', links: onLocationLinks },
 ];
 
+const servicePathCount = mobileServiceLinks.length + 1;
+
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -146,7 +148,7 @@ export function SiteHeader() {
             aria-controls="desktop-services-dropdown"
             onClick={() => setServicesOpen((value) => !value)}
           >
-            All Services
+            All {servicePathCount} Services
             <ChevronDown aria-hidden="true" size={15} />
           </button>
           {servicesOpen ? (
@@ -156,7 +158,7 @@ export function SiteHeader() {
             >
               <div className="desktop-services-dropdown-head">
                 <div>
-                  <span>PRO SERVICE NETWORK / 11 PATHS</span>
+                  <span>PRO SERVICE NETWORK / {servicePathCount} PATHS</span>
                   <strong>Find the exact service you need.</strong>
                 </div>
                 <Link
@@ -247,6 +249,15 @@ export function SiteHeader() {
                   <span aria-hidden="true">↗</span>
                 </Link>
               ))}
+              <a
+                href="https://proaviationcare.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+              >
+                Pro Aviation Care
+                <span aria-hidden="true">↗</span>
+              </a>
             </div>
           </details>
           <Link href="/tint-simulator" onClick={() => setOpen(false)}>
@@ -261,13 +272,6 @@ export function SiteHeader() {
           <Link href="/reviews" onClick={() => setOpen(false)}>
             Reviews
           </Link>
-          <a
-            href="https://proaviationcare.com/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Aircraft Care ↗
-          </a>
           <Link
             className="button button-primary"
             href={quoteHref()}

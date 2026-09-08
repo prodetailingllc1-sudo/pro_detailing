@@ -114,6 +114,7 @@ export default function Home() {
     const service = additionalServices.find((item) => item.slug === slug);
     return service ? [service] : [];
   });
+  const completeServiceCount = homeCareServices.length + 5;
 
   const homeSchema = {
     '@context': 'https://schema.org',
@@ -163,14 +164,14 @@ export default function Home() {
         </div>
       </section>
 
-      <BrandUniverse />
+      <BrandUniverse serviceCount={completeServiceCount} />
 
-      <section className="section home-service-network">
+      <section className="section home-service-network" id="all-services">
         <div className="shell">
           <div className="section-title-row">
             <SectionIntro
-              eyebrow="Complete vehicle & property care"
-              title="More PRO services, clearly connected."
+              eyebrow={`Complete service network / ${completeServiceCount} paths`}
+              title={`All ${completeServiceCount} services, clearly organized.`}
               copy={
                 siteFeatures.mobileDetailing
                   ? 'Choose maintenance, tire service, auto glass, automotive locksmith, mobile detailing or residential tint. Aircraft care opens through the dedicated Pro Aviation Care site.'
@@ -178,7 +179,7 @@ export default function Home() {
               }
             />
             <Link className="button button-ghost" href="/our-services">
-              View every service <ArrowRight aria-hidden="true" />
+              View service directory <ArrowRight aria-hidden="true" />
             </Link>
           </div>
           <div className="home-service-network-grid">
@@ -230,14 +231,11 @@ export default function Home() {
                   sizes="(min-width: 1051px) 48vw, 92vw"
                 />
                 <span>
-                  AVIATION /{' '}
-                  {String(homeCareServices.length + 5).padStart(2, '0')}
+                  AVIATION / {String(completeServiceCount).padStart(2, '0')}
                 </span>
               </div>
               <div className="home-service-card-top">
-                <span>
-                  {String(homeCareServices.length + 5).padStart(2, '0')}
-                </span>
+                <span>{String(completeServiceCount).padStart(2, '0')}</span>
                 <Plane aria-hidden="true" />
               </div>
               <h3>Pro Aviation Care</h3>

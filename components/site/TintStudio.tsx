@@ -2,7 +2,7 @@
 
 import { Check, Copy, RotateCcw, SunMedium } from 'lucide-react';
 import Image from 'next/image';
-import { useId, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { filmLines } from '@/lib/site-data';
 import { tintWindowPaths } from '@/lib/tint-window-paths';
@@ -97,7 +97,7 @@ export function TintStudio({
   compact?: boolean;
   initialLineId?: string;
 }) {
-  const instanceId = useId().replace(/:/g, '');
+  const instanceId = `${compact ? 'compact' : 'full'}-${initialLineId}`;
   const initialLine =
     filmLines.find((item) => item.id === initialLineId) ?? filmLines[1];
   const initialShade =

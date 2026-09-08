@@ -3260,6 +3260,11 @@ h3 {
     #0b0e0c;
 }
 
+.home-service-network {
+  padding-top: clamp(3rem, 4vw, 4.5rem);
+  scroll-margin-top: 100px;
+}
+
 .home-service-network-grid,
 .service-network-grid {
   display: grid;
@@ -3304,7 +3309,7 @@ h3 {
 }
 
 .home-service-network-grid > a {
-  min-height: 500px;
+  min-height: 460px;
   padding: clamp(1.4rem, 2.6vw, 2.2rem);
   display: flex;
   flex-direction: column;
@@ -4632,7 +4637,7 @@ h3 {
 
   .home-service-card-aviation,
   .home-service-card-aviation-wide {
-    grid-column: auto;
+    grid-column: span 2;
   }
 
   .service-console,
@@ -4676,6 +4681,11 @@ h3 {
   .reviews-full-grid,
   .marque-layout {
     grid-template-columns: 1fr;
+  }
+
+  .home-service-card-aviation,
+  .home-service-card-aviation-wide {
+    grid-column: auto;
   }
 
   .marque-grid {
@@ -5294,6 +5304,7 @@ body {
 .brand-universe {
   isolation: isolate;
   overflow: hidden;
+  padding-bottom: clamp(3rem, 4vw, 4.5rem);
   background: linear-gradient(180deg, #070908, #0b0e0c 54%, #080a09), #080a09;
 }
 
@@ -5338,6 +5349,37 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   perspective: 1600px;
+}
+
+.brand-universe-continuation {
+  margin-top: clamp(1.8rem, 3vw, 2.8rem);
+  padding-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: #89928b;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand-universe-continuation a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--lime);
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 0.8rem;
+  font-weight: 760;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.brand-universe-continuation svg {
+  width: 16px;
 }
 
 .brand-card {
@@ -8464,7 +8506,20 @@ body {
 }
 
 .ppf-wordmark.service-hero-mark {
-  width: min(94vw, 700px);
+  width: clamp(390px, 47vw, 700px);
+  max-width: 100%;
+}
+
+@media (max-width: 780px) {
+  .ppf-wordmark.service-hero-mark {
+    width: min(92vw, 650px);
+  }
+}
+
+@media (max-width: 620px) {
+  .ppf-wordmark.service-hero-mark {
+    width: min(94vw, 560px);
+  }
 }
 
 @media (max-width: 480px) {
@@ -8478,6 +8533,11 @@ body {
 
   .lab-copy .ppf-wordmark.service-mark {
     margin-bottom: 1.8rem;
+  }
+
+  .brand-universe-continuation {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 

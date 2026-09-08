@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 
@@ -12,7 +12,11 @@ const systemLabels = {
   detail: 'Appearance reset',
 } as const;
 
-export function BrandUniverse() {
+export function BrandUniverse({
+  serviceCount = 11,
+}: {
+  serviceCount?: number;
+}) {
   return (
     <section className="brand-universe section" id="brand-systems">
       <div className="brand-universe-glow" aria-hidden="true" />
@@ -68,6 +72,16 @@ export function BrandUniverse() {
               </span>
             </Link>
           ))}
+        </div>
+
+        <div className="brand-universe-continuation">
+          <span>
+            Four signature systems above · {serviceCount - 4} specialist
+            services below
+          </span>
+          <Link href="#all-services">
+            See all {serviceCount} services <ArrowDown aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </section>
