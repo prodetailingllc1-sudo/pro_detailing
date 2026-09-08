@@ -5,6 +5,7 @@ import { ArrowRight, Check, Focus, Layers3, ShieldCheck } from 'lucide-react';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { PpfWordmark } from '@/components/site/PpfWordmark';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { ceramicProPpfCompatibility } from '@/lib/ceramic-pro-data';
 import { createPageMetadata } from '@/lib/metadata';
 import { processSteps, quoteHref, SITE_ORIGIN } from '@/lib/site-data';
 
@@ -49,7 +50,7 @@ const faqs = [
   ],
   [
     'Is PPF the same as ceramic coating?',
-    'No. PPF is a physical barrier on covered panels. Ceramic coating changes surface behavior and maintenance. They may be used together when compatibility and installation order are planned.',
+    `No. PPF is a physical barrier on covered panels, while ceramic coating changes surface behavior and maintenance. ${ceramicProPpfCompatibility}`,
   ],
 ] as const;
 
@@ -290,23 +291,26 @@ export default function PaintProtectionFilmPage() {
           />
           <div className="comparison-table-wrap">
             <table className="protection-comparison">
+              <caption className="sr-only">
+                Comparison of LLumar paint protection film and ceramic coating
+              </caption>
               <thead>
                 <tr>
-                  <th>Decision</th>
-                  <th>Paint protection film</th>
-                  <th>Ceramic coating</th>
+                  <th scope="col">Decision</th>
+                  <th scope="col">Paint protection film</th>
+                  <th scope="col">Ceramic coating</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th>Primary role</th>
+                  <th scope="row">Primary role</th>
                   <td>Physical film barrier on covered paint.</td>
                   <td>
                     Surface behavior, gloss and easier routine maintenance.
                   </td>
                 </tr>
                 <tr>
-                  <th>Strongest reason to choose</th>
+                  <th scope="row">Strongest reason to choose</th>
                   <td>
                     Road-debris exposure and light abrasion in selected zones.
                   </td>
@@ -316,7 +320,7 @@ export default function PaintProtectionFilmPage() {
                   </td>
                 </tr>
                 <tr>
-                  <th>Important limit</th>
+                  <th scope="row">Important limit</th>
                   <td>
                     Cannot prevent every form of damage and protects only
                     covered panels.
@@ -324,6 +328,10 @@ export default function PaintProtectionFilmPage() {
                   <td>
                     Does not replace film for meaningful impact protection.
                   </td>
+                </tr>
+                <tr>
+                  <th scope="row">Ceramic coating over LLumar PPF</th>
+                  <td colSpan={2}>{ceramicProPpfCompatibility}</td>
                 </tr>
               </tbody>
             </table>

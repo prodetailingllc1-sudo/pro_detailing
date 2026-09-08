@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 import {
   ArrowRight,
+  ArrowUpRight,
+  BadgeCheck,
   Check,
   Droplets,
   MapPin,
@@ -13,6 +15,13 @@ import {
 import { CeramicLab } from '@/components/site/CeramicLab';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import {
+  ceramicProDealerStatus,
+  ceramicProPaintPackages,
+  ceramicProPpfCompatibility,
+  ceramicProResources,
+  ceramicProSurfaceOfferings,
+} from '@/lib/ceramic-pro-data';
 import { createPageMetadata } from '@/lib/metadata';
 import {
   business,
@@ -22,6 +31,10 @@ import {
 } from '@/lib/site-data';
 
 const ceramicCoatingUrl = `${SITE_ORIGIN}/our-services/ceramic-coating`;
+const authorizedCeramicProOfferings = [
+  ...ceramicProPaintPackages,
+  ...ceramicProSurfaceOfferings,
+];
 
 function galleryItem(id: string) {
   return galleryItems.find((item) => item.id === id) ?? galleryItems[0];
@@ -34,9 +47,9 @@ const finishGallery = [
 ];
 
 export const metadata = createPageMetadata({
-  title: 'Ceramic Pro Coating Manassas, VA | PRO Detailing',
+  title: 'Ceramic Pro Certified Installer Manassas, VA | PRO Detailing',
   description:
-    'Explore Ceramic Pro coating at PRO Detailing in Manassas: paint assessment, preparation, application and aftercare. Request a vehicle-specific quote.',
+    'Explore Ceramic Pro Gold, Silver, Bronze, Sport and specialty coatings from a Ceramic Pro Certified Installer and Authorized Dealer in Manassas, VA.',
   path: '/our-services/ceramic-coating',
 });
 
@@ -93,6 +106,11 @@ const faqs = [
       'It can enhance gloss, create hydrophobic surface behavior and add resistance to UV exposure, oxidation and everyday environmental contamination. Routine washing is still required.',
   },
   {
+    question: 'Which Ceramic Pro packages does PRO Detailing offer?',
+    answer:
+      'The currently confirmed paint packages are Gold, Silver, Bronze and Sport. Confirmed specialty offerings are Glass, Wheel & Caliper, LUX Interior and Leather/Textile. We inspect the vehicle before recommending the product and preparation plan.',
+  },
+  {
     question: 'Will ceramic coating prevent scratches or rock chips?',
     answer:
       'No. A coating is not scratch-proof and is not a substitute for paint protection film where impact and road-debris protection are the priority.',
@@ -114,8 +132,12 @@ const faqs = [
   },
   {
     question: 'Can ceramic coating and paint protection film be combined?',
+    answer: ceramicProPpfCompatibility,
+  },
+  {
+    question: 'What warranty and annual service apply?',
     answer:
-      'They can serve complementary roles: film provides a physical barrier on covered areas, while coating focuses on surface behavior, appearance and maintenance. Compatibility and installation order are planned after inspection.',
+      'Warranty and annual-service requirements depend on the selected Ceramic Pro offering and current manufacturer terms. Leather/Textile carries a confirmed two-year manufacturer warranty. We document the applicable warranty, registration, service timing, included work and current price before handoff.',
   },
   {
     question: 'What do you need for an exact coating quote?',
@@ -137,6 +159,17 @@ export default function CeramicCoatingPage() {
         areaServed: 'Manassas, Virginia',
         url: ceramicCoatingUrl,
         description: metadata.description,
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'Authorized Ceramic Pro coating offerings',
+          itemListElement: authorizedCeramicProOfferings.map((offering) => ({
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: `Ceramic Pro ${offering.name}`,
+            },
+          })),
+        },
       },
       {
         '@type': 'FAQPage',
@@ -177,7 +210,7 @@ export default function CeramicCoatingPage() {
               height="174"
             />
             <p className="eyebrow">
-              <span /> Inspection-led paint protection
+              <BadgeCheck aria-hidden="true" /> {ceramicProDealerStatus.primary}
             </p>
             <h1>Ceramic Pro Coating in Manassas, VA</h1>
             <p>
@@ -242,6 +275,119 @@ export default function CeramicCoatingPage() {
                 </article>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="section ceramic-program-section"
+        id="ceramic-pro-packages"
+      >
+        <div className="shell">
+          <div className="ceramic-program-head">
+            <div>
+              <p className="eyebrow">
+                <span /> Manufacturer-confirmed program
+              </p>
+              <h2>Authorized Ceramic Pro options, organized by surface.</h2>
+              <p>
+                These are the Ceramic Pro offerings confirmed for PRO Detailing.
+                Product layers, preparation, covered surfaces, warranty and
+                price are reviewed before the work is approved.
+              </p>
+            </div>
+            <aside
+              className="ceramic-status-card"
+              aria-label="Ceramic Pro dealer designations"
+            >
+              <span>ACCOUNT DESIGNATION / CONFIRMED</span>
+              <BadgeCheck aria-hidden="true" />
+              <strong>{ceramicProDealerStatus.primary}</strong>
+              <ul>
+                {ceramicProDealerStatus.supporting.map((designation) => (
+                  <li key={designation}>{designation}</li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+
+          <div className="ceramic-offer-columns">
+            <div className="ceramic-offer-group">
+              <div className="ceramic-offer-group-head">
+                <p className="overline">Exterior paint packages</p>
+                <span>04 OPTIONS</span>
+              </div>
+              <div className="ceramic-offer-grid">
+                {ceramicProPaintPackages.map((offering, index) => (
+                  <article
+                    className={`ceramic-offer-card tone-${offering.id}`}
+                    key={offering.id}
+                  >
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <div>
+                      <small>{offering.category}</small>
+                      <h3>{offering.name}</h3>
+                    </div>
+                    <Check aria-hidden="true" />
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="ceramic-offer-group">
+              <div className="ceramic-offer-group-head">
+                <p className="overline">Specialty surfaces</p>
+                <span>04 OPTIONS</span>
+              </div>
+              <div className="ceramic-offer-grid">
+                {ceramicProSurfaceOfferings.map((offering, index) => (
+                  <article className="ceramic-offer-card" key={offering.id}>
+                    <span>{String(index + 5).padStart(2, '0')}</span>
+                    <div>
+                      <small>{offering.category}</small>
+                      <h3>{offering.name}</h3>
+                      {'warranty' in offering ? (
+                        <em>{offering.warranty}</em>
+                      ) : null}
+                    </div>
+                    <Check aria-hidden="true" />
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="ceramic-resource-panel">
+            <div>
+              <p className="overline">Warranty & aftercare</p>
+              <h3>Current terms stay attached to the selected product.</h3>
+              <p>
+                Where annual service is required, the applicable anniversary
+                window, included work and current service price are confirmed in
+                writing. Leather/Textile carries a two-year manufacturer
+                warranty. Manufacturer terms and documents may be revised.
+              </p>
+              <Link
+                className="button button-primary"
+                href={quoteHref('ceramic')}
+              >
+                Request a package recommendation{' '}
+                <ArrowRight aria-hidden="true" />
+              </Link>
+            </div>
+            <nav aria-label="Official Ceramic Pro resources">
+              {ceramicProResources.map((resource) => (
+                <a
+                  href={resource.href}
+                  key={resource.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span>{resource.label}</span>
+                  <ArrowUpRight aria-hidden="true" />
+                </a>
+              ))}
+            </nav>
           </div>
         </div>
       </section>
@@ -374,10 +520,8 @@ export default function CeramicCoatingPage() {
                 <tr>
                   <th scope="row">Planning the two together</th>
                   <td colSpan={2}>
-                    Film can be considered for higher-impact areas while coating
-                    supports suitable surfaces and maintenance goals. Coverage,
-                    compatibility and installation order are confirmed after
-                    inspection.
+                    {ceramicProPpfCompatibility} Coverage and application order
+                    are confirmed after inspection.
                   </td>
                 </tr>
               </tbody>

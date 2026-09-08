@@ -2263,6 +2263,328 @@ h3 {
 .coating-benefit-grid {
   grid-template-columns: repeat(3, 1fr);
 }
+
+.ceramic-program-section {
+  position: relative;
+  overflow: hidden;
+  border-block: 1px solid rgba(156, 245, 0, 0.16);
+  background:
+    radial-gradient(circle at 82% 8%, rgba(156, 245, 0, 0.11), transparent 32%),
+    linear-gradient(145deg, #0b0f0c 0%, #080a09 64%, #0c100d 100%);
+}
+
+.ceramic-program-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, black, transparent 74%);
+}
+
+.ceramic-program-section > .shell {
+  position: relative;
+  z-index: 1;
+}
+
+.ceramic-program-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: center;
+}
+
+.ceramic-program-head > div > h2 {
+  max-width: 800px;
+  margin: 0.8rem 0 1.2rem;
+  font-size: clamp(2.6rem, 5.8vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.ceramic-program-head > div > p:last-child {
+  max-width: 700px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.ceramic-status-card {
+  position: relative;
+  min-height: 320px;
+  padding: clamp(1.7rem, 4vw, 3.2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 1px solid rgba(156, 245, 0, 0.38);
+  border-radius: 26px;
+  background:
+    linear-gradient(145deg, rgba(156, 245, 0, 0.1), transparent 45%),
+    rgba(6, 9, 7, 0.86);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.32),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.ceramic-status-card > span {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.7rem;
+  color: var(--lime);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.ceramic-status-card > svg {
+  width: 2.7rem;
+  height: 2.7rem;
+  margin-bottom: 1rem;
+  color: var(--lime);
+  filter: drop-shadow(0 0 18px rgba(156, 245, 0, 0.32));
+}
+
+.ceramic-status-card > strong {
+  max-width: 420px;
+  font-size: clamp(1.8rem, 3.2vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.ceramic-status-card ul {
+  margin: 1.25rem 0 0;
+  padding: 1.2rem 0 0;
+  display: grid;
+  gap: 0.55rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  list-style: none;
+}
+
+.ceramic-status-card li {
+  color: #aeb8b0;
+  font-size: 0.94rem;
+}
+
+.ceramic-offer-columns {
+  margin-top: clamp(3rem, 7vw, 7rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ceramic-offer-group {
+  padding: clamp(1.15rem, 2.6vw, 2rem);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 26px;
+  background: rgba(10, 13, 11, 0.78);
+}
+
+.ceramic-offer-group-head {
+  margin-bottom: 1rem;
+  padding: 0.2rem 0.2rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ceramic-offer-group-head p {
+  margin: 0;
+}
+
+.ceramic-offer-group-head > span {
+  color: #747e76;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.ceramic-offer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.ceramic-offer-card {
+  --ceramic-tone: var(--lime);
+  position: relative;
+  min-height: 138px;
+  padding: 1rem 1rem 1rem 1.2rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--ceramic-tone) 8%, transparent),
+      transparent 55%
+    ),
+    rgba(5, 8, 6, 0.88);
+}
+
+.ceramic-offer-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--ceramic-tone);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--ceramic-tone) 72%, transparent);
+}
+
+.ceramic-offer-card.tone-gold {
+  --ceramic-tone: #d6b456;
+}
+
+.ceramic-offer-card.tone-silver {
+  --ceramic-tone: #c4cac6;
+}
+
+.ceramic-offer-card.tone-bronze {
+  --ceramic-tone: #b87b4c;
+}
+
+.ceramic-offer-card.tone-sport {
+  --ceramic-tone: var(--lime);
+}
+
+.ceramic-offer-card > span {
+  align-self: start;
+  color: var(--ceramic-tone);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.ceramic-offer-card small {
+  display: block;
+  color: #818b83;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ceramic-offer-card h3 {
+  margin: 0.35rem 0 0;
+  color: #f1f5f2;
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  letter-spacing: -0.035em;
+}
+
+.ceramic-offer-card em {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--lime-soft);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  font-style: normal;
+}
+
+.ceramic-offer-card > svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: var(--ceramic-tone);
+}
+
+.ceramic-resource-panel {
+  margin-top: 1rem;
+  padding: clamp(1.5rem, 4vw, 3.3rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+  border: 1px solid rgba(156, 245, 0, 0.23);
+  border-radius: 26px;
+  background: rgba(9, 12, 10, 0.92);
+}
+
+.ceramic-resource-panel h3 {
+  max-width: 700px;
+  margin: 0.75rem 0 1rem;
+  font-size: clamp(2rem, 3.6vw, 3.7rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.ceramic-resource-panel > div > p:not(.overline) {
+  max-width: 740px;
+  margin: 0 0 1.6rem;
+  color: var(--muted-foreground);
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.ceramic-resource-panel nav {
+  display: grid;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.ceramic-resource-panel nav a {
+  min-height: 62px;
+  padding: 0.85rem 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: #d9dfda;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition:
+    color 180ms ease,
+    padding 180ms ease;
+}
+
+.ceramic-resource-panel nav a:hover,
+.ceramic-resource-panel nav a:focus-visible {
+  padding-left: 0.45rem;
+  color: var(--lime);
+}
+
+.ceramic-resource-panel nav svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 980px) {
+  .ceramic-program-head,
+  .ceramic-offer-columns,
+  .ceramic-resource-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .ceramic-status-card {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 620px) {
+  .ceramic-offer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ceramic-status-card {
+    min-height: 250px;
+  }
+
+  .ceramic-offer-group-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 .coating-truth-section {
   background: #090b0a;
 }
