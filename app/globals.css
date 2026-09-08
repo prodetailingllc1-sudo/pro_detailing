@@ -966,6 +966,16 @@ h3 {
   mask-size: contain;
   transition: opacity 0.22s ease;
 }
+.tint-vector-overlay {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
 .stage-light {
   position: absolute;
   width: 52%;

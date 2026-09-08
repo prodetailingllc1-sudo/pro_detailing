@@ -2,9 +2,10 @@
 
 import { Check, Copy, RotateCcw, SunMedium } from 'lucide-react';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 import { filmLines } from '@/lib/site-data';
+import { tintWindowPaths } from '@/lib/tint-window-paths';
 
 const vehicles = [
   ['sedan', 'Sedan'],
@@ -71,6 +72,24 @@ const states = [
 
 type Zone = 'frontSides' | 'rearSides' | 'windshield';
 
+const tintTones = {
+  ctx: {
+    highlight: '#1a2320',
+    core: '#020403',
+    lowlight: '#111914',
+  },
+  irx: {
+    highlight: '#111d19',
+    core: '#010302',
+    lowlight: '#0b1510',
+  },
+  air: {
+    highlight: '#2c3734',
+    core: '#101513',
+    lowlight: '#202b27',
+  },
+} as const;
+
 export function TintStudio({
   compact = false,
   initialLineId = 'irx',
@@ -78,6 +97,7 @@ export function TintStudio({
   compact?: boolean;
   initialLineId?: string;
 }) {
+  const instanceId = useId().replace(/:/g, '');
   const initialLine =
     filmLines.find((item) => item.id === initialLineId) ?? filmLines[1];
   const initialShade =
@@ -98,7 +118,13 @@ export function TintStudio({
   const line = filmLines.find((item) => item.id === lineId) ?? filmLines[1];
   const shade =
     line.shades.find((item) => item.id === shadeId) ?? line.shades[0];
-  const darkness = Math.max(0, Math.min(0.97, 1 - shade.vlt / 100));
+  const tintOpacity = Math.max(
+    0.04,
+    Math.min(0.82, 1 - Math.sqrt(shade.vlt / 100)),
+  );
+  const tintTone = tintTones[line.id];
+  const windowPaths = tintWindowPaths[vehicle];
+  const tintGradientId = `tint-glass-${vehicle}-${instanceId}`;
   const activeZoneLabel = [
     zones.frontSides ? 'front' : null,
     zones.rearSides && vehicle !== 'coupe' ? 'rear' : null,
@@ -185,36 +211,44 @@ export function TintStudio({
               sizes="(max-width: 780px) 112vw, 62vw"
               priority={!compact}
             />
-            {zones.frontSides ? (
-              <span
-                className="tint-mask"
-                style={{
-                  opacity: before ? 0 : darkness,
-                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
-                  maskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
-                }}
-              />
-            ) : null}
-            {zones.rearSides && vehicle !== 'coupe' ? (
-              <span
-                className="tint-mask"
-                style={{
-                  opacity: before ? 0 : darkness,
-                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
-                  maskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
-                }}
-              />
-            ) : null}
-            {zones.windshield ? (
-              <span
-                className="tint-mask"
-                style={{
-                  opacity: before ? 0 : darkness,
-                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
-                  maskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
-                }}
-              />
-            ) : null}
+            <svg
+              className="tint-vector-overlay"
+              viewBox="0 0 768 512"
+              preserveAspectRatio="xMidYMid meet"
+              aria-hidden="true"
+              focusable="false"
+              shapeRendering="geometricPrecision"
+              style={{ opacity: before ? 0 : tintOpacity }}
+            >
+              <defs>
+                <linearGradient id={tintGradientId} x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor={tintTone.highlight} />
+                  <stop offset="54%" stopColor={tintTone.core} />
+                  <stop offset="100%" stopColor={tintTone.lowlight} />
+                </linearGradient>
+              </defs>
+              <g
+                fill={`url(#${tintGradientId})`}
+                stroke="rgba(255, 255, 255, 0.08)"
+                strokeWidth="0.65"
+              >
+                {zones.rearSides && vehicle !== 'coupe'
+                  ? windowPaths.rearSides.map((path, index) => (
+                      <path d={path} key={`rear-${index}`} />
+                    ))
+                  : null}
+                {zones.frontSides
+                  ? windowPaths.frontSides.map((path, index) => (
+                      <path d={path} key={`front-${index}`} />
+                    ))
+                  : null}
+                {zones.windshield
+                  ? windowPaths.windshield.map((path, index) => (
+                      <path d={path} key={`windshield-${index}`} />
+                    ))
+                  : null}
+              </g>
+            </svg>
           </div>
           <div className="stage-floor" aria-hidden="true" />
         </div>
@@ -223,7 +257,9 @@ export function TintStudio({
           type="button"
           onPointerDown={() => setBefore(true)}
           onPointerUp={() => setBefore(false)}
+          onPointerCancel={() => setBefore(false)}
           onPointerLeave={() => setBefore(false)}
+          onBlur={() => setBefore(false)}
           onKeyDown={(event) => {
             if (event.key === ' ' || event.key === 'Enter') setBefore(true);
           }}
