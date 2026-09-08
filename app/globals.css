@@ -580,7 +580,9 @@ h3 {
 .lab-photo::after {
   content: '';
   position: absolute;
+  z-index: 3;
   inset: 0;
+  pointer-events: none;
   background:
     linear-gradient(90deg, transparent 55%, var(--panel)),
     linear-gradient(0deg, rgba(8, 9, 10, 0.45), transparent 45%);
@@ -593,7 +595,7 @@ h3 {
 }
 .scan-line {
   position: absolute;
-  z-index: 2;
+  z-index: 4;
   top: 0;
   bottom: 0;
   left: 58%;
@@ -604,7 +606,7 @@ h3 {
 }
 .lab-readout {
   position: absolute;
-  z-index: 3;
+  z-index: 7;
   bottom: 1.3rem;
   left: 1.3rem;
   padding: 0.45rem 0.7rem;
@@ -5515,48 +5517,54 @@ body {
   flex: 0 0 auto;
 }
 
-.lab-photo.has-tint-reveal .scan-line {
+.lab-photo.has-comparison-reveal .scan-line {
   display: none;
 }
 
-.lab-tint-reveal {
-  --lab-tint-split: 50%;
+.lab-comparison-reveal {
+  --lab-comparison-split: 50%;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.lab-comparison-visual {
   position: absolute;
   z-index: 1;
   inset: 0;
   overflow: hidden;
-  user-select: none;
   transform: scale(1.02);
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.protection-lab:hover .lab-tint-reveal {
+.protection-lab:hover .lab-comparison-visual {
   transform: scale(1.055);
 }
 
-.lab-tint-reveal > img,
-.lab-tint-dark-layer img {
+.lab-comparison-visual > img,
+.lab-comparison-after img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   filter: saturate(0.82) contrast(1.07);
 }
 
-.lab-tint-dark-layer {
+.lab-comparison-after {
   position: absolute;
   z-index: 2;
   inset: 0;
   overflow: hidden;
-  clip-path: inset(0 0 0 var(--lab-tint-split));
+  clip-path: inset(0 0 0 var(--lab-comparison-split));
   will-change: clip-path;
 }
 
-.lab-tint-divider {
+.lab-comparison-divider {
   position: absolute;
-  z-index: 4;
+  z-index: 5;
   top: 0;
   bottom: 0;
-  left: var(--lab-tint-split);
+  left: var(--lab-comparison-split);
   width: 1px;
   pointer-events: none;
   background: linear-gradient(
@@ -5570,7 +5578,7 @@ body {
   transform: translateX(-50%);
 }
 
-.lab-tint-divider::after {
+.lab-comparison-divider::after {
   content: '\2194';
   position: absolute;
   top: 50%;
@@ -5590,9 +5598,9 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.lab-tint-label {
+.lab-comparison-label {
   position: absolute;
-  z-index: 4;
+  z-index: 5;
   top: 1.15rem;
   padding: 0.42rem 0.58rem;
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -5607,19 +5615,33 @@ body {
   backdrop-filter: blur(8px);
 }
 
-.lab-tint-label-clear {
+.lab-comparison-label-before {
   left: 1.15rem;
 }
 
-.lab-tint-label-dark {
+.lab-comparison-label-after {
   right: 1.15rem;
   border-color: rgba(156, 245, 0, 0.48);
   color: var(--lime);
 }
 
-.lab-tint-reveal input[type='range'] {
+.lab-comparison-note {
   position: absolute;
   z-index: 5;
+  right: 1rem;
+  bottom: 0.85rem;
+  max-width: min(67%, 34rem);
+  color: rgba(235, 241, 236, 0.7);
+  font-size: 0.58rem;
+  line-height: 1.35;
+  text-align: right;
+  text-wrap: balance;
+  pointer-events: none;
+}
+
+.lab-comparison-reveal input[type='range'] {
+  position: absolute;
+  z-index: 6;
   top: calc(50% - 1.75rem);
   left: 4%;
   width: 92%;
@@ -5630,30 +5652,51 @@ body {
   touch-action: pan-y;
 }
 
-.lab-tint-reveal:focus-within .lab-tint-divider::after {
+.lab-comparison-reveal:focus-within .lab-comparison-divider::after {
   outline: 2px solid #fff;
   outline-offset: 4px;
 }
 
+.lab-comparison-ppf .lab-comparison-visual {
+  transform: scale(0.93);
+}
+
+.protection-lab:hover .lab-comparison-ppf .lab-comparison-visual {
+  transform: scale(0.97);
+}
+
+.lab-comparison-ppf .lab-comparison-visual > img,
+.lab-comparison-ppf .lab-comparison-after img {
+  object-fit: contain;
+  object-position: center;
+}
+
 @media (max-width: 480px) {
-  .lab-tint-label {
+  .lab-comparison-label {
     top: 0.8rem;
     padding: 0.36rem 0.46rem;
     font-size: 0.48rem;
   }
 
-  .lab-tint-label-clear {
+  .lab-comparison-label-before {
     left: 0.8rem;
   }
 
-  .lab-tint-label-dark {
+  .lab-comparison-label-after {
     right: 0.8rem;
   }
 
-  .lab-tint-divider::after {
+  .lab-comparison-divider::after {
     width: 1.75rem;
     height: 1.75rem;
     font-size: 0.72rem;
+  }
+
+  .lab-comparison-note {
+    right: 0.75rem;
+    bottom: 0.68rem;
+    max-width: calc(100% - 7.8rem);
+    font-size: 0.5rem;
   }
 }
 
@@ -5985,5 +6028,124 @@ body {
 
   .work-film-feature:hover .work-film-frame {
     transform: none;
+  }
+}
+
+/* V9 keep the custom PRO PPF identity inside the same optical frame as every brand mark */
+.ppf-wordmark {
+  max-width: 100%;
+  min-width: 0;
+  gap: clamp(0.55rem, 1.2vw, 0.9rem);
+  overflow: hidden;
+}
+
+.ppf-wordmark-copy {
+  min-width: 0;
+  flex: 1 1 0;
+  gap: clamp(0.28rem, 0.5vw, 0.42rem);
+  overflow: hidden;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.44));
+}
+
+.ppf-wordmark-copy strong {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.14em;
+  font-style: italic;
+  letter-spacing: -0.06em;
+  transform: skewX(-7deg);
+  transform-origin: left center;
+}
+
+.ppf-wordmark-copy strong > span {
+  flex: 0 0 auto;
+  color: #edf2ee;
+  background: linear-gradient(180deg, #ffffff 4%, #f5f7f5 42%, #aeb5b0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ppf-wordmark-copy strong .ppf-accent {
+  color: var(--lime);
+  background: linear-gradient(
+    180deg,
+    #c9ff72 0%,
+    var(--lime) 48%,
+    #72b900 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-card-logo > .ppf-wordmark-card {
+  width: min(100%, 550px);
+  height: var(--brand-logo-height);
+  justify-content: flex-start;
+  gap: clamp(0.55rem, 1vw, 0.78rem);
+}
+
+.brand-card-logo > .ppf-wordmark-card > img {
+  width: clamp(56px, 4.6vw, 68px);
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-card-logo > .ppf-wordmark-card .ppf-wordmark-copy strong {
+  font-size: clamp(3.1rem, 4.15vw, 4rem);
+  line-height: 0.78;
+}
+
+.brand-card-logo > .ppf-wordmark-card .ppf-wordmark-copy small {
+  font-size: clamp(0.4rem, 0.52vw, 0.52rem);
+  letter-spacing: 0.14em;
+}
+
+.brand-card-logo > .ppf-wordmark-card .ppf-wordmark-divider {
+  height: 86%;
+}
+
+.lab-copy .ppf-wordmark.service-mark {
+  width: min(100%, 500px);
+  margin-bottom: 2.2rem;
+  gap: clamp(0.45rem, 1vw, 0.75rem);
+}
+
+.lab-copy .ppf-wordmark > img {
+  width: clamp(58px, 4.5vw, 76px);
+}
+
+.lab-copy .ppf-wordmark-copy strong {
+  font-size: clamp(2.15rem, 3vw, 3rem);
+  line-height: 0.8;
+}
+
+.lab-copy .ppf-wordmark-copy small {
+  font-size: clamp(0.38rem, 0.48vw, 0.5rem);
+  letter-spacing: 0.12em;
+}
+
+.lab-copy .ppf-wordmark-copy small::before,
+.lab-copy .ppf-wordmark-copy small::after {
+  min-width: 0.4rem;
+}
+
+.ppf-wordmark.service-hero-mark {
+  width: min(94vw, 700px);
+}
+
+@media (max-width: 480px) {
+  .brand-card-logo > .ppf-wordmark-card > img {
+    width: 54px;
+  }
+
+  .brand-card-logo > .ppf-wordmark-card .ppf-wordmark-copy strong {
+    font-size: clamp(2.75rem, 12.2vw, 3.25rem);
+  }
+
+  .lab-copy .ppf-wordmark.service-mark {
+    margin-bottom: 1.8rem;
   }
 }

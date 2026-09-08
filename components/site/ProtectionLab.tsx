@@ -9,15 +9,58 @@ import { useState } from 'react';
 import { PpfWordmark } from '@/components/site/PpfWordmark';
 import { services } from '@/lib/site-data';
 
+const comparisons = {
+  tint: {
+    mode: 'tint',
+    beforeSrc: '/gallery/local-tint-white-sedan-night-clear.webp',
+    beforeAlt:
+      'Interactive comparison of clear and tinted glass on the same white sedan',
+    afterLabel: 'Tinted glass',
+    beforeLabel: 'Clear glass',
+    afterSrc: '/gallery/local-tint-white-sedan-night.webp',
+    ariaLabel: 'Adjust the clear and tinted glass comparison',
+    note: 'Appearance preview. Actual shade varies with factory glass and lighting.',
+    width: 1600,
+    height: 1200,
+  },
+  ceramic: {
+    mode: 'ceramic',
+    beforeSrc: '/generated/ceramic-untreated-before.webp',
+    beforeAlt:
+      'Interactive finish preview showing the same black BMW before and after ceramic coating',
+    afterLabel: 'Ceramic Pro finish',
+    beforeLabel: 'Untreated finish',
+    afterSrc: '/gallery/glossy-black-coupe.webp',
+    ariaLabel: 'Adjust the untreated and Ceramic Pro finish preview',
+    note: 'Finish preview. Final gloss depends on paint condition and preparation.',
+    width: 1200,
+    height: 672,
+  },
+  ppf: {
+    mode: 'ppf',
+    beforeSrc: '/generated/ppf-unprotected-before.webp',
+    beforeAlt:
+      'Interactive comparison of the same grey BMW before and after clear paint protection film',
+    afterLabel: 'Clear PRO PPF',
+    beforeLabel: 'Unprotected paint',
+    afterSrc: '/generated/ppf-coverage.webp',
+    ariaLabel: 'Adjust the unprotected paint and clear PPF comparison',
+    note: 'Coverage preview. Clear film is designed to preserve the paint color.',
+    width: 1536,
+    height: 1024,
+  },
+} as const;
+
 export function ProtectionLab() {
   const [activeId, setActiveId] =
     useState<(typeof services)[number]['id']>('tint');
-  const [tintSplit, setTintSplit] = useState(50);
+  const [comparisonSplit, setComparisonSplit] = useState(50);
   const active =
     services.find((service) => service.id === activeId) ?? services[0];
-  const tintRevealStyle = {
-    '--lab-tint-split': `${tintSplit}%`,
-  } as CSSProperties & Record<'--lab-tint-split', string>;
+  const comparison = active.id === 'detail' ? null : comparisons[active.id];
+  const comparisonRevealStyle = {
+    '--lab-comparison-split': `${comparisonSplit}%`,
+  } as CSSProperties & Record<'--lab-comparison-split', string>;
 
   return (
     <div className="protection-lab">
@@ -50,51 +93,59 @@ export function ProtectionLab() {
         aria-labelledby={`system-tab-${active.id}`}
       >
         <div
-          className={`lab-photo lab-photo-${active.id} ${active.id === 'tint' ? 'has-tint-reveal' : ''}`}
+          className={`lab-photo lab-photo-${active.id} ${comparison ? 'has-comparison-reveal' : ''}`}
         >
-          {active.id === 'tint' ? (
-            <div className="lab-tint-reveal" style={tintRevealStyle}>
-              <Image
-                className="lab-tint-clear"
-                src="/gallery/local-tint-white-sedan-night-clear.webp"
-                alt="White sedan comparison with clear glass on the left and tinted glass on the right"
-                width="1600"
-                height="1200"
-                draggable={false}
-                sizes="(max-width: 780px) 100vw, 65vw"
-              />
-              <span className="lab-tint-dark-layer" aria-hidden="true">
+          {comparison ? (
+            <div
+              className={`lab-comparison-reveal lab-comparison-${comparison.mode}`}
+              style={comparisonRevealStyle}
+            >
+              <div className="lab-comparison-visual">
                 <Image
-                  src={active.image}
-                  alt=""
-                  width="1600"
-                  height="1200"
+                  className="lab-comparison-before"
+                  src={comparison.beforeSrc}
+                  alt={comparison.beforeAlt}
+                  width={comparison.width}
+                  height={comparison.height}
                   draggable={false}
                   sizes="(max-width: 780px) 100vw, 65vw"
                 />
-              </span>
+                <span className="lab-comparison-after" aria-hidden="true">
+                  <Image
+                    src={comparison.afterSrc}
+                    alt=""
+                    width={comparison.width}
+                    height={comparison.height}
+                    draggable={false}
+                    sizes="(max-width: 780px) 100vw, 65vw"
+                  />
+                </span>
+              </div>
               <span
-                className="lab-tint-label lab-tint-label-clear"
+                className="lab-comparison-label lab-comparison-label-before"
                 aria-hidden="true"
               >
-                Clear
+                {comparison.beforeLabel}
               </span>
               <span
-                className="lab-tint-label lab-tint-label-dark"
+                className="lab-comparison-label lab-comparison-label-after"
                 aria-hidden="true"
               >
-                Tinted
+                {comparison.afterLabel}
               </span>
-              <span className="lab-tint-divider" aria-hidden="true" />
+              <span className="lab-comparison-divider" aria-hidden="true" />
+              <span className="lab-comparison-note">{comparison.note}</span>
               <input
                 type="range"
                 min="18"
                 max="82"
                 step="1"
-                value={tintSplit}
-                aria-label="Adjust the clear and tinted glass comparison"
-                aria-valuetext={`${tintSplit}% clear, ${100 - tintSplit}% tinted`}
-                onChange={(event) => setTintSplit(Number(event.target.value))}
+                value={comparisonSplit}
+                aria-label={comparison.ariaLabel}
+                aria-valuetext={`${comparisonSplit}% ${comparison.beforeLabel}, ${100 - comparisonSplit}% ${comparison.afterLabel}`}
+                onChange={(event) =>
+                  setComparisonSplit(Number(event.target.value))
+                }
               />
             </div>
           ) : (
