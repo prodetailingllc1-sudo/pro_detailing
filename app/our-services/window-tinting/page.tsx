@@ -376,6 +376,7 @@ export default function WindowTintingPage() {
         eyebrow="Ready for a clearer recommendation?"
         title="Tell us what you drive and what you want the glass to do."
         copy="We’ll confirm the LLumar film, measured shade, coverage, availability and installed quote for your vehicle."
+        service="tint"
       />
       <script
         type="application/ld+json"

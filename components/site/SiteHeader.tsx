@@ -6,14 +6,40 @@ import Link from '@/components/site/SafeLink';
 import { useEffect, useState } from 'react';
 
 import { business, quoteHref } from '@/lib/site-data';
+import { siteFeatures } from '@/lib/site-config';
 
 const links = [
-  { href: '/our-services/window-tinting', label: 'LLumar Tint' },
-  { href: '/our-services/ceramic-coating', label: 'Ceramic Coating' },
+  { href: '/our-services', label: 'All Services' },
+  { href: '/our-services/window-tinting', label: 'Tint' },
+  { href: '/our-services/ceramic-coating', label: 'Ceramic' },
   { href: '/our-services/paint-protection-film', label: 'PPF' },
   { href: '/our-services/auto-detailing', label: 'Detailing' },
-  { href: '/tint-simulator', label: 'Tint Studio' },
-  { href: '/gallery', label: 'Our Work' },
+  { href: '/blog', label: 'Guides' },
+  { href: '/reviews', label: 'Reviews' },
+];
+
+const mobileServiceLinks = [
+  { href: '/our-services/window-tinting', label: 'LLumar automotive tint' },
+  { href: '/our-services/ceramic-coating', label: 'Ceramic Pro coating' },
+  {
+    href: '/our-services/paint-protection-film',
+    label: 'Paint protection film',
+  },
+  { href: '/our-services/auto-detailing', label: 'Auto detailing' },
+  ...(siteFeatures.mobileDetailing
+    ? [{ href: '/our-services/mobile-detailing', label: 'Mobile detailing' }]
+    : []),
+  {
+    href: '/our-services/residential-window-tinting',
+    label: 'Residential window tint',
+  },
+  {
+    href: '/our-services/maintenance-oil-change',
+    label: 'Maintenance & oil change',
+  },
+  { href: '/our-services/tire-service', label: 'Tire service' },
+  { href: '/our-services/auto-glass', label: 'Auto glass' },
+  { href: '/our-services/key-replacement', label: 'Key replacement' },
 ];
 
 export function SiteHeader() {
@@ -44,7 +70,7 @@ export function SiteHeader() {
           </Link>
         ))}
         <a href="https://proaviationcare.com/" target="_blank" rel="noreferrer">
-          Aircraft Care <span aria-hidden="true">↗</span>
+          Aircraft
         </a>
       </nav>
       <a className="header-call" href={`tel:${business.phoneHref}`}>
@@ -65,11 +91,26 @@ export function SiteHeader() {
         id="mobile-navigation"
         aria-label="Mobile navigation"
       >
-        {links.map((link) => (
+        <Link href="/our-services" onClick={() => setOpen(false)}>
+          All services
+        </Link>
+        {mobileServiceLinks.map((link) => (
           <Link href={link.href} key={link.href} onClick={() => setOpen(false)}>
             {link.label}
           </Link>
         ))}
+        <Link href="/tint-simulator" onClick={() => setOpen(false)}>
+          PRO Tints Studio
+        </Link>
+        <Link href="/gallery" onClick={() => setOpen(false)}>
+          Our work
+        </Link>
+        <Link href="/blog" onClick={() => setOpen(false)}>
+          Guides
+        </Link>
+        <Link href="/reviews" onClick={() => setOpen(false)}>
+          Reviews
+        </Link>
         <a href="https://proaviationcare.com/" target="_blank" rel="noreferrer">
           Aircraft Care ↗
         </a>

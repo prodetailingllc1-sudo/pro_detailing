@@ -202,10 +202,7 @@ export default function CeramicCoatingPage() {
               <a className="button button-primary" href="#coating-lab">
                 Explore the process <ArrowRight aria-hidden="true" />
               </a>
-              <Link
-                className="button button-ghost"
-                href={quoteHref('ceramic')}
-              >
+              <Link className="button button-ghost" href={quoteHref('ceramic')}>
                 Request a coating quote
               </Link>
             </div>
@@ -400,10 +397,7 @@ export default function CeramicCoatingPage() {
             </table>
           </div>
           <div className="comparison-actions">
-            <Link
-              className="button button-primary"
-              href={quoteHref('ceramic')}
-            >
+            <Link className="button button-primary" href={quoteHref('ceramic')}>
               Compare options for my vehicle <ArrowRight aria-hidden="true" />
             </Link>
             <Link className="text-link" href="/#quote">
@@ -518,6 +512,7 @@ export default function CeramicCoatingPage() {
         eyebrow="Ready for a vehicle-specific coating plan?"
         title="Start with the paint you have—not a package assumption."
         copy="Tell us what you drive, its current condition and what you want to improve. We’ll confirm preparation, coating scope, timing, aftercare and price before work begins."
+        service="ceramic"
       />
 
       <script

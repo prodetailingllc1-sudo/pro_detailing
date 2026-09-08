@@ -1,4 +1,18 @@
+import { siteFeatures } from '@/lib/site-config';
+
 const MAX_BODY_BYTES = 20_000;
+const ALLOWED_SERVICES = new Set([
+  'tint',
+  'ceramic',
+  'ppf',
+  'detailing',
+  ...(siteFeatures.mobileDetailing ? ['mobile-detailing'] : []),
+  'residential-tint',
+  'maintenance',
+  'tires',
+  'auto-glass',
+  'key-replacement',
+]);
 
 function clean(value: unknown, maxLength: number) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
@@ -46,6 +60,10 @@ export async function POST(request: Request) {
   const email = clean(body.email, 120);
   const vehicle = clean(body.vehicle, 100);
   const consent = body.consent === true;
+  const requestedService = clean(body.service, 40);
+  const service = ALLOWED_SERVICES.has(requestedService)
+    ? requestedService
+    : 'other';
 
   if (!name || phone.replace(/\D/g, '').length < 7 || !vehicle || !consent) {
     return json({ ok: false, error: 'missing_required_fields' }, 400);
@@ -65,7 +83,7 @@ export async function POST(request: Request) {
     name,
     phone,
     email,
-    service: clean(body.service, 40),
+    service,
     package: clean(body.package, 40),
     vehicle,
     goal: clean(body.goal, 120),
@@ -74,7 +92,7 @@ export async function POST(request: Request) {
     source: 'PRO Detailing website',
     sourcePage: clean(body.page, 200),
     attribution,
-    tags: ['Website Lead', 'PRO Site'],
+    tags: ['Website Lead', 'PRO Site', `Service: ${service}`],
     submittedAt: new Date().toISOString(),
   };
 

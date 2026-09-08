@@ -18,7 +18,8 @@ export const business = {
   termsUrl: 'https://pro-detailing.co/terms-conditions/',
   instagram: 'https://www.instagram.com/pro_detailingcrew',
   facebook: 'https://www.facebook.com/prodetailingcrew',
-  google: 'https://maps.app.goo.gl/oU1kDUrJY6wh1YBR7',
+  google:
+    'https://www.google.com/maps/place/Pro+Detailing+-+Tinting/@38.79913,-77.505505,17z/data=!4m8!3m7!1s0x206936eb6b075581:0x9e782a80c19e3227!8m2!3d38.79913!4d-77.505505!9m1!1b1!16s%2Fg%2F11krpg2kqz?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D',
 } as const;
 
 export function quoteHref(service?: string) {
@@ -86,7 +87,7 @@ export const services = [
       'Decontaminated exterior surfaces, carefully cleaned cabin materials, clear glass and an inspection-led finish for real daily vehicles.',
     href: '/our-services/auto-detailing',
     cta: 'Plan your detail',
-    image: '/generated/interior-detailing.webp',
+    image: '/generated/interior-cockpit-finished.webp',
     mark: '/brand/pro-detailing-optimized.webp',
     markWidth: 1100,
     markHeight: 154,
@@ -151,7 +152,7 @@ export type GalleryItem = {
   caption: string;
   width: number;
   height: number;
-  group: 'current-site' | 'owner-c63' | 'local-tint';
+  group: 'current-site' | 'owner-c63' | 'local-tint' | 'service-visualization';
 };
 
 const currentSiteGallery: GalleryItem[] = Object.values(sitePhotos).map(
@@ -229,10 +230,41 @@ const localTintGallery: GalleryItem[] = localTintImages.map((photo, index) => ({
   group: 'local-tint',
 }));
 
+const interiorVisualizationGallery: GalleryItem[] = [
+  {
+    id: 'interior-cockpit-finished',
+    src: '/generated/interior-cockpit-finished.webp',
+    alt: 'Brand-neutral black leather front cabin shown clean and carefully finished',
+    caption: 'Service visualization · complete front-cabin finish.',
+    width: 1536,
+    height: 1024,
+    group: 'service-visualization',
+  },
+  {
+    id: 'interior-console-cleaning',
+    src: '/generated/interior-console-cleaning.webp',
+    alt: 'Gloved technician using a soft brush around a center console and air vent',
+    caption: 'Service visualization · precision cleaning around controls.',
+    width: 1536,
+    height: 1024,
+    group: 'service-visualization',
+  },
+  {
+    id: 'interior-rear-cabin-finished',
+    src: '/generated/interior-rear-cabin-finished.webp',
+    alt: 'Brand-neutral rear cabin with clean black leather, carpet and door panels',
+    caption: 'Service visualization · rear-cabin reset.',
+    width: 1536,
+    height: 1024,
+    group: 'service-visualization',
+  },
+];
+
 export const galleryItems = [
   ...currentSiteGallery,
   ...localTintGallery,
   ...c63Gallery,
+  ...interiorVisualizationGallery,
 ];
 
 export const serviceAreas = [
@@ -279,43 +311,4 @@ export const processSteps = [
     'Aftercare',
     'You leave with clear cure-time, washing and maintenance guidance.',
   ],
-] as const;
-
-export const reviews = [
-  {
-    name: 'Ronnie Clark',
-    service: 'Window tint',
-    summary:
-      'Highlighted the tint work, practical recommendations and helpful guidance about Northern Virginia tint rules.',
-  },
-  {
-    name: 'Jean Bonner',
-    service: 'Mobile detailing',
-    summary:
-      'Praised the on-time arrival, equipped team and a vehicle left spotless inside and out.',
-  },
-  {
-    name: 'Aqeel Manj',
-    service: 'SUV detailing',
-    summary:
-      'Called out the professional team, deep interior clean and renewed exterior finish on an SUV.',
-  },
-  {
-    name: 'Wendell Bartee',
-    service: 'Window tint',
-    summary:
-      'Highlighted attentive customer service and how much better the vehicle looked after tinting.',
-  },
-  {
-    name: 'Elena',
-    service: 'Window tint',
-    summary:
-      'Described a professional tint installation that matched the requested look.',
-  },
-  {
-    name: 'Carol Ojeda-Muro',
-    service: 'Full detail',
-    summary:
-      'Praised the professional experience and a car that looked renewed at pickup after a full detail.',
-  },
 ] as const;

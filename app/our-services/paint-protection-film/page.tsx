@@ -6,11 +6,7 @@ import { ArrowRight, Check, Focus, Layers3, ShieldCheck } from 'lucide-react';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { PpfWordmark } from '@/components/site/PpfWordmark';
 import { SectionIntro } from '@/components/site/SectionIntro';
-import {
-  processSteps,
-  quoteHref,
-  SITE_ORIGIN,
-} from '@/lib/site-data';
+import { processSteps, quoteHref, SITE_ORIGIN } from '@/lib/site-data';
 
 export const metadata: Metadata = {
   title: { absolute: 'Paint Protection Film Manassas, VA | PRO PPF' },
@@ -191,8 +187,8 @@ export default function PaintProtectionFilmPage() {
             <Link className="button button-primary" href={quoteHref('ppf')}>
               Request an inspection <ArrowRight aria-hidden="true" />
             </Link>
-            </div>
-            <div className="coverage-diagram ppf-coverage-diagram">
+          </div>
+          <div className="coverage-diagram ppf-coverage-diagram">
             <div className="coverage-car">
               <Image
                 className="ppf-coverage-image"
@@ -358,6 +354,7 @@ export default function PaintProtectionFilmPage() {
         eyebrow="Protect the paint you plan to keep."
         title="Build a panel-by-panel PPF recommendation."
         copy="Send your vehicle, paint condition and driving priorities. We’ll inspect, confirm the LLumar film and define the coverage before quoting."
+        service="ppf"
       />
       <script
         type="application/ld+json"

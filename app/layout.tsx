@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: '%s | PRO Detailing',
   },
   description:
-    'Premium LLumar window tint, Ceramic Pro coating, paint protection film and auto detailing at the PRO Detailing studio in Manassas, Virginia.',
+    'LLumar tint, Ceramic Pro coating, PPF, detailing, maintenance, tire care, auto glass, keys and residential window film in Manassas, Virginia.',
   alternates: { canonical: '/' },
   robots: { index: true, follow: true },
   icons: {
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     siteName: 'PRO Detailing',
     title: 'PRO Detailing | Vehicle Appearance & Protection',
     description:
-      'LLumar window tint, Ceramic Pro coating, paint protection film and premium detailing in Manassas, Virginia.',
+      'Vehicle appearance, protection and practical care services from PRO Detailing in Manassas, Virginia.',
     url: '/',
   },
 };

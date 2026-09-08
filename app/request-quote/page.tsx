@@ -4,17 +4,19 @@ import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 
 import { HighLevelLeadCapture } from '@/components/site/HighLevelLeadCapture';
+import { siteFeatures } from '@/lib/site-config';
 import { business, SITE_ORIGIN } from '@/lib/site-data';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Request a Vehicle Protection Quote | PRO Detailing' },
-  description:
-    'Start a vehicle-specific quote for LLumar tint, Ceramic Pro coating, paint protection film or auto detailing in Manassas, Virginia.',
+  title: { absolute: 'Request a Service Quote | PRO Detailing' },
+  description: siteFeatures.mobileDetailing
+    ? 'Start a quote for automotive appearance, protection, maintenance, tire, glass, key, mobile detailing or residential tint service in Northern Virginia.'
+    : 'Start a quote for automotive appearance, protection, maintenance, tire, glass, key or residential tint service in Northern Virginia.',
   alternates: { canonical: '/request-quote' },
   openGraph: {
-    title: 'Request a Vehicle Protection Quote | PRO Detailing',
+    title: 'Request a Service Quote | PRO Detailing',
     description:
-      'Tell PRO Detailing what you drive and what you want to improve. Start a vehicle-specific service request in Manassas, Virginia.',
+      'Tell PRO Detailing what needs attention. Start an automotive or residential window-film service request in Manassas, Virginia.',
     url: '/request-quote',
   },
 };
@@ -33,6 +35,28 @@ type QuoteSearchParams = Record<string, string | string[] | undefined>;
 
 function firstValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function allowedQuoteService(value: string | undefined) {
+  const allowed = new Set([
+    'tint',
+    'ceramic',
+    'ppf',
+    'detailing',
+    ...(siteFeatures.mobileDetailing ? ['mobile-detailing'] : []),
+    'residential-tint',
+    'maintenance',
+    'tires',
+    'auto-glass',
+    'key-replacement',
+  ]);
+  return value && allowed.has(value) ? value : 'tint';
+}
+
+function allowedDetailingPackage(value: string | undefined) {
+  return value && ['tier-1', 'tier-2', 'tier-3', 'tier-4'].includes(value)
+    ? value
+    : '';
 }
 
 function addFormAttribution(
@@ -64,18 +88,26 @@ export default async function RequestQuotePage({
   searchParams: Promise<QuoteSearchParams>;
 }) {
   const params = await searchParams;
-  const service = firstValue(params.service) ?? 'tint';
-  const packageChoice = firstValue(params.package) ?? '';
+  const service = allowedQuoteService(firstValue(params.service));
+  const packageChoice =
+    service === 'detailing'
+      ? allowedDetailingPackage(firstValue(params.package))
+      : '';
+  const normalizedParams: QuoteSearchParams = {
+    ...params,
+    service,
+    package: packageChoice || undefined,
+  };
   const embedUrl = addFormAttribution(
     safeEmbedUrl(process.env.GHL_FORM_URL),
-    params,
+    normalizedParams,
   );
   const webhookEnabled = Boolean(process.env.GHL_WEBHOOK_URL);
 
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Vehicle appearance and protection consultation',
+    name: 'Automotive and residential service consultation',
     provider: { '@id': `${SITE_ORIGIN}/#business` },
     areaServed: 'Manassas, Virginia',
     url: `${SITE_ORIGIN}/request-quote`,
@@ -99,13 +131,15 @@ export default async function RequestQuotePage({
               priority
             />
             <p className="eyebrow">
-              <span /> Vehicle request command center
+              <span /> Service request command center
             </p>
-            <h1>Tell us what you drive. We’ll configure what comes next.</h1>
+            <h1>
+              Tell us what needs attention. We’ll configure what comes next.
+            </h1>
             <p>
-              Start with the vehicle and outcome. Product, shade, coverage,
-              preparation, timing and price are confirmed after the team reviews
-              the request.
+              Start with the vehicle or property and the outcome. Product,
+              parts, coverage, preparation, timing and price are confirmed after
+              the team reviews the request.
             </p>
           </div>
           <div className="quote-hero-emblem" aria-hidden="true">

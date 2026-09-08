@@ -1,10 +1,14 @@
 import type { MetadataRoute } from 'next';
 
 import { SITE_ORIGIN } from '@/lib/site-data';
+import { featuredArticles } from '@/lib/blog-data';
+import { additionalServices } from '@/lib/expanded-content';
+import { siteFeatures } from '@/lib/site-config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths = [
     '',
+    '/our-services',
     '/our-services/window-tinting',
     '/our-services/ceramic-coating',
     '/our-services/paint-protection-film',
@@ -12,6 +16,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tint-simulator',
     '/gallery',
     '/request-quote',
+    '/reviews',
+    '/blog',
+    ...additionalServices
+      .filter(
+        (service) =>
+          service.slug !== 'mobile-detailing' || siteFeatures.mobileDetailing,
+      )
+      .map((service) => `/our-services/${service.slug}`),
+    ...featuredArticles.map((article) => `/blog/${article.slug}`),
   ];
 
   return paths.map((path, index) => ({

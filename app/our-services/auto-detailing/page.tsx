@@ -228,6 +228,27 @@ const detailImages = [
   .map((id) => galleryItems.find((item) => item.id === id))
   .filter((item): item is (typeof galleryItems)[number] => Boolean(item));
 
+const interiorVisuals = [
+  {
+    src: '/generated/interior-cockpit-finished.webp',
+    alt: 'Brand-neutral black leather front cabin shown clean and carefully finished',
+    title: 'Complete cockpit finish',
+    copy: 'A wide view of the material clarity, seams, carpet and touchpoints a detailed cabin should reveal.',
+  },
+  {
+    src: '/generated/interior-console-cleaning.webp',
+    alt: 'Gloved technician using a soft brush around a center console and air vent',
+    title: 'Precision at the controls',
+    copy: 'Soft-brush technique around vents, switches and cupholders where careless moisture or abrasion does not belong.',
+  },
+  {
+    src: '/generated/interior-rear-cabin-finished.webp',
+    alt: 'Brand-neutral rear cabin with clean black leather, carpet and door panels',
+    title: 'Rear-cabin reset',
+    copy: 'Seats, footwells, carpet, door panels and the spaces passengers actually touch—shown in one finished frame.',
+  },
+] as const;
+
 export default function AutoDetailingPage() {
   const schema = {
     '@context': 'https://schema.org',
@@ -267,7 +288,7 @@ export default function AutoDetailingPage() {
       <section className="service-hero detailing-service-hero">
         <div className="service-hero-media" aria-hidden="true">
           <Image
-            src="/generated/interior-detailing.webp"
+            src="/generated/interior-cockpit-finished.webp"
             alt=""
             width="1800"
             height="1200"
@@ -333,6 +354,36 @@ export default function AutoDetailingPage() {
               reviewed.
             </small>
           </aside>
+        </div>
+      </section>
+
+      <section className="section interior-visual-section">
+        <div className="shell">
+          <SectionIntro
+            eyebrow="Interior detailing · service visualizations"
+            title="More of the cabin. More of the work that matters."
+            copy="These original, brand-neutral visualizations show the areas and techniques the interior scope can address. They are illustrative service visuals—not customer-vehicle photographs or guaranteed before-and-after results."
+          />
+          <div className="interior-visual-grid">
+            {interiorVisuals.map((visual, index) => (
+              <figure key={visual.src}>
+                <div>
+                  <Image
+                    src={visual.src}
+                    alt={visual.alt}
+                    width="1536"
+                    height="1024"
+                    sizes="(max-width: 780px) 100vw, 33vw"
+                  />
+                  <span>VISUAL / 0{index + 1}</span>
+                </div>
+                <figcaption>
+                  <strong>{visual.title}</strong>
+                  <p>{visual.copy}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -652,6 +703,7 @@ export default function AutoDetailingPage() {
         eyebrow="Ready for a vehicle-specific detail?"
         title="Show us the condition. Tell us the priority."
         copy="We’ll confirm the interior, exterior and finish scope, timing and quote after reviewing your vehicle or clear photographs."
+        service="detailing"
       />
       <script
         type="application/ld+json"

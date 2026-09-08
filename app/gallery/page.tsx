@@ -46,8 +46,9 @@ export default function GalleryPage() {
         </h1>
         <p className="mt-6 max-w-3xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
           Cars, SUVs, trucks and performance vehicles from the current PRO
-          Detailing and owner-provided photo library. Captions describe what is
-          visible without assigning an unverified service to any vehicle.
+          Detailing and owner-provided photo library, plus clearly labeled
+          interior service visualizations. Captions do not assign an unverified
+          service to a customer vehicle.
         </p>
       </header>
 

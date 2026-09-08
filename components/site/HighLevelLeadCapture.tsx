@@ -5,29 +5,58 @@ import { useMemo, useState } from 'react';
 import type { SyntheticEvent } from 'react';
 
 import { business } from '@/lib/site-data';
+import { siteFeatures } from '@/lib/site-config';
 
-const serviceOptions = [
+const serviceOptions: readonly (readonly [string, string])[] = [
   ['tint', 'LLumar tint'],
   ['ceramic', 'Ceramic coating'],
   ['ppf', 'Paint protection film'],
   ['detailing', 'Auto detailing'],
-] as const;
+  ...(siteFeatures.mobileDetailing
+    ? ([['mobile-detailing', 'Mobile detailing']] as const)
+    : []),
+  ['residential-tint', 'Residential window tint'],
+  ['maintenance', 'Maintenance & oil change'],
+  ['tires', 'Tire service'],
+  ['auto-glass', 'Auto glass'],
+  ['key-replacement', 'Key replacement'],
+];
 
-const vehicleOptions = ['Sedan', 'Coupe', 'SUV', 'Truck', 'EV', 'Other'];
+const vehicleOptions = [
+  'Sedan',
+  'Coupe',
+  'SUV',
+  'Truck',
+  'EV',
+  'Fleet',
+  'Home / property glass',
+  'Other',
+];
 const goalOptions = [
   'Cabin comfort & privacy',
   'Protect the paint',
   'Easier maintenance & gloss',
   'Deep interior/exterior reset',
+  'Routine maintenance or oil service',
+  'Tire or brake safety concern',
+  'Replace damaged auto glass',
+  'Replace or program a key',
+  'Home heat, glare or privacy',
   'I need a recommendation',
 ];
 
-const serviceGoalDefaults = {
+const serviceGoalDefaults: Record<string, string> = {
   tint: 'Cabin comfort & privacy',
   ceramic: 'Easier maintenance & gloss',
   ppf: 'Protect the paint',
   detailing: 'Deep interior/exterior reset',
-} as const;
+  'mobile-detailing': 'Deep interior/exterior reset',
+  'residential-tint': 'Home heat, glare or privacy',
+  maintenance: 'Routine maintenance or oil service',
+  tires: 'Tire or brake safety concern',
+  'auto-glass': 'Replace damaged auto glass',
+  'key-replacement': 'Replace or program a key',
+};
 
 const detailingPackageLabels = {
   'tier-1': 'Detailing Tier 1',
@@ -74,9 +103,7 @@ export function HighLevelLeadCapture({
   const [service, setService] = useState(normalizedInitialService);
   const [vehicle, setVehicle] = useState('Sedan');
   const [goal, setGoal] = useState<string>(
-    serviceGoalDefaults[
-      normalizedInitialService as keyof typeof serviceGoalDefaults
-    ],
+    serviceGoalDefaults[normalizedInitialService] ?? 'I need a recommendation',
   );
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [statusMessage, setStatusMessage] = useState('');
@@ -155,7 +182,7 @@ export function HighLevelLeadCapture({
         </div>
         <iframe
           src={embedUrl}
-          title="Request a PRO Detailing vehicle quote"
+          title="Request a PRO Detailing service quote"
           loading="eager"
           referrerPolicy="strict-origin-when-cross-origin"
         />
@@ -171,7 +198,7 @@ export function HighLevelLeadCapture({
         data-ghl-form-slot="vehicle-quote"
       >
         <div className="lead-form-head">
-          <span>VEHICLE REQUEST / CRM</span>
+          <span>SERVICE REQUEST / CRM</span>
           <span>DIRECT TO PRO DETAILING</span>
         </div>
         {packageLabel ? (
@@ -206,7 +233,16 @@ export function HighLevelLeadCapture({
           </label>
           <label>
             <span>Service</span>
-            <select value={service} onChange={(e) => setService(e.target.value)}>
+            <select
+              value={service}
+              onChange={(event) => {
+                const nextService = event.target.value;
+                setService(nextService);
+                setGoal(
+                  serviceGoalDefaults[nextService] ?? 'I need a recommendation',
+                );
+              }}
+            >
               {serviceOptions.map(([value, label]) => (
                 <option value={value} key={value}>
                   {label}
@@ -215,17 +251,21 @@ export function HighLevelLeadCapture({
             </select>
           </label>
           <label>
-            <span>Vehicle</span>
+            <span>Vehicle or property</span>
             <input
               name="vehicle"
-              placeholder="Year, make and model"
+              placeholder="Year, make and model—or property type"
               maxLength={100}
               required
             />
           </label>
           <label>
             <span>Main priority</span>
-            <select name="goal" defaultValue={goalOptions[0]}>
+            <select
+              name="goal"
+              value={goal}
+              onChange={(event) => setGoal(event.target.value)}
+            >
               {goalOptions.map((option) => (
                 <option key={option}>{option}</option>
               ))}
@@ -279,7 +319,7 @@ export function HighLevelLeadCapture({
   return (
     <div className="lead-router" data-ghl-form-slot="vehicle-quote">
       <div className="lead-form-head">
-        <span>VEHICLE ROUTER / 01</span>
+        <span>SERVICE ROUTER / 01</span>
         <span>HIGH-INTENT PATH</span>
       </div>
 
@@ -292,7 +332,9 @@ export function HighLevelLeadCapture({
               className={service === value ? 'is-active' : ''}
               onClick={() => {
                 setService(value);
-                setGoal(serviceGoalDefaults[value]);
+                setGoal(
+                  serviceGoalDefaults[value] ?? 'I need a recommendation',
+                );
               }}
               key={value}
             >
@@ -304,7 +346,7 @@ export function HighLevelLeadCapture({
 
       <div className="lead-router-grid">
         <label>
-          <span>02 · Vehicle profile</span>
+          <span>02 · Vehicle / property</span>
           <select value={vehicle} onChange={(e) => setVehicle(e.target.value)}>
             {vehicleOptions.map((option) => (
               <option key={option}>{option}</option>

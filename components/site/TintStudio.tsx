@@ -87,10 +87,14 @@ export function TintStudio({ compact = false }: { compact?: boolean }) {
   const line = filmLines.find((item) => item.id === lineId) ?? filmLines[1];
   const shade =
     line.shades.find((item) => item.id === shadeId) ?? line.shades[0];
-  const darkness = Math.max(
-    0.12,
-    Math.min(0.94, 0.08 + (1 - shade.vlt / 100) * 0.92),
-  );
+  const darkness = Math.max(0, Math.min(0.97, 1 - shade.vlt / 100));
+  const activeZoneLabel = [
+    zones.frontSides ? 'front' : null,
+    zones.rearSides && vehicle !== 'coupe' ? 'rear' : null,
+    zones.windshield ? 'brow' : null,
+  ]
+    .filter(Boolean)
+    .join(' + ');
   const supportedState =
     state === 'Virginia' ||
     state === 'Maryland' ||
@@ -154,7 +158,9 @@ export function TintStudio({ compact = false }: { compact?: boolean }) {
       <div className="studio-preview">
         <div className="studio-hud" aria-hidden="true">
           <span>LIVE PREVIEW</span>
-          <span>VLT {shade.vlt}%</span>
+          <span>
+            {activeZoneLabel || 'no zones'} · VLT {shade.vlt}%
+          </span>
         </div>
         <div className={`vehicle-stage ${before ? 'show-before' : ''}`}>
           <div className="stage-light" aria-hidden="true" />
@@ -192,7 +198,7 @@ export function TintStudio({ compact = false }: { compact?: boolean }) {
               <span
                 className="tint-mask"
                 style={{
-                  opacity: before ? 0 : Math.min(darkness, 0.7),
+                  opacity: before ? 0 : darkness,
                   WebkitMaskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
                   maskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
                 }}
@@ -267,38 +273,39 @@ export function TintStudio({ compact = false }: { compact?: boolean }) {
               role="radiogroup"
               aria-label="Shade and measured VLT"
             >
-              {line.shades.map((item) => (
-                <label
-                  className={shadeId === item.id ? 'is-active' : ''}
-                  key={item.id}
-                >
-                  <input
-                    type="radio"
-                    name={`shade-${compact ? 'compact' : 'full'}`}
-                    value={item.id}
-                    checked={shadeId === item.id}
-                    aria-label={`${item.label}, ${item.vlt}% measured VLT`}
-                    onChange={() => setShadeId(item.id)}
-                  />
-                  <span
-                    className="shade-option-swatch"
-                    aria-hidden="true"
-                    style={{
-                      background: `linear-gradient(135deg, rgba(126, 145, 134, ${Math.max(
-                        0.16,
-                        item.vlt / 100,
-                      )}), rgba(0, 0, 0, ${Math.max(
-                        0.2,
-                        1 - item.vlt / 112,
-                      )}))`,
-                    }}
-                  />
-                  <span>
-                    <strong>{item.label}</strong>
-                    <small>{item.vlt}% VLT</small>
-                  </span>
-                </label>
-              ))}
+              {line.shades.map((item) => {
+                const swatchDarkness = Math.max(
+                  0,
+                  Math.min(0.97, 1 - item.vlt / 100),
+                );
+
+                return (
+                  <label
+                    className={shadeId === item.id ? 'is-active' : ''}
+                    key={item.id}
+                  >
+                    <input
+                      type="radio"
+                      name={`shade-${compact ? 'compact' : 'full'}`}
+                      value={item.id}
+                      checked={shadeId === item.id}
+                      aria-label={`${item.label}, ${item.vlt}% measured VLT`}
+                      onChange={() => setShadeId(item.id)}
+                    />
+                    <span
+                      className="shade-option-swatch"
+                      aria-hidden="true"
+                      style={{
+                        background: `linear-gradient(135deg, rgba(18, 22, 20, ${swatchDarkness}), rgba(0, 0, 0, ${swatchDarkness}))`,
+                      }}
+                    />
+                    <span>
+                      <strong>{item.label}</strong>
+                      <small>{item.vlt}% VLT</small>
+                    </span>
+                  </label>
+                );
+              })}
             </div>
           </div>
         </div>

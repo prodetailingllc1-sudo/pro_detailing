@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 
 import { business, serviceAreas } from '@/lib/site-data';
+import { siteFeatures } from '@/lib/site-config';
 
 export function Footer() {
   return (
@@ -16,8 +17,8 @@ export function Footer() {
             height="126"
           />
           <p>
-            Premium vehicle appearance and protection, configured and installed
-            in Manassas, Virginia.
+            Premium vehicle appearance, protection and practical care,
+            configured in Manassas, Virginia.
           </p>
           <div className="footer-socials">
             <a
@@ -39,7 +40,8 @@ export function Footer() {
           </div>
         </div>
         <div>
-          <p className="footer-label">Protection</p>
+          <p className="footer-label">Appearance & protection</p>
+          <Link href="/our-services">All services</Link>
           <Link href="/our-services/window-tinting">LLumar window tint</Link>
           <Link href="/our-services/ceramic-coating">Ceramic Pro coating</Link>
           <Link href="/our-services/paint-protection-film">
@@ -48,10 +50,27 @@ export function Footer() {
           <Link href="/our-services/auto-detailing">Auto detailing</Link>
           <Link href="/tint-simulator">PRO Tints Studio</Link>
           <Link href="/gallery">Real work gallery</Link>
-          <Link href="/request-quote">Request a vehicle quote</Link>
+          <Link href="/blog">Car-care guides</Link>
+          <Link href="/reviews">Google reviews</Link>
         </div>
         <div>
-          <p className="footer-label">Studio</p>
+          <p className="footer-label">Maintenance & more</p>
+          {siteFeatures.mobileDetailing ? (
+            <Link href="/our-services/mobile-detailing">Mobile detailing</Link>
+          ) : null}
+          <Link href="/our-services/residential-window-tinting">
+            Residential window tint
+          </Link>
+          <Link href="/our-services/maintenance-oil-change">
+            Maintenance &amp; oil change
+          </Link>
+          <Link href="/our-services/tire-service">Tire service</Link>
+          <Link href="/our-services/auto-glass">Auto glass</Link>
+          <Link href="/our-services/key-replacement">Key replacement</Link>
+          <Link href="/request-quote">Request a quote</Link>
+        </div>
+        <div>
+          <p className="footer-label">Studio & service area</p>
           <a href={`tel:${business.phoneHref}`}>
             <Phone aria-hidden="true" /> {business.phone}
           </a>
@@ -65,19 +84,16 @@ export function Footer() {
             Appointments available Monday–Saturday. Call to confirm
             availability.
           </small>
+          <p>
+            {serviceAreas.slice(0, 6).join(' · ')} and surrounding Northern
+            Virginia communities.
+          </p>
           <a href={business.privacyUrl} target="_blank" rel="noreferrer">
             Privacy policy
           </a>
           <a href={business.termsUrl} target="_blank" rel="noreferrer">
             Terms &amp; conditions
           </a>
-        </div>
-        <div>
-          <p className="footer-label">Service area</p>
-          <p>
-            {serviceAreas.slice(0, 6).join(' · ')} and surrounding Northern
-            Virginia communities.
-          </p>
           <a
             className="aircraft-link"
             href="https://proaviationcare.com/"

@@ -1,12 +1,20 @@
 import {
   ArrowRight,
   ArrowUpRight,
+  BookOpen,
+  CarFront,
   Check,
+  CircleGauge,
+  House,
+  KeyRound,
   MapPin,
+  PanelsTopLeft,
   Phone,
   ShieldCheck,
   Sparkles,
+  Star,
   SunMedium,
+  Wrench,
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
@@ -18,12 +26,18 @@ import { ProtectionLab } from '@/components/site/ProtectionLab';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
 import { TintStudio } from '@/components/site/TintStudio';
+import { featuredArticles } from '@/lib/blog-data';
+import {
+  additionalServices,
+  googleReviewSnapshot,
+  specialistMarques,
+} from '@/lib/expanded-content';
+import { siteFeatures } from '@/lib/site-config';
 import {
   business,
   galleryItems,
   processSteps,
   quoteHref,
-  reviews,
   serviceAreas,
   SITE_ORIGIN,
 } from '@/lib/site-data';
@@ -81,6 +95,15 @@ const homeGallery = homeGalleryIds.flatMap((id) => {
   const item = galleryItems.find((entry) => entry.id === id);
   return item ? [item] : [];
 });
+
+const additionalServiceIcons: Record<string, typeof CarFront> = {
+  'mobile-detailing': CarFront,
+  'residential-window-tinting': House,
+  'maintenance-oil-change': Wrench,
+  'tire-service': CircleGauge,
+  'auto-glass': PanelsTopLeft,
+  'key-replacement': KeyRound,
+};
 
 export default function Home() {
   const homeSchema = {
@@ -144,6 +167,52 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section home-service-network">
+        <div className="shell">
+          <div className="section-title-row">
+            <SectionIntro
+              eyebrow="Beyond appearance & protection"
+              title="More than appearance. A complete care network."
+              copy={
+                siteFeatures.mobileDetailing
+                  ? 'Maintenance, tire care, auto glass, keys, mobile detailing and residential window film now have clear paths of their own.'
+                  : 'Maintenance, tire care, auto glass, keys and residential window film now have clear paths of their own.'
+              }
+            />
+            <Link className="button button-ghost" href="/our-services">
+              View every service <ArrowRight aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="home-service-network-grid">
+            {additionalServices
+              .filter(
+                (service) =>
+                  service.slug !== 'mobile-detailing' ||
+                  siteFeatures.mobileDetailing,
+              )
+              .map((service, index) => {
+                const Icon = additionalServiceIcons[service.slug];
+                return (
+                  <Link
+                    href={`/our-services/${service.slug}`}
+                    key={service.slug}
+                  >
+                    <div>
+                      <span>{String(index + 5).padStart(2, '0')}</span>
+                      <Icon aria-hidden="true" />
+                    </div>
+                    <h3>{service.name}</h3>
+                    <p>{service.description}</p>
+                    <strong>
+                      Explore <ArrowRight aria-hidden="true" />
+                    </strong>
+                  </Link>
+                );
+              })}
+          </div>
+        </div>
+      </section>
+
       <section className="section feature-split c63-feature">
         <div className="feature-image">
           <Image
@@ -188,6 +257,34 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section marque-section">
+        <div className="shell marque-layout">
+          <div>
+            <p className="eyebrow">
+              <span /> Luxury & performance experience
+            </p>
+            <h2>Specialist attention for vehicles where details compound.</h2>
+            <p>
+              We tailor the inspection, surface preparation, film coverage and
+              material care to the vehicle in front of us. Brand familiarity
+              never replaces a model-specific check—and does not imply factory
+              authorization.
+            </p>
+            <Link className="text-link" href={quoteHref()}>
+              Tell us what you drive <ArrowRight aria-hidden="true" />
+            </Link>
+          </div>
+          <ul className="marque-grid" aria-label="Specialist vehicle marques">
+            {specialistMarques.map((marque, index) => (
+              <li key={marque}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{marque}</strong>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <section className="section tint-preview-section">
         <div className="shell">
           <div className="studio-section-head">
@@ -224,7 +321,10 @@ export default function Home() {
                 Three standout vehicles, one PRO standard. Watch the original
                 PRO Detailing fleet film in its complete portrait frame.
               </p>
-              <ul className="work-film-models" aria-label="Vehicles in the film">
+              <ul
+                className="work-film-models"
+                aria-label="Vehicles in the film"
+              >
                 <li>Mercedes-Maybach GLS</li>
                 <li>BMW M8</li>
                 <li>Mercedes-AMG GLE 63</li>
@@ -313,29 +413,69 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section home-blog-section">
+        <div className="shell">
+          <div className="section-title-row">
+            <SectionIntro
+              eyebrow="PRO knowledge library"
+              title="Useful answers before the appointment."
+              copy="The rebuilt library starts with nine current guides and keeps the complete 67-article source archive connected."
+            />
+            <Link className="button button-ghost" href="/blog">
+              Browse all guides <ArrowRight aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="home-blog-grid">
+            {featuredArticles.slice(0, 3).map((article, index) => (
+              <Link href={`/blog/${article.slug}`} key={article.slug}>
+                <div>
+                  <span>0{index + 1}</span>
+                  <BookOpen aria-hidden="true" />
+                </div>
+                <small>{article.category}</small>
+                <h3>{article.title}</h3>
+                <p>{article.description}</p>
+                <strong>
+                  Read guide <ArrowRight aria-hidden="true" />
+                </strong>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="section review-section">
         <div className="shell review-layout">
           <div>
             <SectionIntro
-              eyebrow="Google-sourced customer feedback"
-              title="The details customers notice after the handoff."
-              copy="These concise review highlights are paraphrased from Google-sourced feedback published on the current pro-detailing.co website."
+              eyebrow={`${googleReviewSnapshot.rating} on Google · ${googleReviewSnapshot.count} reviews`}
+              title="Current customer feedback, linked to the source."
+              copy={`Verified ${googleReviewSnapshot.verified}. Review highlights are concise paraphrases; each card links directly to its Google review.`}
             />
-            <a
-              className="text-link"
-              href={business.google}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Read current Google reviews <ArrowUpRight aria-hidden="true" />
-            </a>
+            <div className="review-actions">
+              <a
+                className="text-link"
+                href={googleReviewSnapshot.profileUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Read current Google reviews <ArrowUpRight aria-hidden="true" />
+              </a>
+              <Link className="text-link" href="/reviews">
+                Open the reviews page <ArrowRight aria-hidden="true" />
+              </Link>
+            </div>
           </div>
           <div className="review-stack">
-            {reviews.map((review, index) => (
+            {googleReviewSnapshot.reviews.map((review, index) => (
               <article className="review-card" key={review.name}>
                 <div className="review-card-top">
                   <span>0{index + 1}</span>
-                  <small>GOOGLE REVIEW HIGHLIGHT</small>
+                  <span className="review-stars" aria-label="5 out of 5 stars">
+                    {Array.from({ length: 5 }).map((_, star) => (
+                      <Star aria-hidden="true" key={star} />
+                    ))}
+                  </span>
                 </div>
                 <p>{review.summary}</p>
                 <div className="review-author">
@@ -348,9 +488,20 @@ export default function Home() {
                   </span>
                   <div>
                     <strong>{review.name}</strong>
-                    <small>{review.service}</small>
+                    <small>
+                      {review.service} · {review.age}
+                    </small>
                   </div>
                 </div>
+                <a
+                  className="review-source-link"
+                  href={review.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Read ${review.name}'s review on Google`}
+                >
+                  Source <ArrowUpRight aria-hidden="true" />
+                </a>
               </article>
             ))}
           </div>

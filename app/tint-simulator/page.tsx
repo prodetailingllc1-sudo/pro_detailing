@@ -152,6 +152,7 @@ export default function TintSimulatorPage() {
         eyebrow="Save the preview. Confirm it on the vehicle."
         title="Bring your build to the Manassas studio."
         copy="Your quote will confirm the glass, selected LLumar film, measured shade, coverage, availability and installation scope."
+        service="tint"
       />
     </main>
   );

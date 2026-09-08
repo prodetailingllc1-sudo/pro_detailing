@@ -127,14 +127,14 @@ export function GalleryClient({ items }: GalleryClientProps) {
           id="gallery-heading"
           className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground"
         >
-          Selected vehicles
+          Selected work &amp; service visuals
         </h2>
         <p
           className="text-sm text-muted-foreground"
           aria-live="polite"
           aria-atomic="true"
         >
-          Showing {visibleItems.length} of {items.length} photographs
+          Showing {visibleItems.length} of {items.length} images
         </p>
       </div>
 
@@ -153,7 +153,7 @@ export function GalleryClient({ items }: GalleryClientProps) {
               <button
                 type="button"
                 className="gallery-card-trigger group relative block w-full cursor-zoom-in overflow-hidden bg-muted text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
-                aria-label={`Open photograph ${index + 1} of ${items.length}`}
+                aria-label={`Open image ${index + 1} of ${items.length}`}
                 aria-describedby={captionId}
                 onClick={(event) => openImage(index, event.currentTarget)}
               >
@@ -210,11 +210,11 @@ export function GalleryClient({ items }: GalleryClientProps) {
             onTouchEnd={handleTouchEnd}
           >
             <DialogTitle className="sr-only">
-              Gallery photograph: {activeItem.caption}
+              Gallery image: {activeItem.caption}
             </DialogTitle>
             <DialogDescription className="sr-only">
-              Photograph {selectedIndex + 1} of {items.length}. Use the previous
-              and next buttons, the left and right arrow keys, or swipe
+              Image {selectedIndex + 1} of {items.length}. Use the previous and
+              next buttons, the left and right arrow keys, or swipe
               horizontally.
             </DialogDescription>
 
