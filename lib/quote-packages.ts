@@ -1,11 +1,8 @@
 import { additionalServices } from '@/lib/expanded-content';
-
-const detailingPackageLabels: Record<string, string> = {
-  'tier-1': 'Detailing Tier 1',
-  'tier-2': 'Detailing Tier 2',
-  'tier-3': 'Detailing Tier 3',
-  'tier-4': 'Detailing Tier 4',
-};
+import {
+  detailingQuoteTiers,
+  mobileDetailingQuoteTiers,
+} from '@/lib/quote-options';
 
 export function resolveQuotePackage(
   service: string,
@@ -13,8 +10,18 @@ export function resolveQuotePackage(
 ) {
   if (!choice) return null;
 
-  if (service === 'detailing' && detailingPackageLabels[choice]) {
-    return { id: choice, label: detailingPackageLabels[choice] };
+  const configuredTier =
+    service === 'detailing'
+      ? detailingQuoteTiers.find((tier) => tier.id === choice)
+      : service === 'mobile-detailing'
+        ? mobileDetailingQuoteTiers.find((tier) => tier.id === choice)
+        : undefined;
+
+  if (configuredTier) {
+    return {
+      id: configuredTier.id,
+      label: `${configuredTier.name} — ${configuredTier.label}`,
+    };
   }
 
   const match = /^path-(\d+)$/.exec(choice);

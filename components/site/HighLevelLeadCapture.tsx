@@ -7,6 +7,10 @@ import type { SyntheticEvent } from 'react';
 import { business } from '@/lib/site-data';
 import { siteFeatures } from '@/lib/site-config';
 import { resolveQuotePackage } from '@/lib/quote-packages';
+import {
+  detailingAddOns,
+  quoteTierOptionsForService,
+} from '@/lib/quote-options';
 
 const serviceOptions: readonly (readonly [string, string])[] = [
   ['tint', 'LLumar tint'],
@@ -70,6 +74,7 @@ function buildTrackedBookingUrl(
   vehicle: string,
   goal: string,
   packageChoice: string,
+  addOnIds: readonly string[],
 ) {
   const url = new URL(business.bookingUrl);
   url.searchParams.set('utm_source', 'pro_detailing_site');
@@ -79,7 +84,160 @@ function buildTrackedBookingUrl(
   url.searchParams.set('vehicle', vehicle);
   url.searchParams.set('goal', goal);
   if (packageChoice) url.searchParams.set('package', packageChoice);
+  if (addOnIds.length) url.searchParams.set('addons', addOnIds.join(','));
   return url.toString();
+}
+
+function TierAndAddOnPicker({
+  service,
+  packageChoice,
+  selectedAddOnIds,
+  onPackageChange,
+  onToggleAddOn,
+}: {
+  service: string;
+  packageChoice: string;
+  selectedAddOnIds: readonly string[];
+  onPackageChange: (choice: string) => void;
+  onToggleAddOn: (id: string) => void;
+}) {
+  const tiers = quoteTierOptionsForService(service);
+  if (!tiers.length) return null;
+
+  const mobile = service === 'mobile-detailing';
+  const tierHeadingId = 'quote-tier-heading-' + service;
+
+  return (
+    <section className="lead-configuration" aria-labelledby={tierHeadingId}>
+      <div className="lead-configuration-head">
+        <span>{mobile ? '02 · MOBILE PACKAGE' : '02 · DETAILING PACKAGE'}</span>
+        <strong id={tierHeadingId}>
+          {mobile
+            ? 'Choose a mobile detailing tier.'
+            : 'Choose a detailing tier.'}
+        </strong>
+        <p>
+          {mobile
+            ? 'Select the closest service level. Final mobile scope and price are confirmed after the address and vehicle are reviewed.'
+            : 'Published starting prices are shown. Vehicle size and condition can change the final quote.'}
+        </p>
+      </div>
+
+      <fieldset className="lead-tier-fieldset">
+        <legend className="sr-only">
+          {mobile
+            ? 'Choose a mobile detailing tier'
+            : 'Choose a detailing tier'}
+        </legend>
+        <div className="lead-tier-options">
+          {tiers.map((tier) => (
+            <label
+              className={
+                packageChoice === tier.id
+                  ? 'lead-tier-option is-selected'
+                  : 'lead-tier-option'
+              }
+              key={tier.id}
+            >
+              <input
+                className="lead-choice-input"
+                type="radio"
+                name="packageChoice"
+                value={tier.id}
+                checked={packageChoice === tier.id}
+                onChange={() => onPackageChange(tier.id)}
+              />
+              <span className="lead-tier-topline">
+                <strong>{tier.name}</strong>
+                <small>{tier.label}</small>
+              </span>
+              <span className="lead-tier-description">{tier.description}</span>
+              <span className="lead-tier-meta">{tier.meta}</span>
+            </label>
+          ))}
+          <label
+            className={
+              packageChoice
+                ? 'lead-tier-option'
+                : 'lead-tier-option is-selected'
+            }
+          >
+            <input
+              className="lead-choice-input"
+              type="radio"
+              name="packageChoice"
+              value=""
+              checked={!packageChoice}
+              onChange={() => onPackageChange('')}
+            />
+            <span className="lead-tier-topline">
+              <strong>Help me choose</strong>
+              <small>Recommendation</small>
+            </span>
+            <span className="lead-tier-description">
+              Share the condition and let the team recommend the right starting
+              point.
+            </span>
+            <span className="lead-tier-meta">No tier assigned yet</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset className="lead-addon-fieldset">
+        <legend>03 · Optional add-ons</legend>
+        <p>
+          {mobile
+            ? 'Request any add-ons that may be needed. Mobile availability and pricing are confirmed after the location review.'
+            : 'Add-ons are requests, not automatic charges. The team confirms whether they are already included or actually needed.'}
+        </p>
+        <div className="lead-addon-options">
+          {detailingAddOns.map((addOn) => {
+            const selected = selectedAddOnIds.includes(addOn.id);
+            return (
+              <label
+                className={
+                  selected
+                    ? 'lead-addon-option is-selected'
+                    : 'lead-addon-option'
+                }
+                key={addOn.id}
+              >
+                <input
+                  type="checkbox"
+                  name="addOnIds"
+                  value={addOn.id}
+                  checked={selected}
+                  onChange={() => onToggleAddOn(addOn.id)}
+                />
+                <span>
+                  <strong>{addOn.name}</strong>
+                  <small>{mobile ? 'Request' : '+$' + addOn.price}</small>
+                </span>
+                <Check aria-hidden="true" />
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
+    </section>
+  );
+}
+
+function ConsentField() {
+  return (
+    <label className="lead-consent">
+      <input type="checkbox" name="consent" required />
+      <span>
+        I agree that PRO Detailing may contact me by phone, text or email about
+        this request. Message and data rates may apply; reply STOP to opt out.
+        View the{' '}
+        <a href={business.privacyUrl} target="_blank" rel="noreferrer">
+          privacy policy
+        </a>
+        .
+      </span>
+    </label>
+  );
 }
 
 export function HighLevelLeadCapture({
@@ -108,13 +266,46 @@ export function HighLevelLeadCapture({
   const [packageChoice, setPackageChoice] = useState(
     resolveQuotePackage(normalizedInitialService, initialPackage)?.id ?? '',
   );
+  const [selectedAddOnIds, setSelectedAddOnIds] = useState<string[]>([]);
   const selectedPackage = resolveQuotePackage(service, packageChoice);
   const selectedPackageId = selectedPackage?.id ?? '';
   const packageLabel = selectedPackage?.label ?? '';
-  const bookingUrl = useMemo(
-    () => buildTrackedBookingUrl(service, vehicle, goal, selectedPackageId),
-    [goal, selectedPackageId, service, vehicle],
+  const selectedAddOns = detailingAddOns.filter((addOn) =>
+    selectedAddOnIds.includes(addOn.id),
   );
+  const showsDetailOptions =
+    service === 'detailing' || service === 'mobile-detailing';
+  const bookingUrl = useMemo(
+    () =>
+      buildTrackedBookingUrl(
+        service,
+        vehicle,
+        goal,
+        selectedPackageId,
+        selectedAddOnIds,
+      ),
+    [goal, selectedAddOnIds, selectedPackageId, service, vehicle],
+  );
+
+  function chooseService(nextService: string) {
+    setService(nextService);
+    setPackageChoice('');
+    setSelectedAddOnIds([]);
+    setVehicle(
+      nextService === 'residential-tint' ? 'Home / property glass' : 'Sedan',
+    );
+    setGoal(serviceGoalDefaults[nextService] ?? 'I need a recommendation');
+    setSubmitState('idle');
+    setStatusMessage('');
+  }
+
+  function toggleAddOn(id: string) {
+    setSelectedAddOnIds((current) =>
+      current.includes(id)
+        ? current.filter((currentId) => currentId !== id)
+        : [...current, id],
+    );
+  }
 
   async function submitLead(
     event: SyntheticEvent<HTMLFormElement, SubmitEvent>,
@@ -143,8 +334,10 @@ export function HighLevelLeadCapture({
           service,
           package: selectedPackageId,
           packageLabel,
+          addOnIds: selectedAddOnIds,
           vehicle: form.get('vehicle'),
-          goal: form.get('goal'),
+          vehicleType: vehicle,
+          goal,
           message: form.get('message'),
           consent: form.get('consent') === 'on',
           website: form.get('website'),
@@ -197,9 +390,13 @@ export function HighLevelLeadCapture({
           <span>SERVICE REQUEST / CRM</span>
           <span>DIRECT TO PRO DETAILING</span>
         </div>
-        {packageLabel ? (
+        {packageLabel || selectedAddOns.length ? (
           <p className="lead-package-context">
-            Selected starting point: <strong>{packageLabel}</strong>
+            Selected starting point:{' '}
+            <strong>{packageLabel || 'Recommendation requested'}</strong>
+            {selectedAddOns.length
+              ? ' · ' + selectedAddOns.map((addOn) => addOn.name).join(', ')
+              : ''}
           </p>
         ) : null}
         <div className="lead-form-grid">
@@ -231,19 +428,7 @@ export function HighLevelLeadCapture({
             <span>Service</span>
             <select
               value={service}
-              onChange={(event) => {
-                const nextService = event.target.value;
-                setService(nextService);
-                setPackageChoice('');
-                setVehicle(
-                  nextService === 'residential-tint'
-                    ? 'Home / property glass'
-                    : 'Sedan',
-                );
-                setGoal(
-                  serviceGoalDefaults[nextService] ?? 'I need a recommendation',
-                );
-              }}
+              onChange={(event) => chooseService(event.target.value)}
             >
               {serviceOptions.map(([value, label]) => (
                 <option value={value} key={value}>
@@ -262,6 +447,18 @@ export function HighLevelLeadCapture({
             />
           </label>
           <label>
+            <span>Vehicle / property type</span>
+            <select
+              name="vehicleType"
+              value={vehicle}
+              onChange={(event) => setVehicle(event.target.value)}
+            >
+              {vehicleOptions.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          </label>
+          <label>
             <span>Main priority</span>
             <select
               name="goal"
@@ -274,6 +471,13 @@ export function HighLevelLeadCapture({
             </select>
           </label>
         </div>
+        <TierAndAddOnPicker
+          service={service}
+          packageChoice={selectedPackageId}
+          selectedAddOnIds={selectedAddOnIds}
+          onPackageChange={setPackageChoice}
+          onToggleAddOn={toggleAddOn}
+        />
         <label className="lead-message-field">
           <span>What should we know?</span>
           <textarea
@@ -283,18 +487,7 @@ export function HighLevelLeadCapture({
             placeholder="Current condition, desired shade or coverage, and timing."
           />
         </label>
-        <label className="lead-consent">
-          <input type="checkbox" name="consent" required />
-          <span>
-            I agree that PRO Detailing may contact me by phone, text or email
-            about this request. Message and data rates may apply; reply STOP to
-            opt out. View the{' '}
-            <a href={business.privacyUrl} target="_blank" rel="noreferrer">
-              privacy policy
-            </a>
-            .
-          </span>
-        </label>
+        <ConsentField />
         <label className="lead-honeypot" aria-hidden="true">
           Website
           <input name="website" tabIndex={-1} autoComplete="off" />
@@ -334,18 +527,7 @@ export function HighLevelLeadCapture({
               type="button"
               className={service === value ? 'is-active' : ''}
               aria-pressed={service === value}
-              onClick={() => {
-                setService(value);
-                setPackageChoice('');
-                setVehicle(
-                  value === 'residential-tint'
-                    ? 'Home / property glass'
-                    : 'Sedan',
-                );
-                setGoal(
-                  serviceGoalDefaults[value] ?? 'I need a recommendation',
-                );
-              }}
+              onClick={() => chooseService(value)}
               key={value}
             >
               {label}
@@ -354,9 +536,21 @@ export function HighLevelLeadCapture({
         </fieldset>
       </div>
 
+      <TierAndAddOnPicker
+        service={service}
+        packageChoice={selectedPackageId}
+        selectedAddOnIds={selectedAddOnIds}
+        onPackageChange={setPackageChoice}
+        onToggleAddOn={toggleAddOn}
+      />
+
       <div className="lead-router-grid">
         <label>
-          <span>02 · Vehicle / property</span>
+          <span>
+            {showsDetailOptions
+              ? '04 · Vehicle / property'
+              : '02 · Vehicle / property'}
+          </span>
           <select value={vehicle} onChange={(e) => setVehicle(e.target.value)}>
             {vehicleOptions.map((option) => (
               <option key={option}>{option}</option>
@@ -364,7 +558,9 @@ export function HighLevelLeadCapture({
           </select>
         </label>
         <label>
-          <span>03 · Main priority</span>
+          <span>
+            {showsDetailOptions ? '05 · Main priority' : '03 · Main priority'}
+          </span>
           <select value={goal} onChange={(e) => setGoal(e.target.value)}>
             {goalOptions.map((option) => (
               <option key={option}>{option}</option>
@@ -379,7 +575,11 @@ export function HighLevelLeadCapture({
           <strong>Your route is ready.</strong>
           {serviceOptions.find(([value]) => value === service)?.[1]} · {vehicle}{' '}
           · {goal}
-          {packageLabel ? ` · ${packageLabel}` : ''}
+          {packageLabel ? ' · ' + packageLabel : ''}
+          {selectedAddOns.length
+            ? ' · Add-ons: ' +
+              selectedAddOns.map((addOn) => addOn.name).join(', ')
+            : ''}
         </p>
       </div>
 

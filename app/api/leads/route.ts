@@ -1,5 +1,6 @@
 import { siteFeatures } from '@/lib/site-config';
 import { resolveQuotePackage } from '@/lib/quote-packages';
+import { resolveQuoteAddOns } from '@/lib/quote-options';
 
 const MAX_BODY_BYTES = 20_000;
 const ALLOWED_SERVICES = new Set([
@@ -74,6 +75,10 @@ export async function POST(request: Request) {
     ? requestedService
     : 'other';
   const packageChoice = resolveQuotePackage(service, clean(body.package, 40));
+  const addOns =
+    service === 'detailing' || service === 'mobile-detailing'
+      ? resolveQuoteAddOns(body.addOnIds)
+      : [];
 
   if (!name || phone.replace(/\D/g, '').length < 7 || !vehicle || !consent) {
     return json({ ok: false, error: 'missing_required_fields' }, 400);
@@ -96,7 +101,11 @@ export async function POST(request: Request) {
     service,
     package: packageChoice?.id ?? '',
     packageLabel: packageChoice?.label ?? '',
+    addOnIds: addOns.map((addOn) => addOn.id),
+    addOnLabels: addOns.map((addOn) => addOn.name),
+    addOnsSummary: addOns.map((addOn) => addOn.name).join(', '),
     vehicle,
+    vehicleType: clean(body.vehicleType, 40),
     goal: clean(body.goal, 120),
     message: clean(body.message, 1_200),
     consent: true,
@@ -108,6 +117,7 @@ export async function POST(request: Request) {
       'PRO Site',
       `Service: ${service}`,
       ...(packageChoice ? [`Path: ${packageChoice.label}`] : []),
+      ...addOns.map((addOn) => `Add-on: ${addOn.name}`),
     ],
     submittedAt: new Date().toISOString(),
   };

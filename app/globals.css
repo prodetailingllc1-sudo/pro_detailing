@@ -5560,6 +5560,224 @@ body {
   box-shadow: 0 0 28px rgba(156, 245, 0, 0.12);
 }
 
+.lead-configuration {
+  margin: 0 0 2rem;
+  padding: clamp(1rem, 2.8vw, 1.5rem);
+  border: 1px solid rgba(156, 245, 0, 0.18);
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, rgba(156, 245, 0, 0.045), transparent 42%),
+    rgba(5, 8, 6, 0.62);
+}
+
+.lead-configuration-head {
+  max-width: 720px;
+  margin-bottom: 1.2rem;
+}
+
+.lead-configuration-head > span {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--lime);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.1em;
+}
+
+.lead-configuration-head > strong {
+  display: block;
+  color: #f2f6f3;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.25;
+}
+
+.lead-configuration-head > p {
+  margin: 0.55rem 0 0;
+  color: #929d95;
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.lead-tier-fieldset,
+.lead-addon-fieldset {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.lead-tier-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.7rem;
+}
+
+.lead-tier-option {
+  position: relative;
+  min-height: 158px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 13px;
+  color: #dce3dd;
+  background: rgba(9, 12, 10, 0.84);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lead-tier-option:hover {
+  transform: translateY(-2px);
+  border-color: rgba(156, 245, 0, 0.42);
+}
+
+.lead-tier-option.is-selected {
+  border-color: var(--lime);
+  background: rgba(156, 245, 0, 0.075);
+  box-shadow:
+    inset 0 0 0 1px rgba(156, 245, 0, 0.1),
+    0 16px 34px rgba(0, 0, 0, 0.2);
+}
+
+.lead-choice-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lead-tier-option:has(.lead-choice-input:focus-visible) {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+
+.lead-tier-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.lead-tier-topline strong {
+  color: #f0f5f1;
+  font-size: 0.95rem;
+}
+
+.lead-tier-topline small {
+  color: var(--lime);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  text-align: right;
+}
+
+.lead-tier-description {
+  margin-top: 0.75rem;
+  color: #9ca69e;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.lead-tier-meta {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  color: #eef4ef;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.lead-addon-fieldset {
+  margin-top: 1.4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lead-addon-fieldset > legend {
+  padding: 0;
+  color: #f0f5f1;
+  font-size: 0.95rem;
+  font-weight: 760;
+}
+
+.lead-addon-fieldset > p {
+  max-width: 720px;
+  margin: 0.45rem 0 0.9rem;
+  color: #8e9991;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.lead-addon-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.5rem;
+}
+
+.lead-addon-option {
+  min-height: 56px;
+  padding: 0.7rem 0.75rem;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 18px;
+  gap: 0.65rem;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #c8d0ca;
+  background: rgba(7, 10, 8, 0.68);
+  cursor: pointer;
+}
+
+.lead-addon-option:hover,
+.lead-addon-option.is-selected {
+  border-color: rgba(156, 245, 0, 0.55);
+  background: rgba(156, 245, 0, 0.055);
+}
+
+.lead-addon-option input {
+  width: 17px;
+  height: 17px;
+  min-height: 17px;
+  margin: 0;
+  accent-color: var(--lime);
+}
+
+.lead-addon-option > span {
+  min-width: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.lead-addon-option strong {
+  color: #e7ece8;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.lead-addon-option small {
+  flex: 0 0 auto;
+  color: var(--lime);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.66rem;
+}
+
+.lead-addon-option > svg {
+  width: 16px;
+  color: var(--lime);
+  opacity: 0;
+}
+
+.lead-addon-option.is-selected > svg {
+  opacity: 1;
+}
+
 .lead-router-grid,
 .lead-form-grid {
   display: grid;

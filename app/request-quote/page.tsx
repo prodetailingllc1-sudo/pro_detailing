@@ -174,8 +174,8 @@ export default async function RequestQuotePage({
                 <div>
                   <strong>Appointment coordinated</strong>
                   <p>
-                    You receive the practical timing and studio-arrival details
-                    for your vehicle.
+                    You receive the practical timing and either studio-arrival
+                    or approved mobile-service details.
                   </p>
                 </div>
               </li>
