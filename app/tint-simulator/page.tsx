@@ -1,25 +1,17 @@
-import type { Metadata } from 'next';
 import { ArrowRight, Eye, Gauge, Info, Layers3 } from 'lucide-react';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { TintStudio } from '@/components/site/TintStudio';
+import { createPageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: {
-    absolute: 'Window Tint Simulator: LLumar CTX, IRX & AIR | PRO Tints',
-  },
+export const metadata = createPageMetadata({
+  title: 'Window Tint Simulator: LLumar CTX, IRX & AIR | PRO Tints',
   description:
     'Preview LLumar CTX, IRX and AIR shades on your vehicle, compare measured film data and check Virginia, Maryland and DC guidance before requesting a quote.',
-  alternates: { canonical: '/tint-simulator' },
-  openGraph: {
-    title: 'Window Tint Simulator: LLumar CTX, IRX & AIR | PRO Tints',
-    description:
-      'Build a tint appearance preview, compare measured VLT and continue to a vehicle-specific recommendation.',
-    url: '/tint-simulator',
-  },
-};
+  path: '/tint-simulator',
+});
 
 const simulatorFaqs = [
   [

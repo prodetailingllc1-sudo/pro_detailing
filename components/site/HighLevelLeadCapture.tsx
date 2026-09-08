@@ -6,6 +6,7 @@ import type { SyntheticEvent } from 'react';
 
 import { business } from '@/lib/site-data';
 import { siteFeatures } from '@/lib/site-config';
+import { resolveQuotePackage } from '@/lib/quote-packages';
 
 const serviceOptions: readonly (readonly [string, string])[] = [
   ['tint', 'LLumar tint'],
@@ -58,13 +59,6 @@ const serviceGoalDefaults: Record<string, string> = {
   'key-replacement': 'Replace or program a key',
 };
 
-const detailingPackageLabels = {
-  'tier-1': 'Detailing Tier 1',
-  'tier-2': 'Detailing Tier 2',
-  'tier-3': 'Detailing Tier 3',
-  'tier-4': 'Detailing Tier 4',
-} as const;
-
 type SubmitState = 'idle' | 'sending' | 'success' | 'error';
 
 function allowedService(value: string | null) {
@@ -101,24 +95,25 @@ export function HighLevelLeadCapture({
 }) {
   const normalizedInitialService = allowedService(initialService);
   const [service, setService] = useState(normalizedInitialService);
-  const [vehicle, setVehicle] = useState('Sedan');
+  const [vehicle, setVehicle] = useState(
+    normalizedInitialService === 'residential-tint'
+      ? 'Home / property glass'
+      : 'Sedan',
+  );
   const [goal, setGoal] = useState<string>(
     serviceGoalDefaults[normalizedInitialService] ?? 'I need a recommendation',
   );
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [statusMessage, setStatusMessage] = useState('');
-  const packageChoice = Object.hasOwn(detailingPackageLabels, initialPackage)
-    ? initialPackage
-    : '';
-  const selectedPackage = service === 'detailing' ? packageChoice : '';
-  const packageLabel = selectedPackage
-    ? detailingPackageLabels[
-        selectedPackage as keyof typeof detailingPackageLabels
-      ]
-    : '';
+  const [packageChoice, setPackageChoice] = useState(
+    resolveQuotePackage(normalizedInitialService, initialPackage)?.id ?? '',
+  );
+  const selectedPackage = resolveQuotePackage(service, packageChoice);
+  const selectedPackageId = selectedPackage?.id ?? '';
+  const packageLabel = selectedPackage?.label ?? '';
   const bookingUrl = useMemo(
-    () => buildTrackedBookingUrl(service, vehicle, goal, selectedPackage),
-    [goal, selectedPackage, service, vehicle],
+    () => buildTrackedBookingUrl(service, vehicle, goal, selectedPackageId),
+    [goal, selectedPackageId, service, vehicle],
   );
 
   async function submitLead(
@@ -146,7 +141,8 @@ export function HighLevelLeadCapture({
           phone: form.get('phone'),
           email: form.get('email'),
           service,
-          package: selectedPackage,
+          package: selectedPackageId,
+          packageLabel,
           vehicle: form.get('vehicle'),
           goal: form.get('goal'),
           message: form.get('message'),
@@ -238,6 +234,12 @@ export function HighLevelLeadCapture({
               onChange={(event) => {
                 const nextService = event.target.value;
                 setService(nextService);
+                setPackageChoice('');
+                setVehicle(
+                  nextService === 'residential-tint'
+                    ? 'Home / property glass'
+                    : 'Sedan',
+                );
                 setGoal(
                   serviceGoalDefaults[nextService] ?? 'I need a recommendation',
                 );
@@ -325,13 +327,21 @@ export function HighLevelLeadCapture({
 
       <div className="lead-router-block">
         <span className="lead-step">01 · Choose a system</span>
-        <div className="lead-service-options">
+        <fieldset className="lead-service-options">
+          <legend className="sr-only">Choose a service</legend>
           {serviceOptions.map(([value, label]) => (
             <button
               type="button"
               className={service === value ? 'is-active' : ''}
+              aria-pressed={service === value}
               onClick={() => {
                 setService(value);
+                setPackageChoice('');
+                setVehicle(
+                  value === 'residential-tint'
+                    ? 'Home / property glass'
+                    : 'Sedan',
+                );
                 setGoal(
                   serviceGoalDefaults[value] ?? 'I need a recommendation',
                 );
@@ -341,7 +351,7 @@ export function HighLevelLeadCapture({
               {label}
             </button>
           ))}
-        </div>
+        </fieldset>
       </div>
 
       <div className="lead-router-grid">

@@ -6,6 +6,7 @@ import { additionalServices } from '@/lib/expanded-content';
 import { siteFeatures } from '@/lib/site-config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const contentUpdated = new Date('2026-09-08T00:00:00-04:00');
   const paths = [
     '',
     '/our-services',
@@ -29,7 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return paths.map((path, index) => ({
     url: `${SITE_ORIGIN}${path}`,
-    lastModified: new Date(),
+    lastModified: contentUpdated,
     changeFrequency: index === 0 ? 'weekly' : 'monthly',
     priority: index === 0 ? 1 : index < 3 ? 0.9 : 0.75,
   }));

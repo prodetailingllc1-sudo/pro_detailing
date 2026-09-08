@@ -40,22 +40,22 @@ export function CeramicLab() {
     <div className="ceramic-lab">
       <div className="ceramic-visual">
         <Image
-          src="/gallery/glossy-black-coupe.webp"
-          alt="Glossy black coupe under studio lighting"
-          width="1800"
-          height="1200"
+          src="/generated/ceramic-untreated-before.webp"
+          alt="Interactive comparison of untreated and Ceramic Pro-finished paint on the same black coupe"
+          width="1200"
+          height="672"
           sizes="(max-width: 780px) 100vw, 60vw"
         />
         <div
           className="ceramic-reveal"
-          style={{ width: `${finish}%` }}
+          style={{ clipPath: `inset(0 ${100 - finish}% 0 0)` }}
           aria-hidden="true"
         >
           <Image
             src="/gallery/glossy-black-coupe.webp"
             alt=""
-            width="1800"
-            height="1200"
+            width="1200"
+            height="672"
             sizes="(max-width: 780px) 100vw, 60vw"
           />
         </div>
@@ -65,30 +65,29 @@ export function CeramicLab() {
           aria-hidden="true"
         />
         <label className="ceramic-slider">
-          <span className="sr-only">Move demonstration reveal</span>
+          <span className="sr-only">
+            Adjust untreated and Ceramic Pro finish comparison
+          </span>
           <input
             type="range"
             min="12"
             max="88"
             value={finish}
+            aria-valuetext={`${100 - finish}% untreated paint, ${finish}% Ceramic Pro finish`}
             onChange={(event) => setFinish(Number(event.target.value))}
           />
         </label>
-        <span className="demo-label">Finish demonstration</span>
+        <span className="demo-label">Untreated ↔ Ceramic Pro finish</span>
       </div>
       <div className="ceramic-controls">
         <p className="overline">Preparation protocol</p>
         <h3>Coating starts before the bottle opens.</h3>
-        <div
-          className="ceramic-steps"
-          role="tablist"
-          aria-label="Ceramic coating process"
-        >
+        <fieldset className="ceramic-steps">
+          <legend className="sr-only">Ceramic coating process</legend>
           {steps.map((step, index) => (
             <button
               type="button"
-              role="tab"
-              aria-selected={active === step.id}
+              aria-pressed={active === step.id}
               className={active === step.id ? 'is-active' : ''}
               onClick={() => setActive(step.id)}
               key={step.id}
@@ -97,8 +96,10 @@ export function CeramicLab() {
               {step.label}
             </button>
           ))}
-        </div>
-        <p className="ceramic-detail">{current.detail}</p>
+        </fieldset>
+        <p className="ceramic-detail" aria-live="polite">
+          {current.detail}
+        </p>
         <div className="benefit-icons">
           <div>
             <Sparkles aria-hidden="true" />

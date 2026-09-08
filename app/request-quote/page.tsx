@@ -1,25 +1,20 @@
-import type { Metadata } from 'next';
 import { ArrowLeft, Check, Clock3, MessageSquareText } from 'lucide-react';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 
 import { HighLevelLeadCapture } from '@/components/site/HighLevelLeadCapture';
+import { createPageMetadata } from '@/lib/metadata';
+import { resolveQuotePackage } from '@/lib/quote-packages';
 import { siteFeatures } from '@/lib/site-config';
 import { business, SITE_ORIGIN } from '@/lib/site-data';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Request a Service Quote | PRO Detailing' },
+export const metadata = createPageMetadata({
+  title: 'Request a Service Quote | PRO Detailing',
   description: siteFeatures.mobileDetailing
     ? 'Start a quote for automotive appearance, protection, maintenance, tire, glass, key, mobile detailing or residential tint service in Northern Virginia.'
     : 'Start a quote for automotive appearance, protection, maintenance, tire, glass, key or residential tint service in Northern Virginia.',
-  alternates: { canonical: '/request-quote' },
-  openGraph: {
-    title: 'Request a Service Quote | PRO Detailing',
-    description:
-      'Tell PRO Detailing what needs attention. Start an automotive or residential window-film service request in Manassas, Virginia.',
-    url: '/request-quote',
-  },
-};
+  path: '/request-quote',
+});
 
 function safeEmbedUrl(value: string | undefined) {
   if (!value) return undefined;
@@ -53,12 +48,6 @@ function allowedQuoteService(value: string | undefined) {
   return value && allowed.has(value) ? value : 'tint';
 }
 
-function allowedDetailingPackage(value: string | undefined) {
-  return value && ['tier-1', 'tier-2', 'tier-3', 'tier-4'].includes(value)
-    ? value
-    : '';
-}
-
 function addFormAttribution(
   embedUrl: string | undefined,
   searchParams: QuoteSearchParams,
@@ -90,9 +79,7 @@ export default async function RequestQuotePage({
   const params = await searchParams;
   const service = allowedQuoteService(firstValue(params.service));
   const packageChoice =
-    service === 'detailing'
-      ? allowedDetailingPackage(firstValue(params.package))
-      : '';
+    resolveQuotePackage(service, firstValue(params.package))?.id ?? '';
   const normalizedParams: QuoteSearchParams = {
     ...params,
     service,

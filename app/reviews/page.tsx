@@ -1,16 +1,16 @@
-import type { Metadata } from 'next';
 import { ArrowRight, ArrowUpRight, Star } from 'lucide-react';
 import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { googleReviewSnapshot } from '@/lib/expanded-content';
+import { createPageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: { absolute: 'PRO Detailing Reviews | Manassas, VA' },
+export const metadata = createPageMetadata({
+  title: 'PRO Detailing Reviews | Manassas, VA',
   description:
     'Read current Google review highlights for PRO Detailing window tint, ceramic coating, detailing and maintenance work in Manassas, Virginia.',
-  alternates: { canonical: '/reviews' },
-};
+  path: '/reviews',
+});
 
 export default function ReviewsPage() {
   return (

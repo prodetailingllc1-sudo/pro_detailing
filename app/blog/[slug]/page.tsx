@@ -11,6 +11,16 @@ export function generateStaticParams() {
   return featuredArticles.map((article) => ({ slug: article.slug }));
 }
 
+function conciseArticleTitle(title: string) {
+  const colonLead = title.split(':')[0];
+  if (colonLead !== title) return colonLead;
+  const questionMark = title.indexOf('?');
+  if (questionMark > 0) return title.slice(0, questionMark + 1);
+  return title.length <= 64
+    ? title
+    : `${title.slice(0, 61).replace(/\s+\S*$/, '')}…`;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -20,7 +30,7 @@ export async function generateMetadata({
   const article = featuredArticles.find((item) => item.slug === slug);
   if (!article) return {};
   return {
-    title: { absolute: `${article.title} | PRO Detailing` },
+    title: { absolute: conciseArticleTitle(article.title) },
     description: article.description,
     alternates: { canonical: `/blog/${article.slug}` },
     openGraph: {
@@ -28,6 +38,20 @@ export async function generateMetadata({
       title: article.title,
       description: article.description,
       url: `/blog/${article.slug}`,
+      images: [
+        {
+          url: '/opengraph-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'PRO Detailing automotive appearance and protection studio',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: conciseArticleTitle(article.title),
+      description: article.description,
+      images: ['/twitter-image.jpg'],
     },
   };
 }
@@ -51,6 +75,7 @@ export default async function BlogArticlePage({
     dateModified: '2026-09-08',
     author: { '@type': 'Organization', name: 'PRO Detailing LLC' },
     publisher: { '@id': `${SITE_ORIGIN}/#business` },
+    image: `${SITE_ORIGIN}/opengraph-image.jpg`,
     mainEntityOfPage: articleUrl,
     url: articleUrl,
   };

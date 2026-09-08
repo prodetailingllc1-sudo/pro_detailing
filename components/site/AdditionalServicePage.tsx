@@ -181,7 +181,7 @@ export function AdditionalServicePage({
                 </ul>
                 <Link
                   className="text-link"
-                  href={quoteHref(service.quoteService)}
+                  href={quoteHref(service.quoteService, `path-${index + 1}`)}
                 >
                   Configure this path <ArrowRight aria-hidden="true" />
                 </Link>

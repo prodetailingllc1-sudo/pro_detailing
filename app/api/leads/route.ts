@@ -1,4 +1,5 @@
 import { siteFeatures } from '@/lib/site-config';
+import { resolveQuotePackage } from '@/lib/quote-packages';
 
 const MAX_BODY_BYTES = 20_000;
 const ALLOWED_SERVICES = new Set([
@@ -40,12 +41,20 @@ export async function POST(request: Request) {
     return json({ ok: false, error: 'origin_rejected' }, 403);
   }
 
-  let body: Record<string, unknown>;
+  let parsedBody: unknown;
   try {
-    body = (await request.json()) as Record<string, unknown>;
+    parsedBody = await request.json();
   } catch {
     return json({ ok: false, error: 'invalid_json' }, 400);
   }
+  if (
+    !parsedBody ||
+    typeof parsedBody !== 'object' ||
+    Array.isArray(parsedBody)
+  ) {
+    return json({ ok: false, error: 'invalid_payload' }, 400);
+  }
+  const body = parsedBody as Record<string, unknown>;
 
   if (clean(body.website, 200)) return json({ ok: true });
 
@@ -64,6 +73,7 @@ export async function POST(request: Request) {
   const service = ALLOWED_SERVICES.has(requestedService)
     ? requestedService
     : 'other';
+  const packageChoice = resolveQuotePackage(service, clean(body.package, 40));
 
   if (!name || phone.replace(/\D/g, '').length < 7 || !vehicle || !consent) {
     return json({ ok: false, error: 'missing_required_fields' }, 400);
@@ -84,7 +94,8 @@ export async function POST(request: Request) {
     phone,
     email,
     service,
-    package: clean(body.package, 40),
+    package: packageChoice?.id ?? '',
+    packageLabel: packageChoice?.label ?? '',
     vehicle,
     goal: clean(body.goal, 120),
     message: clean(body.message, 1_200),
@@ -92,7 +103,12 @@ export async function POST(request: Request) {
     source: 'PRO Detailing website',
     sourcePage: clean(body.page, 200),
     attribution,
-    tags: ['Website Lead', 'PRO Site', `Service: ${service}`],
+    tags: [
+      'Website Lead',
+      'PRO Site',
+      `Service: ${service}`,
+      ...(packageChoice ? [`Path: ${packageChoice.label}`] : []),
+    ],
     submittedAt: new Date().toISOString(),
   };
 
@@ -102,8 +118,12 @@ export async function POST(request: Request) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(8_000),
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.name === 'TimeoutError') {
+      return json({ ok: false, error: 'crm_timeout' }, 504);
+    }
     return json({ ok: false, error: 'crm_unreachable' }, 502);
   }
 

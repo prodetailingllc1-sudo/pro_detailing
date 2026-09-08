@@ -4,10 +4,14 @@ import { resolve, sep } from 'node:path';
 const clientRoot = resolve(process.cwd(), 'dist', 'client');
 const originalAssetCopies = [
   'assets/pro-detailing-wordmark.png',
+  'assets/hero-studio.webp',
   'brand/pro-ceramic.png',
   'brand/pro-detailing.png',
   'brand/pro-ppf.png',
   'brand/pro-tints.png',
+  'generated/ceramic-application.webp',
+  'generated/interior-detailing.webp',
+  'generated/ppf-coverage.webp',
   'c63/IMG_0437.jpeg',
   'c63/IMG_0558.jpeg',
   'c63/IMG_2082.jpeg',

@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import {
   ArrowRight,
   Radio,
@@ -12,6 +11,7 @@ import Link from '@/components/site/SafeLink';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
 import { TintStudio } from '@/components/site/TintStudio';
+import { createPageMetadata } from '@/lib/metadata';
 import {
   filmLines,
   processSteps,
@@ -19,18 +19,12 @@ import {
   SITE_ORIGIN,
 } from '@/lib/site-data';
 
-export const metadata: Metadata = {
-  title: { absolute: 'LLumar Window Tint Manassas, VA | PRO Tints' },
+export const metadata = createPageMetadata({
+  title: 'LLumar Window Tint Manassas, VA | PRO Tints',
   description:
     'Compare LLumar CTX, IRX and AIR ceramic films, preview shades and review measured film data before requesting installation in Manassas, VA.',
-  alternates: { canonical: '/our-services/window-tinting' },
-  openGraph: {
-    title: 'LLumar Window Tint Manassas, VA | PRO Tints',
-    description:
-      'Compare LLumar CTX, IRX and AIR ceramic films, preview shades and request a vehicle-specific installation recommendation.',
-    url: '/our-services/window-tinting',
-  },
-};
+  path: '/our-services/window-tinting',
+});
 
 const faqs = [
   [
@@ -55,15 +49,39 @@ const faqs = [
   ],
 ] as const;
 
-export default function WindowTintingPage() {
+type TintSearchParams = { film?: string | string[] };
+
+function selectedFilm(value: string | string[] | undefined) {
+  const candidate = Array.isArray(value) ? value[0] : value;
+  return filmLines.some((film) => film.id === candidate) ? candidate! : 'irx';
+}
+
+export default async function WindowTintingPage({
+  searchParams,
+}: {
+  searchParams: Promise<TintSearchParams>;
+}) {
+  const initialFilm = selectedFilm((await searchParams).film);
   const serviceSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'LLumar Window Tint Installation',
-    serviceType: 'Automotive window tinting',
-    provider: { '@id': `${SITE_ORIGIN}/#business` },
-    areaServed: 'Manassas, Virginia',
-    url: `${SITE_ORIGIN}/our-services/window-tinting`,
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: 'LLumar Window Tint Installation',
+        serviceType: 'Automotive window tinting',
+        provider: { '@id': `${SITE_ORIGIN}/#business` },
+        areaServed: 'Manassas, Virginia',
+        url: `${SITE_ORIGIN}/our-services/window-tinting`,
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: faqs.map(([question, answer]) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      },
+    ],
   };
 
   return (
@@ -73,8 +91,8 @@ export default function WindowTintingPage() {
           <Image
             src="/gallery/white-suv-profile.webp"
             alt=""
-            width="1800"
-            height="1200"
+            width="1200"
+            height="900"
             priority
             sizes="100vw"
           />
@@ -203,9 +221,12 @@ export default function WindowTintingPage() {
                     </span>
                   ))}
                 </div>
-                <a className="text-link" href="#studio">
+                <Link
+                  className="text-link"
+                  href={`/our-services/window-tinting?film=${film.id}#studio`}
+                >
                   Preview {film.name} <ArrowRight aria-hidden="true" />
-                </a>
+                </Link>
               </article>
             ))}
           </div>
@@ -238,7 +259,7 @@ export default function WindowTintingPage() {
               Open full-screen studio <ArrowRight aria-hidden="true" />
             </Link>
           </div>
-          <TintStudio compact />
+          <TintStudio compact initialLineId={initialFilm} />
         </div>
       </section>
 

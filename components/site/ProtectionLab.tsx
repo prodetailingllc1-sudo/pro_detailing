@@ -43,7 +43,7 @@ const comparisons = {
       'Interactive comparison of the same grey BMW before and after clear paint protection film',
     afterLabel: 'Clear PRO PPF',
     beforeLabel: 'Unprotected paint',
-    afterSrc: '/generated/ppf-coverage.webp',
+    afterSrc: '/generated/ppf-finished-clear-v2.webp',
     ariaLabel: 'Adjust the unprotected paint and clear PPF comparison',
     note: 'Coverage preview. Clear film is designed to preserve the paint color.',
     width: 1536,
@@ -64,19 +64,13 @@ export function ProtectionLab() {
 
   return (
     <div className="protection-lab">
-      <div
-        className="lab-controls"
-        role="tablist"
-        aria-label="Protection systems"
-      >
+      <fieldset className="lab-controls">
+        <legend className="sr-only">Protection systems</legend>
         {services.map((service) => (
           <button
             key={service.id}
             type="button"
-            role="tab"
-            aria-selected={service.id === activeId}
-            aria-controls={`system-${service.id}`}
-            id={`system-tab-${service.id}`}
+            aria-pressed={service.id === activeId}
             className={service.id === activeId ? 'is-active' : ''}
             onClick={() => setActiveId(service.id)}
           >
@@ -85,13 +79,8 @@ export function ProtectionLab() {
             <small>{service.short}</small>
           </button>
         ))}
-      </div>
-      <div
-        className="lab-display"
-        role="tabpanel"
-        id={`system-${active.id}`}
-        aria-labelledby={`system-tab-${active.id}`}
-      >
+      </fieldset>
+      <div className="lab-display" aria-live="polite">
         <div
           className={`lab-photo lab-photo-${active.id} ${comparison ? 'has-comparison-reveal' : ''}`}
         >

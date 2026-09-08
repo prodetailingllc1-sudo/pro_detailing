@@ -3,7 +3,7 @@
 import { Menu, Phone, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { business, quoteHref } from '@/lib/site-data';
 import { siteFeatures } from '@/lib/site-config';
@@ -44,12 +44,24 @@ const mobileServiceLinks = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener('resize', close);
     return () => window.removeEventListener('resize', close);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeWithKeyboard = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    window.addEventListener('keydown', closeWithKeyboard);
+    return () => window.removeEventListener('keydown', closeWithKeyboard);
+  }, [open]);
 
   return (
     <header className="site-header">
@@ -77,6 +89,7 @@ export function SiteHeader() {
         <Phone aria-hidden="true" size={16} /> {business.phone}
       </a>
       <button
+        ref={menuButtonRef}
         className="menu-toggle"
         type="button"
         aria-label={open ? 'Close navigation' : 'Open navigation'}
@@ -86,38 +99,52 @@ export function SiteHeader() {
       >
         {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
       </button>
-      <nav
-        className={`mobile-nav ${open ? 'is-open' : ''}`}
-        id="mobile-navigation"
-        aria-label="Mobile navigation"
-      >
-        <Link href="/our-services" onClick={() => setOpen(false)}>
-          All services
-        </Link>
-        {mobileServiceLinks.map((link) => (
-          <Link href={link.href} key={link.href} onClick={() => setOpen(false)}>
-            {link.label}
+      {open ? (
+        <nav
+          className="mobile-nav is-open"
+          id="mobile-navigation"
+          aria-label="Mobile navigation"
+        >
+          <Link href="/our-services" onClick={() => setOpen(false)}>
+            All services
           </Link>
-        ))}
-        <Link href="/tint-simulator" onClick={() => setOpen(false)}>
-          PRO Tints Studio
-        </Link>
-        <Link href="/gallery" onClick={() => setOpen(false)}>
-          Our work
-        </Link>
-        <Link href="/blog" onClick={() => setOpen(false)}>
-          Guides
-        </Link>
-        <Link href="/reviews" onClick={() => setOpen(false)}>
-          Reviews
-        </Link>
-        <a href="https://proaviationcare.com/" target="_blank" rel="noreferrer">
-          Aircraft Care ↗
-        </a>
-        <Link className="button button-primary" href={quoteHref()}>
-          Request an appointment
-        </Link>
-      </nav>
+          {mobileServiceLinks.map((link) => (
+            <Link
+              href={link.href}
+              key={link.href}
+              onClick={() => setOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Link href="/tint-simulator" onClick={() => setOpen(false)}>
+            PRO Tints Studio
+          </Link>
+          <Link href="/gallery" onClick={() => setOpen(false)}>
+            Our work
+          </Link>
+          <Link href="/blog" onClick={() => setOpen(false)}>
+            Guides
+          </Link>
+          <Link href="/reviews" onClick={() => setOpen(false)}>
+            Reviews
+          </Link>
+          <a
+            href="https://proaviationcare.com/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Aircraft Care ↗
+          </a>
+          <Link
+            className="button button-primary"
+            href={quoteHref()}
+            onClick={() => setOpen(false)}
+          >
+            Request an appointment
+          </Link>
+        </nav>
+      ) : null}
     </header>
   );
 }

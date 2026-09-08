@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import {
   ArrowRight,
   CarFront,
@@ -19,14 +18,15 @@ import { SectionIntro } from '@/components/site/SectionIntro';
 import { additionalServices } from '@/lib/expanded-content';
 import { siteFeatures } from '@/lib/site-config';
 import { quoteHref, services } from '@/lib/site-data';
+import { createPageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Automotive Services Manassas, VA | PRO Detailing' },
+export const metadata = createPageMetadata({
+  title: 'Automotive Services Manassas, VA | PRO Detailing',
   description: siteFeatures.mobileDetailing
-    ? 'Explore window tint, ceramic coating, PPF, detailing, maintenance, tire care, auto glass, car keys, mobile detailing, residential tint and aircraft care in Northern Virginia.'
-    : 'Explore window tint, ceramic coating, PPF, detailing, maintenance, tire care, auto glass, car keys, residential tint and aircraft care in Northern Virginia.',
-  alternates: { canonical: '/our-services' },
-};
+    ? 'Explore tint, ceramic coating, PPF, detailing, maintenance, tires, glass, keys, mobile detailing, home tint and aircraft care in Northern Virginia.'
+    : 'Explore tint, ceramic coating, PPF, detailing, maintenance, tires, glass, keys, home tint and aircraft care in Northern Virginia.',
+  path: '/our-services',
+});
 
 const coreIcons = [SunMedium, Sparkles, ShieldCheck, CarFront];
 const additionalIcons: Record<string, typeof CarFront> = {
@@ -118,7 +118,9 @@ export default function ServicesPage() {
               target="_blank"
               rel="noreferrer"
             >
-              <span>{String(visibleAdditional.length + 5).padStart(2, '0')}</span>
+              <span>
+                {String(visibleAdditional.length + 5).padStart(2, '0')}
+              </span>
               <Plane aria-hidden="true" />
               <h2>Aircraft Detailing</h2>
               <p>

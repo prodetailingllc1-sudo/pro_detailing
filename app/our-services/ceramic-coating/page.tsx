@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 import {
@@ -14,6 +13,7 @@ import {
 import { CeramicLab } from '@/components/site/CeramicLab';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { createPageMetadata } from '@/lib/metadata';
 import {
   business,
   galleryItems,
@@ -33,25 +33,12 @@ const finishGallery = [
   galleryItem('dark-fastback-drive'),
 ];
 
-export const metadata: Metadata = {
-  title: { absolute: 'Ceramic Pro Coating Manassas, VA | PRO Detailing' },
+export const metadata = createPageMetadata({
+  title: 'Ceramic Pro Coating Manassas, VA | PRO Detailing',
   description:
     'Explore Ceramic Pro coating at PRO Detailing in Manassas: paint assessment, preparation, application and aftercare. Request a vehicle-specific quote.',
-  alternates: { canonical: ceramicCoatingUrl },
-  openGraph: {
-    type: 'website',
-    url: ceramicCoatingUrl,
-    title: 'Ceramic Pro Coating Manassas, VA | PRO Detailing',
-    description:
-      'Explore Ceramic Pro coating at PRO Detailing in Manassas: paint assessment, preparation, application and aftercare. Request a vehicle-specific quote.',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'Ceramic Pro Coating Manassas, VA | PRO Detailing',
-    description:
-      'Inspection-led Ceramic Pro coating, surface preparation and vehicle-specific aftercare in Manassas, Virginia.',
-  },
-};
+  path: '/our-services/ceramic-coating',
+});
 
 const benefits = [
   {
@@ -171,7 +158,7 @@ export default function CeramicCoatingPage() {
       <section className="service-hero ceramic-service-hero">
         <div className="service-hero-media" aria-hidden="true">
           <Image
-            src="/generated/ceramic-application.webp"
+            src="/generated/ceramic-application-v2.webp"
             alt=""
             width="1536"
             height="1024"

@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import { ArrowRight, ArrowUpRight, BookOpen, Library } from 'lucide-react';
 import Link from '@/components/site/SafeLink';
 
@@ -9,13 +8,14 @@ import {
   featuredArticles,
   legacyBlogLinks,
 } from '@/lib/blog-data';
+import { createPageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Car Care Guides & Detailing Blog | PRO Detailing' },
+export const metadata = createPageMetadata({
+  title: 'Car Care Guides & Detailing Blog | PRO Detailing',
   description:
     'Read PRO Detailing guides about auto detailing, window tint, ceramic coating, EV care, maintenance, auto glass and vehicle protection in Northern Virginia.',
-  alternates: { canonical: '/blog' },
-};
+  path: '/blog',
+});
 
 export default function BlogPage() {
   return (

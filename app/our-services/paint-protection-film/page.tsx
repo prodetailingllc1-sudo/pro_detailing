@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 import { ArrowRight, Check, Focus, Layers3, ShieldCheck } from 'lucide-react';
@@ -6,20 +5,15 @@ import { ArrowRight, Check, Focus, Layers3, ShieldCheck } from 'lucide-react';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { PpfWordmark } from '@/components/site/PpfWordmark';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { createPageMetadata } from '@/lib/metadata';
 import { processSteps, quoteHref, SITE_ORIGIN } from '@/lib/site-data';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Paint Protection Film Manassas, VA | PRO PPF' },
+export const metadata = createPageMetadata({
+  title: 'Paint Protection Film Manassas, VA | PRO PPF',
   description:
     'Plan LLumar paint protection film coverage for your vehicle at PRO Detailing in Manassas, VA. Compare impact zones and request an inspection-led quote.',
-  alternates: { canonical: '/our-services/paint-protection-film' },
-  openGraph: {
-    title: 'Paint Protection Film Manassas, VA | PRO PPF',
-    description:
-      'Inspection-led LLumar paint protection film coverage for vehicles in Manassas and Northern Virginia.',
-    url: '/our-services/paint-protection-film',
-  },
-};
+  path: '/our-services/paint-protection-film',
+});
 
 const coverage = [
   [
@@ -62,12 +56,24 @@ const faqs = [
 export default function PaintProtectionFilmPage() {
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'LLumar Paint Protection Film Installation',
-    serviceType: 'Automotive paint protection film',
-    provider: { '@id': `${SITE_ORIGIN}/#business` },
-    areaServed: 'Manassas, Virginia',
-    url: `${SITE_ORIGIN}/our-services/paint-protection-film`,
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: 'LLumar Paint Protection Film Installation',
+        serviceType: 'Automotive paint protection film',
+        provider: { '@id': `${SITE_ORIGIN}/#business` },
+        areaServed: 'Manassas, Virginia',
+        url: `${SITE_ORIGIN}/our-services/paint-protection-film`,
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: faqs.map(([question, answer]) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      },
+    ],
   };
 
   return (
@@ -192,8 +198,8 @@ export default function PaintProtectionFilmPage() {
             <div className="coverage-car">
               <Image
                 className="ppf-coverage-image"
-                src="/generated/ppf-coverage.webp"
-                alt="Clear paint protection film coverage being inspected on the painted impact zones of a performance coupe"
+                src="/generated/ppf-finished-clear-v2.webp"
+                alt="Silver performance coupe after a smooth, optically clear paint protection film installation"
                 width="1536"
                 height="1024"
                 sizes="(max-width: 780px) 100vw, 54vw"

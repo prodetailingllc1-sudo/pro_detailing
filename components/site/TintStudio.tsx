@@ -71,10 +71,21 @@ const states = [
 
 type Zone = 'frontSides' | 'rearSides' | 'windshield';
 
-export function TintStudio({ compact = false }: { compact?: boolean }) {
+export function TintStudio({
+  compact = false,
+  initialLineId = 'irx',
+}: {
+  compact?: boolean;
+  initialLineId?: string;
+}) {
+  const initialLine =
+    filmLines.find((item) => item.id === initialLineId) ?? filmLines[1];
+  const initialShade =
+    initialLine.shades.find((item) => item.id === `${initialLine.id}-35`) ??
+    initialLine.shades[Math.min(4, initialLine.shades.length - 1)];
   const [vehicle, setVehicle] = useState<(typeof vehicles)[number][0]>('sedan');
-  const [lineId, setLineId] = useState('irx');
-  const [shadeId, setShadeId] = useState('irx-35');
+  const [lineId, setLineId] = useState(initialLine.id);
+  const [shadeId, setShadeId] = useState(initialShade.id);
   const [state, setState] = useState('Virginia');
   const [zones, setZones] = useState<Record<Zone, boolean>>({
     frontSides: true,

@@ -165,7 +165,7 @@ export const sitePhotos = {
   },
   'grey-offroader-forecourt': {
     id: 'grey-offroader-forecourt',
-    alt: 'A charcoal grey Toyota 4Runner SUV with black wheels, chunky all-terrain tyres and a black roof rack, parked in side profile on an asphalt lot beside a cream-painted brick building under a b',
+    alt: 'A charcoal grey Toyota 4Runner SUV with black wheels, all-terrain tires and a roof rack, parked in side profile beside a cream brick building under a bright sky.',
     width: 1200,
     height: 900,
     widths: [400, 640, 900, 1200],
@@ -176,7 +176,7 @@ export const sitePhotos = {
   },
   'blue-offroader-forecourt': {
     id: 'blue-offroader-forecourt',
-    alt: 'A two-door Ford Bronco in blue-grey with a black roof, black wheels and chunky all-terrain tyres, parked side-on across marked bays beside a white painted brick industrial unit with brown ro',
+    alt: 'A blue-grey two-door Ford Bronco with a black roof, black wheels and all-terrain tires, parked side-on beside a white brick industrial unit with brown roller doors.',
     width: 1200,
     height: 900,
     widths: [400, 640, 900, 1200],
@@ -187,7 +187,7 @@ export const sitePhotos = {
   },
   'white-crossover-bay': {
     id: 'white-crossover-bay',
-    alt: 'A white Tesla crossover parked side-on across marked asphalt bays outside a white-painted brick industrial unit with dark roller shutter doors, one of them raised open, under bright blue sky',
+    alt: 'A white Tesla crossover parked side-on outside a white brick industrial unit with dark roller doors, one raised open, under a bright blue sky.',
     width: 1200,
     height: 900,
     widths: [400, 640, 900, 1200],
@@ -198,7 +198,7 @@ export const sitePhotos = {
   },
   'green-saloon-front': {
     id: 'green-saloon-front',
-    alt: 'A bright lime-green Dodge Charger sedan parked head-on in an asphalt parking lot, with a white van, a dumpster, an enclosed trailer and industrial storage tanks behind it under an overcast s',
+    alt: 'A bright lime-green Dodge Charger sedan parked head-on in an asphalt lot, with a white van, trailer and industrial storage tanks behind it under an overcast sky.',
     width: 900,
     height: 675,
     widths: [400, 640, 900],
@@ -209,7 +209,7 @@ export const sitePhotos = {
   },
   'white-convertible-lot': {
     id: 'white-convertible-lot',
-    alt: 'A white Audi convertible with its black fabric roof raised, parked in side profile on a sunlit asphalt lot outside a white-painted brick unit, with a white box truck and a silver minivan beh',
+    alt: 'A white Audi convertible with its black fabric roof raised, parked in side profile outside a white brick unit, with a white box truck and silver minivan behind it.',
     width: 1200,
     height: 900,
     widths: [400, 640, 900, 1200],
@@ -220,7 +220,7 @@ export const sitePhotos = {
   },
   'silver-coupe-suv-drive': {
     id: 'silver-coupe-suv-drive',
-    alt: 'A grey metallic Mercedes-AMG coupe-SUV with black multi-spoke wheels and red brake calipers, parked at an angle on a concrete residential driveway beside an open garage, with a lawn and tree',
+    alt: 'A grey metallic Mercedes-AMG coupe-SUV with black wheels and red brake calipers, parked on a residential driveway beside an open garage, lawn and trees.',
     width: 1200,
     height: 901,
     widths: [400, 640, 900, 1200],
@@ -231,7 +231,7 @@ export const sitePhotos = {
   },
   'dark-fastback-drive': {
     id: 'dark-fastback-drive',
-    alt: 'A dark grey four-door coupe parked nose-in on a narrow concrete driveway between two suburban houses, seen from above and behind in bright sunlight with the neighbouring siding mirrored acro',
+    alt: 'A dark grey four-door coupe parked nose-in on a driveway between two suburban houses, seen from above and behind with neighboring siding reflected across its paint.',
     width: 1200,
     height: 909,
     widths: [400, 640, 900, 1200],

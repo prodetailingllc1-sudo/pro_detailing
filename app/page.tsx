@@ -16,7 +16,6 @@ import {
   SunMedium,
   Wrench,
 } from 'lucide-react';
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 
@@ -33,6 +32,7 @@ import {
   specialistMarques,
 } from '@/lib/expanded-content';
 import { siteFeatures } from '@/lib/site-config';
+import { createPageMetadata } from '@/lib/metadata';
 import {
   business,
   galleryItems,
@@ -42,20 +42,12 @@ import {
   SITE_ORIGIN,
 } from '@/lib/site-data';
 
-export const metadata: Metadata = {
-  title: {
-    absolute: 'Window Tint & Ceramic Coating Manassas, VA | PRO Detailing',
-  },
+export const metadata = createPageMetadata({
+  title: 'Window Tint & Ceramic Coating Manassas, VA | PRO Detailing',
   description:
     'Visit PRO Detailing in Manassas for LLumar window tint, Ceramic Pro coating and professional auto detailing. Preview tint options and request a quote.',
-  alternates: { canonical: '/' },
-  openGraph: {
-    title: 'Window Tint & Ceramic Coating Manassas, VA | PRO Detailing',
-    description:
-      'LLumar window tint, Ceramic Pro coating and professional auto detailing at our Manassas vehicle-protection studio.',
-    url: '/',
-  },
-};
+  path: '/',
+});
 
 const faqs = [
   [
@@ -316,7 +308,7 @@ export default function Home() {
           <div className="work-film-feature" id="pro-fleet-film">
             <div className="work-film-copy">
               <p className="overline">PRO original film · 00:34</p>
-              <h3>GLS Maybach. BMW M8. AMG GLE 63.</h3>
+              <h3>Mercedes-Maybach GLS. BMW M8. Mercedes-AMG GLE 63.</h3>
               <p>
                 Three standout vehicles, one PRO standard. Watch the original
                 PRO Detailing fleet film in its complete portrait frame.

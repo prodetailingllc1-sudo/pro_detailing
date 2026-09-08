@@ -1,10 +1,9 @@
-import type { Metadata } from 'next';
-
 import { GalleryClient } from '@/components/site/GalleryClient';
+import { createPageMetadata } from '@/lib/metadata';
 import { galleryItems } from '@/lib/site-data';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Vehicle Gallery Manassas, VA | PRO Detailing' },
+export const metadata = createPageMetadata({
+  title: 'Vehicle Gallery Manassas, VA | PRO Detailing',
   description:
     "Browse PRO Detailing's vehicle photo gallery, including cars, SUVs, trucks and performance vehicles. Explore our Manassas services or request a quote.",
   keywords: [
@@ -14,22 +13,8 @@ export const metadata: Metadata = {
     'Northern Virginia auto detailing',
     'PRO Detailing gallery',
   ],
-  alternates: { canonical: '/gallery' },
-  openGraph: {
-    type: 'website',
-    url: '/gallery',
-    title: 'Vehicle Gallery Manassas, VA | PRO Detailing',
-    description:
-      'Explore vehicle photography from PRO Detailing in Manassas, Virginia.',
-    siteName: 'PRO Detailing',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'Vehicle Gallery Manassas, VA | PRO Detailing',
-    description:
-      'Explore vehicle photography from PRO Detailing in Manassas, Virginia.',
-  },
-};
+  path: '/gallery',
+});
 
 export default function GalleryPage() {
   return (

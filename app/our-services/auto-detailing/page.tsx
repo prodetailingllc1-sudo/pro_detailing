@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 import {
@@ -12,6 +11,7 @@ import {
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { createPageMetadata } from '@/lib/metadata';
 import {
   business,
   galleryItems,
@@ -19,18 +19,12 @@ import {
   SITE_ORIGIN,
 } from '@/lib/site-data';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Auto Detailing Manassas, VA | PRO Detailing' },
+export const metadata = createPageMetadata({
+  title: 'Auto Detailing Manassas, VA | PRO Detailing',
   description:
     'Compare PRO Detailing packages starting at $100 for interior and exterior auto detailing in Manassas, VA. See inclusions, timing and add-ons.',
-  alternates: { canonical: '/our-services/auto-detailing' },
-  openGraph: {
-    title: 'Auto Detailing Manassas, VA | PRO Detailing',
-    description:
-      'Compare four interior and exterior detailing packages, inclusions and starting prices at PRO Detailing in Manassas, Virginia.',
-    url: '/our-services/auto-detailing',
-  },
-};
+  path: '/our-services/auto-detailing',
+});
 
 const detailingPackages = [
   {
@@ -221,7 +215,7 @@ const faqs = [
 ] as const;
 
 const detailImages = [
-  'foam-covered-saloon',
+  'sports-car-in-bay',
   'studio-front-dark-saloon',
   'white-suv-studio-door',
 ]
@@ -288,10 +282,10 @@ export default function AutoDetailingPage() {
       <section className="service-hero detailing-service-hero">
         <div className="service-hero-media" aria-hidden="true">
           <Image
-            src="/generated/interior-cockpit-finished.webp"
+            src="/gallery/foam-covered-saloon.webp"
             alt=""
-            width="1800"
-            height="1200"
+            width="1200"
+            height="680"
             priority
             sizes="100vw"
           />

@@ -525,8 +525,12 @@ h3 {
   box-shadow: 0 30px 100px rgba(0, 0, 0, 0.25);
 }
 .lab-controls {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  border: 0;
   border-bottom: 1px solid var(--line);
 }
 .lab-controls button {
@@ -839,7 +843,7 @@ h3 {
 .before-button {
   position: absolute;
   z-index: 4;
-  bottom: 2rem;
+  bottom: 3.25rem;
   left: 50%;
   min-height: 44px;
   transform: translateX(-50%);
@@ -2017,6 +2021,9 @@ h3 {
   line-height: 0.92;
 }
 .ceramic-steps {
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin: 2rem 0;
@@ -5061,6 +5068,10 @@ body {
 }
 
 .lead-service-options {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.55rem;

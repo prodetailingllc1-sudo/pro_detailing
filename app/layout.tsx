@@ -35,6 +35,21 @@ export const metadata: Metadata = {
     description:
       'Vehicle appearance, protection and practical care services from PRO Detailing in Manassas, Virginia.',
     url: '/',
+    images: [
+      {
+        url: '/opengraph-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'PRO Detailing automotive appearance and protection studio',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'PRO Detailing | Vehicle Appearance & Protection',
+    description:
+      'Vehicle appearance, protection and practical care services from PRO Detailing in Manassas, Virginia.',
+    images: ['/twitter-image.jpg'],
   },
 };
 
@@ -45,6 +60,8 @@ const localBusinessSchema = {
   name: business.legalName,
   alternateName: business.name,
   url: SITE_ORIGIN,
+  logo: `${SITE_ORIGIN}/pro-mark.png`,
+  image: `${SITE_ORIGIN}/opengraph-image.jpg`,
   telephone: business.phoneHref,
   email: business.email,
   address: {

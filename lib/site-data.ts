@@ -1,8 +1,10 @@
 import { sitePhotos } from '@/lib/gallery-data';
 import { localTintImages } from '@/lib/local-tint-data';
 
-export const SITE_ORIGIN =
-  'https://pro-detailing.prodetailingllc1.chatgpt.site';
+export const SITE_ORIGIN = (
+  process.env.NEXT_PUBLIC_SITE_ORIGIN ??
+  'https://pro-detailing.prodetailingllc1.chatgpt.site'
+).replace(/\/$/, '');
 
 export const business = {
   name: 'PRO Detailing',
@@ -22,10 +24,11 @@ export const business = {
     'https://www.google.com/maps/place/Pro+Detailing+-+Tinting/@38.79913,-77.505505,17z/data=!4m8!3m7!1s0x206936eb6b075581:0x9e782a80c19e3227!8m2!3d38.79913!4d-77.505505!9m1!1b1!16s%2Fg%2F11krpg2kqz?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D',
 } as const;
 
-export function quoteHref(service?: string) {
-  return service
-    ? `/request-quote?service=${encodeURIComponent(service)}`
-    : '/request-quote';
+export function quoteHref(service?: string, packageChoice?: string) {
+  if (!service) return '/request-quote';
+  const params = new URLSearchParams({ service });
+  if (packageChoice) params.set('package', packageChoice);
+  return `/request-quote?${params.toString()}`;
 }
 
 export const services = [
@@ -72,7 +75,7 @@ export const services = [
       'Choose targeted front-end or broader coverage after an in-person inspection. Product specifics are confirmed before your quote—not guessed online.',
     href: '/our-services/paint-protection-film',
     cta: 'Ask about PPF',
-    image: '/generated/ppf-coverage.webp',
+    image: '/generated/ppf-finished-clear-v2.webp',
     mark: '/pro-mark.png',
     markWidth: 400,
     markHeight: 400,
