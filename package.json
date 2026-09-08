@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
+    "postbuild": "node scripts/prune-build-assets.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint app components/site lib",
     "format": "oxfmt"
