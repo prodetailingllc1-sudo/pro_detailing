@@ -327,6 +327,8 @@ export default function CeramicCoatingPage() {
                     <div>
                       <small>{offering.category}</small>
                       <h3>{offering.name}</h3>
+                      <p>{offering.summary}</p>
+                      <em>{offering.warranty}</em>
                     </div>
                     <Check aria-hidden="true" />
                   </article>
@@ -346,6 +348,7 @@ export default function CeramicCoatingPage() {
                     <div>
                       <small>{offering.category}</small>
                       <h3>{offering.name}</h3>
+                      <p>{offering.summary}</p>
                       {'warranty' in offering ? (
                         <em>{offering.warranty}</em>
                       ) : null}
@@ -365,7 +368,9 @@ export default function CeramicCoatingPage() {
                 Where annual service is required, the applicable anniversary
                 window, included work and current service price are confirmed in
                 writing. Leather/Textile carries a two-year manufacturer
-                warranty. Manufacturer terms and documents may be revised.
+                warranty. Published package durations are manufacturer warranty
+                tiers, not unconditional promises; registration, inspection,
+                maintenance and current written terms apply.
               </p>
               <Link
                 className="button button-primary"

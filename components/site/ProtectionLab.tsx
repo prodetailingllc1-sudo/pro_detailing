@@ -12,40 +12,43 @@ import { services } from '@/lib/site-data';
 const comparisons = {
   tint: {
     mode: 'tint',
-    beforeSrc: '/gallery/local-tint-white-sedan-night-clear.webp',
+    vehicle: 'sedan',
+    baseSrc: '/vehicles/sedan.webp',
     beforeAlt:
-      'Interactive comparison of clear and tinted glass on the same white sedan',
-    afterLabel: 'Tinted glass',
+      'Interactive registered comparison of clear and tinted glass on a white sedan',
+    afterLabel: 'Tinted side glass',
     beforeLabel: 'Clear glass',
-    afterSrc: '/gallery/local-tint-white-sedan-night.webp',
     ariaLabel: 'Adjust the clear and tinted glass comparison',
-    note: 'Appearance preview. Actual shade varies with factory glass and lighting.',
-    width: 1600,
-    height: 1200,
+    note: 'Registered glass-mask preview. Actual shade varies with factory glass and lighting.',
+    masks: ['glass-frontSides', 'glass-rearSides'],
+    width: 1536,
+    height: 1024,
   },
   ceramic: {
     mode: 'ceramic',
-    beforeSrc: '/generated/ceramic-untreated-before.webp',
+    vehicle: 'coupe',
+    baseSrc: '/vehicles/coupe.webp',
     beforeAlt:
-      'Interactive finish preview showing the same black BMW before and after ceramic coating',
+      'Interactive registered comparison of untreated and Ceramic Pro-finished paint on the same coupe',
     afterLabel: 'Ceramic Pro finish',
     beforeLabel: 'Untreated finish',
-    afterSrc: '/gallery/glossy-black-coupe.webp',
     ariaLabel: 'Adjust the untreated and Ceramic Pro finish preview',
-    note: 'Finish preview. Final gloss depends on paint condition and preparation.',
-    width: 1200,
-    height: 672,
+    note: 'Same vehicle, same paint color. The effect previews gloss only; condition and preparation determine the result.',
+    masks: ['paint'],
+    width: 1536,
+    height: 1024,
   },
   ppf: {
     mode: 'ppf',
-    beforeSrc: '/generated/ppf-unprotected-before.webp',
+    vehicle: 'coupe',
+    baseSrc: '/vehicles/coupe.webp',
     beforeAlt:
-      'Interactive comparison of the same grey BMW before and after clear paint protection film',
-    afterLabel: 'Clear PRO PPF',
+      'Interactive registered comparison of unprotected paint and clear full-front paint protection film on the same coupe',
+    afterLabel: 'Full-front clear PPF',
     beforeLabel: 'Unprotected paint',
-    afterSrc: '/generated/ppf-finished-clear-v2.webp',
     ariaLabel: 'Adjust the unprotected paint and clear PPF comparison',
-    note: 'Coverage preview. Clear film is designed to preserve the paint color.',
+    note: 'LLumar clear-PPF coverage preview—not a color wrap. The vehicle color stays unchanged.',
+    masks: ['ppf-hood', 'ppf-fenders', 'ppf-bumper', 'ppf-mirrors'],
     width: 1536,
     height: 1024,
   },
@@ -92,7 +95,7 @@ export function ProtectionLab() {
               <div className="lab-comparison-visual">
                 <Image
                   className="lab-comparison-before"
-                  src={comparison.beforeSrc}
+                  src={comparison.baseSrc}
                   alt={comparison.beforeAlt}
                   width={comparison.width}
                   height={comparison.height}
@@ -101,13 +104,24 @@ export function ProtectionLab() {
                 />
                 <span className="lab-comparison-after" aria-hidden="true">
                   <Image
-                    src={comparison.afterSrc}
+                    className="lab-registered-after"
+                    src={comparison.baseSrc}
                     alt=""
                     width={comparison.width}
                     height={comparison.height}
                     draggable={false}
                     sizes="(max-width: 780px) 100vw, 65vw"
                   />
+                  {comparison.masks.map((mask) => (
+                    <span
+                      className={`lab-surface-mask lab-surface-mask-${comparison.mode}`}
+                      key={mask}
+                      style={{
+                        WebkitMaskImage: `url(/vehicles/masks/${comparison.vehicle}-${mask}.png)`,
+                        maskImage: `url(/vehicles/masks/${comparison.vehicle}-${mask}.png)`,
+                      }}
+                    />
+                  ))}
                 </span>
               </div>
               <span

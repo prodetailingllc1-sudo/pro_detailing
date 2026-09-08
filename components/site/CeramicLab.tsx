@@ -40,10 +40,11 @@ export function CeramicLab() {
     <div className="ceramic-lab">
       <div className="ceramic-visual">
         <Image
-          src="/generated/ceramic-untreated-before.webp"
-          alt="Interactive comparison of untreated and Ceramic Pro-finished paint on the same black coupe"
-          width="1200"
-          height="672"
+          className="ceramic-vehicle-before"
+          src="/vehicles/coupe.webp"
+          alt="Interactive registered comparison of untreated and Ceramic Pro-finished paint on the same coupe"
+          width="1536"
+          height="1024"
           sizes="(max-width: 780px) 100vw, 60vw"
         />
         <div
@@ -52,11 +53,19 @@ export function CeramicLab() {
           aria-hidden="true"
         >
           <Image
-            src="/gallery/glossy-black-coupe.webp"
+            className="ceramic-vehicle-after"
+            src="/vehicles/coupe.webp"
             alt=""
-            width="1200"
-            height="672"
+            width="1536"
+            height="1024"
             sizes="(max-width: 780px) 100vw, 60vw"
+          />
+          <span
+            className="ceramic-paint-mask"
+            style={{
+              WebkitMaskImage: 'url(/vehicles/masks/coupe-paint.png)',
+              maskImage: 'url(/vehicles/masks/coupe-paint.png)',
+            }}
           />
         </div>
         <div
@@ -77,7 +86,9 @@ export function CeramicLab() {
             onChange={(event) => setFinish(Number(event.target.value))}
           />
         </label>
-        <span className="demo-label">Untreated ↔ Ceramic Pro finish</span>
+        <span className="demo-label">
+          Same vehicle · untreated ↔ coated finish
+        </span>
       </div>
       <div className="ceramic-controls">
         <p className="overline">Preparation protocol</p>

@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useMemo, useState } from 'react';
 
 import { filmLines } from '@/lib/site-data';
-import { tintWindowPaths } from '@/lib/tint-window-paths';
 
 const vehicles = [
   ['sedan', 'Sedan'],
@@ -97,7 +96,6 @@ export function TintStudio({
   compact?: boolean;
   initialLineId?: string;
 }) {
-  const instanceId = `${compact ? 'compact' : 'full'}-${initialLineId}`;
   const initialLine =
     filmLines.find((item) => item.id === initialLineId) ?? filmLines[1];
   const initialShade =
@@ -118,13 +116,8 @@ export function TintStudio({
   const line = filmLines.find((item) => item.id === lineId) ?? filmLines[1];
   const shade =
     line.shades.find((item) => item.id === shadeId) ?? line.shades[0];
-  const tintOpacity = Math.max(
-    0.04,
-    Math.min(0.82, 1 - Math.sqrt(shade.vlt / 100)),
-  );
+  const tintOpacity = Math.max(0, Math.min(0.95, 1 - shade.vlt / 100));
   const tintTone = tintTones[line.id];
-  const windowPaths = tintWindowPaths[vehicle];
-  const tintGradientId = `tint-glass-${vehicle}-${instanceId}`;
   const activeZoneLabel = [
     zones.frontSides ? 'front' : null,
     zones.rearSides && vehicle !== 'coupe' ? 'rear' : null,
@@ -165,6 +158,8 @@ export function TintStudio({
     setVehicle(nextVehicle);
     if (nextVehicle === 'coupe') {
       setZones((current) => ({ ...current, rearSides: false }));
+    } else if (vehicle === 'coupe') {
+      setZones((current) => ({ ...current, rearSides: true }));
     }
   }
 
@@ -211,44 +206,42 @@ export function TintStudio({
               sizes="(max-width: 780px) 112vw, 62vw"
               priority={!compact}
             />
-            <svg
-              className="tint-vector-overlay"
-              viewBox="0 0 768 512"
-              preserveAspectRatio="xMidYMid meet"
-              aria-hidden="true"
-              focusable="false"
-              shapeRendering="geometricPrecision"
-              style={{ opacity: before ? 0 : tintOpacity }}
-            >
-              <defs>
-                <linearGradient id={tintGradientId} x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor={tintTone.highlight} />
-                  <stop offset="54%" stopColor={tintTone.core} />
-                  <stop offset="100%" stopColor={tintTone.lowlight} />
-                </linearGradient>
-              </defs>
-              <g
-                fill={`url(#${tintGradientId})`}
-                stroke="rgba(255, 255, 255, 0.08)"
-                strokeWidth="0.65"
-              >
-                {zones.rearSides && vehicle !== 'coupe'
-                  ? windowPaths.rearSides.map((path, index) => (
-                      <path d={path} key={`rear-${index}`} />
-                    ))
-                  : null}
-                {zones.frontSides
-                  ? windowPaths.frontSides.map((path, index) => (
-                      <path d={path} key={`front-${index}`} />
-                    ))
-                  : null}
-                {zones.windshield
-                  ? windowPaths.windshield.map((path, index) => (
-                      <path d={path} key={`windshield-${index}`} />
-                    ))
-                  : null}
-              </g>
-            </svg>
+            {zones.frontSides ? (
+              <span
+                className="tint-mask"
+                aria-hidden="true"
+                style={{
+                  opacity: before ? 0 : tintOpacity,
+                  background: `linear-gradient(145deg, ${tintTone.highlight}, ${tintTone.core} 58%, ${tintTone.lowlight})`,
+                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
+                  maskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
+                }}
+              />
+            ) : null}
+            {zones.rearSides && vehicle !== 'coupe' ? (
+              <span
+                className="tint-mask"
+                aria-hidden="true"
+                style={{
+                  opacity: before ? 0 : tintOpacity,
+                  background: `linear-gradient(145deg, ${tintTone.highlight}, ${tintTone.core} 58%, ${tintTone.lowlight})`,
+                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
+                  maskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
+                }}
+              />
+            ) : null}
+            {zones.windshield ? (
+              <span
+                className="tint-mask"
+                aria-hidden="true"
+                style={{
+                  opacity: before ? 0 : tintOpacity,
+                  background: `linear-gradient(145deg, ${tintTone.highlight}, ${tintTone.core} 58%, ${tintTone.lowlight})`,
+                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
+                  maskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
+                }}
+              />
+            ) : null}
           </div>
           <div className="stage-floor" aria-hidden="true" />
         </div>

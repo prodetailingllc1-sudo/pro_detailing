@@ -957,7 +957,6 @@ h3 {
 .tint-mask {
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(155deg, #08100c, #000 60%, #1d3322);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -965,16 +964,6 @@ h3 {
   -webkit-mask-size: contain;
   mask-size: contain;
   transition: opacity 0.22s ease;
-}
-.tint-vector-overlay {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  transition: opacity 0.28s ease;
 }
 .stage-light {
   position: absolute;
@@ -1232,6 +1221,190 @@ h3 {
 }
 .tint-studio.is-compact .studio-preview {
   min-height: 630px;
+}
+
+.simulator-intro-links {
+  display: grid;
+  gap: 0.7rem;
+  justify-items: start;
+}
+
+.wrap-studio-section {
+  border-block: 1px solid rgba(156, 245, 0, 0.12);
+  background:
+    radial-gradient(
+      circle at 78% 18%,
+      rgba(156, 245, 0, 0.08),
+      transparent 28rem
+    ),
+    #090c0a;
+}
+
+.wrap-studio-section .section-intro {
+  max-width: 880px;
+}
+
+.wrap-preview {
+  background: radial-gradient(
+    ellipse at 50% 62%,
+    #252c27 0%,
+    #101411 38%,
+    #060706 70%
+  );
+}
+
+.wrap-paint-mask {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  transition: opacity 0.28s ease;
+}
+
+.wrap-color-mask {
+  z-index: 2;
+  opacity: 0.88;
+  background: linear-gradient(
+    138deg,
+    var(--wrap-highlight),
+    var(--wrap-color) 48%,
+    color-mix(in srgb, var(--wrap-color) 72%, #000)
+  );
+  mix-blend-mode: multiply;
+}
+
+.wrap-finish-mask {
+  z-index: 3;
+  opacity: 0.76;
+  background:
+    linear-gradient(
+      112deg,
+      transparent 14%,
+      rgba(255, 255, 255, 0.34) 31%,
+      transparent 46%
+    ),
+    radial-gradient(
+      circle at 64% 45%,
+      rgba(255, 255, 255, 0.18),
+      transparent 27%
+    );
+  mix-blend-mode: screen;
+}
+
+.wrap-finish-mask.finish-satin {
+  opacity: 0.42;
+  filter: blur(0.2px);
+}
+
+.wrap-finish-mask.finish-matte {
+  opacity: 0.2;
+  background: rgba(2, 4, 3, 0.55);
+  mix-blend-mode: multiply;
+}
+
+.show-before .wrap-paint-mask {
+  opacity: 0;
+}
+
+.wrap-color-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.wrap-color-options label {
+  min-height: 62px;
+  padding: 0.7rem;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 0.7rem;
+  align-items: center;
+  border: 1px solid var(--line);
+  color: #aab2ac;
+  background: #0b0e0c;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease;
+}
+
+.wrap-color-options label.is-active {
+  border-color: var(--lime);
+  color: #f3f6f4;
+  background: rgba(156, 245, 0, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(156, 245, 0, 0.16);
+}
+
+.wrap-color-options input,
+.wrap-finish-options input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wrap-color-options label:focus-within,
+.wrap-finish-options label:focus-within {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.wrap-swatch {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.25),
+    0 5px 14px rgba(0, 0, 0, 0.35);
+}
+
+.wrap-color-options strong {
+  font-size: 0.75rem;
+}
+
+.wrap-finish-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wrap-finish-options label {
+  min-height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-right: 0;
+  color: #929b94;
+  font-size: 0.72rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.wrap-finish-options label:last-child {
+  border-right: 1px solid var(--line);
+}
+
+.wrap-finish-options label.is-active {
+  color: #071009;
+  border-color: var(--lime);
+  background: var(--lime);
+}
+
+.wrap-brand-note {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid rgba(208, 173, 82, 0.28);
+  color: #9ca59e;
+  background: rgba(208, 173, 82, 0.045);
+  font-size: 0.68rem;
+  line-height: 1.55;
 }
 
 .work-section {
@@ -2112,7 +2285,13 @@ h3 {
   position: relative;
   min-height: 630px;
   overflow: hidden;
-  background: #050606;
+  background:
+    radial-gradient(
+      circle at 52% 50%,
+      rgba(255, 255, 255, 0.08),
+      transparent 38%
+    ),
+    #050606;
 }
 .ceramic-visual > img,
 .ceramic-reveal,
@@ -2121,10 +2300,10 @@ h3 {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .ceramic-visual > img {
-  filter: saturate(0.42) brightness(0.68);
+  filter: saturate(0.62) brightness(0.76) contrast(1.04);
 }
 .ceramic-reveal {
   z-index: 1;
@@ -2134,6 +2313,27 @@ h3 {
 .ceramic-reveal img {
   max-width: none;
   filter: saturate(1.03) contrast(1.08) brightness(1.05);
+}
+.ceramic-paint-mask {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      112deg,
+      transparent 15%,
+      rgba(255, 255, 255, 0.2) 35%,
+      transparent 52%
+    ),
+    radial-gradient(circle at 58% 42%, rgba(156, 245, 0, 0.08), transparent 32%);
+  mix-blend-mode: screen;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 .ceramic-divider {
   position: absolute;
@@ -2490,6 +2690,13 @@ h3 {
   color: #f1f5f2;
   font-size: clamp(1.3rem, 2.2vw, 2rem);
   letter-spacing: -0.035em;
+}
+
+.ceramic-offer-card p {
+  margin: 0.55rem 0 0;
+  color: #9ca69e;
+  font-size: 0.76rem;
+  line-height: 1.5;
 }
 
 .ceramic-offer-card em {
@@ -7298,6 +7505,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
+  isolation: isolate;
   transform: translateZ(36px) rotateX(-1.5deg);
   transform-style: preserve-3d;
   transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -7893,6 +8101,13 @@ body {
   z-index: 1;
   inset: 0;
   overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 52% 48%,
+      rgba(255, 255, 255, 0.07),
+      transparent 38%
+    ),
+    #050706;
   transform: scale(1.02);
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -7905,7 +8120,8 @@ body {
 .lab-comparison-after img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   filter: saturate(0.82) contrast(1.07);
 }
 
@@ -7916,6 +8132,68 @@ body {
   overflow: hidden;
   clip-path: inset(0 0 0 var(--lab-comparison-split));
   will-change: clip-path;
+}
+
+.lab-comparison-after > img {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+}
+
+.lab-surface-mask {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.lab-surface-mask-tint {
+  opacity: 0.92;
+  background: linear-gradient(145deg, #14201b, #010302 58%, #07100b);
+}
+
+.lab-comparison-ceramic .lab-comparison-before {
+  filter: saturate(0.62) brightness(0.76) contrast(1.04);
+}
+
+.lab-comparison-ceramic .lab-registered-after {
+  filter: saturate(1.03) brightness(1.05) contrast(1.08);
+}
+
+.lab-surface-mask-ceramic {
+  background:
+    linear-gradient(
+      112deg,
+      transparent 15%,
+      rgba(255, 255, 255, 0.2) 35%,
+      transparent 52%
+    ),
+    radial-gradient(circle at 58% 42%, rgba(156, 245, 0, 0.08), transparent 32%);
+  mix-blend-mode: screen;
+}
+
+.lab-comparison-ppf .lab-comparison-before,
+.lab-comparison-ppf .lab-registered-after {
+  filter: saturate(0.9) contrast(1.05);
+}
+
+.lab-surface-mask-ppf {
+  background:
+    linear-gradient(
+      118deg,
+      transparent 18%,
+      rgba(255, 255, 255, 0.2) 35%,
+      transparent 48%
+    ),
+    linear-gradient(180deg, rgba(156, 245, 0, 0.08), rgba(255, 255, 255, 0.035));
+  filter: drop-shadow(0 0 1px rgba(205, 255, 150, 0.72));
+  mix-blend-mode: screen;
 }
 
 .lab-comparison-divider {

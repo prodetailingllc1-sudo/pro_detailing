@@ -4,12 +4,13 @@ import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { TintStudio } from '@/components/site/TintStudio';
+import { WrapStudio } from '@/components/site/WrapStudio';
 import { createPageMetadata } from '@/lib/metadata';
 
 export const metadata = createPageMetadata({
-  title: 'Window Tint Simulator: LLumar CTX, IRX & AIR | PRO Tints',
+  title: 'Window Tint & Color Wrap Simulator | PRO Detailing',
   description:
-    'Preview LLumar CTX, IRX and AIR shades on your vehicle, compare measured film data and check Virginia, Maryland and DC guidance before requesting a quote.',
+    'Preview LLumar CTX, IRX and AIR tint shades or explore original color-wrap concepts on registered vehicle masks before requesting a Manassas consultation.',
   path: '/tint-simulator',
 });
 
@@ -33,6 +34,10 @@ const simulatorFaqs = [
   [
     'Can I send this configuration with a quote request?',
     'Use Copy Build, then paste the configuration into the vehicle request. We will confirm it against your actual vehicle.',
+  ],
+  [
+    'Is the color-wrap preview a Ceramic Pro product visualizer?',
+    'No. It is an original PRO Detailing appearance-planning tool. Ceramic Pro coatings do not recolor paint, and exact wrap material, color, finish and service availability must be confirmed by the studio.',
   ],
 ] as const;
 
@@ -60,11 +65,17 @@ export default function TintSimulatorPage() {
           <div className="simulator-intro-copy">
             <p>
               Preview shade and coverage, compare confirmed LLumar film choices
-              and bring a clearer starting point to your tint consultation.
+              and explore an original color-wrap concept on body-registered
+              masks before your consultation.
             </p>
-            <Link className="text-link" href="/our-services/window-tinting">
-              Compare CTX, IRX & AIR <ArrowRight aria-hidden="true" />
-            </Link>
+            <div className="simulator-intro-links">
+              <Link className="text-link" href="/our-services/window-tinting">
+                Compare CTX, IRX & AIR <ArrowRight aria-hidden="true" />
+              </Link>
+              <a className="text-link" href="#wrap-studio">
+                Open wrap concept studio <ArrowRight aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -72,6 +83,29 @@ export default function TintSimulatorPage() {
       <section className="studio-full-section">
         <div className="shell">
           <TintStudio />
+        </div>
+      </section>
+
+      <section
+        className="section studio-full-section wrap-studio-section"
+        id="wrap-studio"
+      >
+        <div className="shell">
+          <div className="studio-section-head">
+            <div className="section-intro">
+              <p className="eyebrow">
+                <span /> Original body-mask visualizer
+              </p>
+              <h2>Preview color on the paint—not across the glass.</h2>
+              <p>
+                Every finish is clipped to a calibrated vehicle paint mask so
+                windows, lamps, wheels and openings remain untouched. This is an
+                appearance concept; the studio confirms whether a requested
+                color-wrap service and material are available.
+              </p>
+            </div>
+          </div>
+          <WrapStudio />
         </div>
       </section>
 
