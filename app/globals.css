@@ -5656,3 +5656,45 @@ body {
     font-size: 0.72rem;
   }
 }
+
+/* V7 give PPF and detailing wider, service-specific editorial crops */
+.lab-photo-ppf {
+  background:
+    radial-gradient(circle at 52% 46%, rgba(255, 255, 255, 0.055), transparent 42%),
+    #050706;
+}
+
+.lab-photo.lab-photo-ppf > img {
+  object-fit: contain;
+  object-position: center;
+  transform: scale(0.93);
+}
+
+.protection-lab:hover .lab-photo.lab-photo-ppf > img {
+  transform: scale(0.97);
+}
+
+.lab-photo.lab-photo-detail > img {
+  object-position: 48% center;
+  transform: scale(1);
+}
+
+.protection-lab:hover .lab-photo.lab-photo-detail > img {
+  transform: scale(1.035);
+}
+
+.lab-controls button.is-active:hover > span,
+.lab-controls button.is-active:hover strong,
+.lab-controls button.is-active:hover small {
+  color: #071009;
+}
+
+@media (max-width: 780px) {
+  .lab-photo.lab-photo-ppf {
+    min-height: 350px;
+  }
+
+  .lab-photo.lab-photo-detail > img {
+    object-position: 46% center;
+  }
+}

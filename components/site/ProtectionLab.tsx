@@ -50,7 +50,7 @@ export function ProtectionLab() {
         aria-labelledby={`system-tab-${active.id}`}
       >
         <div
-          className={`lab-photo ${active.id === 'tint' ? 'has-tint-reveal' : ''}`}
+          className={`lab-photo lab-photo-${active.id} ${active.id === 'tint' ? 'has-tint-reveal' : ''}`}
         >
           {active.id === 'tint' ? (
             <div className="lab-tint-reveal" style={tintRevealStyle}>
