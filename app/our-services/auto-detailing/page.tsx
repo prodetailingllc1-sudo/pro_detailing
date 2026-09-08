@@ -22,15 +22,148 @@ import {
 export const metadata: Metadata = {
   title: { absolute: 'Auto Detailing Manassas, VA | PRO Detailing' },
   description:
-    'Explore inspection-led auto detailing in Manassas, VA, with interior cleaning, exterior decontamination and finish refinement planned for your vehicle.',
+    'Compare PRO Detailing packages starting at $100 for interior and exterior auto detailing in Manassas, VA. See inclusions, timing and add-ons.',
   alternates: { canonical: '/our-services/auto-detailing' },
   openGraph: {
     title: 'Auto Detailing Manassas, VA | PRO Detailing',
     description:
-      'Inspection-led interior and exterior auto detailing at the PRO Detailing studio in Manassas, Virginia.',
+      'Compare four interior and exterior detailing packages, inclusions and starting prices at PRO Detailing in Manassas, Virginia.',
     url: '/our-services/auto-detailing',
   },
 };
+
+const detailingPackages = [
+  {
+    id: 'tier-1',
+    name: 'Tier 1',
+    price: 100,
+    duration: '60–90 min',
+    label: 'Maintenance refresh',
+    featured: false,
+    description:
+      'For a well-maintained vehicle that needs a focused interior and exterior reset.',
+    interior: [
+      'Wipe and clean all surfaces',
+      'Vacuum interior',
+      'Clean windows and mirrors',
+      'Clean floor mats and carpets',
+      'Air-freshener treatment',
+      'Detail trunk',
+    ],
+    exterior: [
+      'Professional hand wash',
+      'Clean wheel wells',
+      'Detail rim faces and tires',
+      'Dress exterior trim and tires',
+      'Clean door jambs',
+      'Clean exterior windows',
+    ],
+  },
+  {
+    id: 'tier-2',
+    name: 'Tier 2',
+    price: 150,
+    duration: 'About 120 min',
+    label: 'Most popular',
+    featured: true,
+    description:
+      'A more complete interior and exterior service with steam cleaning, decontamination and wax protection.',
+    interior: [
+      'Wipe and clean all surfaces',
+      'Double-vacuum interior',
+      'Steam-clean full interior',
+      'Clean crevices, vents and cupholders',
+      'Clean and protect plastic',
+      'Clean windows and mirrors',
+      'Condition leather',
+      'Deep-clean floor mats and carpets',
+      'Air-freshener treatment',
+      'Detail trunk',
+    ],
+    exterior: [
+      'Professional hand wash',
+      'Clay-bar paint decontamination',
+      'Clean wheel wells',
+      'Detail rim faces and tires',
+      'Dress exterior trim and tires',
+      'Clean door jambs',
+      'Clean exterior windows',
+      'Wax protection',
+    ],
+  },
+  {
+    id: 'tier-3',
+    name: 'Tier 3',
+    price: 350,
+    duration: 'About 240 min',
+    label: 'Complete makeover',
+    featured: false,
+    description:
+      'The deepest published package for a vehicle that needs a fuller cabin reset and exterior decontamination.',
+    interior: [
+      'Deep-clean all surfaces',
+      'Double-vacuum interior',
+      'Shampoo carpets and seats',
+      'Steam-clean full interior',
+      'Clean crevices, vents and cupholders',
+      'Clean and protect plastic',
+      'Condition leather',
+      'Clean windows and mirrors',
+      'Deep-clean floor mats and carpets',
+      'Air-freshener treatment',
+      'Detail trunk',
+    ],
+    exterior: [
+      'Remove embedded contaminants',
+      'Professional hand wash',
+      'Clay-bar paint decontamination',
+      'Detail rim faces and tires',
+      'Clean wheel wells',
+      'Dress exterior trim and tires',
+      'Clean door jambs',
+      'Detail exterior windows',
+      'Wax protection',
+    ],
+  },
+  {
+    id: 'tier-4',
+    name: 'Tier 4',
+    price: 150,
+    duration: 'Timing confirmed with quote',
+    label: 'Interior only',
+    featured: false,
+    description:
+      'A dedicated deep interior package without the exterior service.',
+    interior: [
+      'Deep-clean all surfaces',
+      'Double-vacuum interior',
+      'Shampoo carpets and seats',
+      'Steam-clean full interior',
+      'Clean crevices, vents and cupholders',
+      'Clean and protect plastic',
+      'Condition leather',
+      'Clean windows and mirrors',
+      'Deep-clean floor mats and carpets',
+      'Air-freshener treatment',
+      'Detail trunk',
+    ],
+    exterior: [],
+  },
+] as const;
+
+const detailingAddOns = [
+  ['Shampoo seats', '$50'],
+  ['Heavy pet hair', '$69'],
+  ['Stain or spill treatment', '$50'],
+  ['Bio cleaning', '$50'],
+  ['Clay-bar treatment', '$50'],
+  ['Headlight restoration', '$70'],
+  ['Shampoo carpets', '$50'],
+  ['Light pet hair', '$29'],
+  ['Headliner cleaning', '$50'],
+  ['Ozone odor treatment', '$50'],
+  ['Engine-bay detail', '$50'],
+] as const;
 
 const workflow = [
   [
@@ -106,6 +239,17 @@ export default function AutoDetailingPage() {
         provider: { '@id': `${SITE_ORIGIN}/#business` },
         areaServed: 'Manassas, Virginia',
         url: `${SITE_ORIGIN}/our-services/auto-detailing`,
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'PRO Detailing packages',
+          itemListElement: detailingPackages.map((item) => ({
+            '@type': 'Offer',
+            name: item.name,
+            price: item.price,
+            priceCurrency: 'USD',
+            description: `${item.label}. Published starting price; final scope and price depend on vehicle size and condition.`,
+          })),
+        },
       },
       {
         '@type': 'FAQPage',
@@ -123,7 +267,7 @@ export default function AutoDetailingPage() {
       <section className="service-hero detailing-service-hero">
         <div className="service-hero-media" aria-hidden="true">
           <Image
-            src="/gallery/studio-front-dark-saloon.webp"
+            src="/generated/interior-detailing.webp"
             alt=""
             width="1800"
             height="1200"
@@ -152,8 +296,8 @@ export default function AutoDetailingPage() {
               fits its condition and your goals.
             </p>
             <div className="hero-actions">
-              <a className="button button-primary" href="#workflow">
-                See the studio workflow <ArrowRight aria-hidden="true" />
+              <a className="button button-primary" href="#packages">
+                View detailing packages <ArrowRight aria-hidden="true" />
               </a>
               <Link
                 className="button button-ghost"
@@ -221,6 +365,102 @@ export default function AutoDetailingPage() {
               separately recommended and scoped when defects require more work.
             </p>
           </article>
+        </div>
+      </section>
+
+      <section className="section detailing-packages-section" id="packages">
+        <div className="shell">
+          <div className="detailing-packages-head">
+            <SectionIntro
+              eyebrow="Published PRO Detailing menu"
+              title="Four clear starting points. Every inclusion is shown."
+              copy="Choose the closest fit, then let vehicle size and condition set the final scope. These packages and starting prices come from the current PRO Detailing service menu."
+            />
+            <p className="package-price-note">
+              Starting prices · final price and timing confirmed before work
+            </p>
+          </div>
+
+          <div className="detailing-package-grid">
+            {detailingPackages.map((item) => (
+              <article
+                className={`detailing-package-card${item.featured ? ' is-featured' : ''}`}
+                id={item.id}
+                key={item.id}
+              >
+                <div className="package-card-head">
+                  <div>
+                    <span>{item.label}</span>
+                    <h2>{item.name}</h2>
+                  </div>
+                  <div className="package-price">
+                    <small>Starting at</small>
+                    <strong>${item.price}</strong>
+                    <span>{item.duration}</span>
+                  </div>
+                </div>
+                <p className="package-description">{item.description}</p>
+                <div
+                  className={`package-inclusions${item.exterior.length ? '' : ' interior-only'}`}
+                >
+                  <div>
+                    <h3>Interior</h3>
+                    <ul>
+                      {item.interior.map((inclusion) => (
+                        <li key={inclusion}>{inclusion}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  {item.exterior.length ? (
+                    <div>
+                      <h3>Exterior</h3>
+                      <ul>
+                        {item.exterior.map((inclusion) => (
+                          <li key={inclusion}>{inclusion}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <div className="interior-only-note">
+                      <span>Interior-only service</span>
+                      <p>No exterior service is included in Tier 4.</p>
+                    </div>
+                  )}
+                </div>
+                <Link
+                  className="button button-ghost package-quote-link"
+                  href={`${quoteHref('detailing')}&package=${item.id}`}
+                >
+                  Request {item.name} <ArrowRight aria-hidden="true" />
+                </Link>
+              </article>
+            ))}
+          </div>
+
+          <div className="detailing-addons">
+            <div>
+              <p className="overline">Published add-ons</p>
+              <h2>Build around the condition.</h2>
+              <p>
+                Some add-ons may already be included in a package. We confirm
+                what is actually needed before adding it to your quote.
+              </p>
+            </div>
+            <ul>
+              {detailingAddOns.map(([name, price]) => (
+                <li key={name}>
+                  <span>{name}</span>
+                  <strong>+{price}</strong>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <p className="package-source-note">
+            Menu reviewed from the current pro-detailing.co car-detailing page.
+            Vehicle size, condition and requested work can change the final
+            quote. Add-on availability is confirmed by the studio.
+          </p>
         </div>
       </section>
 

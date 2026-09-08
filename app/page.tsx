@@ -66,6 +66,22 @@ const faqs = [
   ],
 ] as const;
 
+const homeGalleryIds = [
+  'sports-car-in-bay',
+  'blue-pickup-profile',
+  'grey-suv-profile',
+  'green-saloon-profile',
+  'white-pickup-forecourt',
+  'white-convertible-lot',
+  'white-audi-suv-bay-door',
+  'silver-sports-car-forecourt',
+] as const;
+
+const homeGallery = homeGalleryIds.flatMap((id) => {
+  const item = galleryItems.find((entry) => entry.id === id);
+  return item ? [item] : [];
+});
+
 export default function Home() {
   const homeSchema = {
     '@context': 'https://schema.org',
@@ -201,7 +217,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="home-gallery">
-            {galleryItems.slice(0, 8).map((item, index) => (
+            {homeGallery.map((item, index) => (
               <Link
                 className={`home-gallery-item item-${index + 1}`}
                 href="/gallery"

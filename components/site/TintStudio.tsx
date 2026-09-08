@@ -87,7 +87,10 @@ export function TintStudio({ compact = false }: { compact?: boolean }) {
   const line = filmLines.find((item) => item.id === lineId) ?? filmLines[1];
   const shade =
     line.shades.find((item) => item.id === shadeId) ?? line.shades[0];
-  const darkness = Math.max(0.08, Math.min(0.82, (100 - shade.vlt) / 112));
+  const darkness = Math.max(
+    0.12,
+    Math.min(0.94, 0.08 + (1 - shade.vlt / 100) * 0.92),
+  );
   const supportedState =
     state === 'Virginia' ||
     state === 'Maryland' ||
@@ -155,45 +158,47 @@ export function TintStudio({ compact = false }: { compact?: boolean }) {
         </div>
         <div className={`vehicle-stage ${before ? 'show-before' : ''}`}>
           <div className="stage-light" aria-hidden="true" />
-          <Image
-            className="vehicle-base"
-            src={`/vehicles/${vehicle}.webp`}
-            alt={`${vehicles.find(([id]) => id === vehicle)?.[1]} tint appearance preview`}
-            width="1536"
-            height="1024"
-            sizes="(max-width: 780px) 112vw, 62vw"
-            priority={!compact}
-          />
-          {zones.frontSides ? (
-            <span
-              className="tint-mask"
-              style={{
-                opacity: before ? 0 : darkness,
-                WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
-                maskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
-              }}
+          <div className="vehicle-composite">
+            <Image
+              className="vehicle-base"
+              src={`/vehicles/${vehicle}.webp`}
+              alt={`${vehicles.find(([id]) => id === vehicle)?.[1]} tint appearance preview`}
+              width="1536"
+              height="1024"
+              sizes="(max-width: 780px) 112vw, 62vw"
+              priority={!compact}
             />
-          ) : null}
-          {zones.rearSides && vehicle !== 'coupe' ? (
-            <span
-              className="tint-mask"
-              style={{
-                opacity: before ? 0 : darkness,
-                WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
-                maskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
-              }}
-            />
-          ) : null}
-          {zones.windshield ? (
-            <span
-              className="tint-mask"
-              style={{
-                opacity: before ? 0 : Math.min(darkness, 0.58),
-                WebkitMaskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
-                maskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
-              }}
-            />
-          ) : null}
+            {zones.frontSides ? (
+              <span
+                className="tint-mask"
+                style={{
+                  opacity: before ? 0 : darkness,
+                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
+                  maskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
+                }}
+              />
+            ) : null}
+            {zones.rearSides && vehicle !== 'coupe' ? (
+              <span
+                className="tint-mask"
+                style={{
+                  opacity: before ? 0 : darkness,
+                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
+                  maskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
+                }}
+              />
+            ) : null}
+            {zones.windshield ? (
+              <span
+                className="tint-mask"
+                style={{
+                  opacity: before ? 0 : Math.min(darkness, 0.7),
+                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
+                  maskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
+                }}
+              />
+            ) : null}
+          </div>
           <div className="stage-floor" aria-hidden="true" />
         </div>
         <button
@@ -255,19 +260,47 @@ export function TintStudio({ compact = false }: { compact?: boolean }) {
               ))}
             </select>
           </label>
-          <label>
-            <span>03 · Shade / measured VLT</span>
-            <select
-              value={shadeId}
-              onChange={(event) => setShadeId(event.target.value)}
+          <div className="shade-control">
+            <span className="control-label">03 · Shade / measured VLT</span>
+            <div
+              className="shade-options"
+              role="radiogroup"
+              aria-label="Shade and measured VLT"
             >
               {line.shades.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.label} · {item.vlt}% VLT
-                </option>
+                <label
+                  className={shadeId === item.id ? 'is-active' : ''}
+                  key={item.id}
+                >
+                  <input
+                    type="radio"
+                    name={`shade-${compact ? 'compact' : 'full'}`}
+                    value={item.id}
+                    checked={shadeId === item.id}
+                    aria-label={`${item.label}, ${item.vlt}% measured VLT`}
+                    onChange={() => setShadeId(item.id)}
+                  />
+                  <span
+                    className="shade-option-swatch"
+                    aria-hidden="true"
+                    style={{
+                      background: `linear-gradient(135deg, rgba(126, 145, 134, ${Math.max(
+                        0.16,
+                        item.vlt / 100,
+                      )}), rgba(0, 0, 0, ${Math.max(
+                        0.2,
+                        1 - item.vlt / 112,
+                      )}))`,
+                    }}
+                  />
+                  <span>
+                    <strong>{item.label}</strong>
+                    <small>{item.vlt}% VLT</small>
+                  </span>
+                </label>
               ))}
-            </select>
-          </label>
+            </div>
+          </div>
         </div>
 
         <div className="control-block">

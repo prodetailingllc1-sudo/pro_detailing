@@ -2,6 +2,7 @@ import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 
+import { PpfWordmark } from '@/components/site/PpfWordmark';
 import { services } from '@/lib/site-data';
 
 const systemLabels = {
@@ -40,21 +41,23 @@ export function BrandUniverse() {
               <span className="brand-card-index">0{index + 1}</span>
               <span className="brand-card-signal" aria-hidden="true" />
               <div className="brand-card-logo">
-                <Image
-                  src={service.mark}
-                  alt={
-                    service.id === 'detail'
-                      ? 'PRO Detailing'
-                      : service.id === 'tint'
-                        ? 'PRO Tints by PRO Detailing LLC'
-                        : service.id === 'ceramic'
-                          ? 'PRO Ceramic'
-                          : 'PRO PPF'
-                  }
-                  width={service.markWidth}
-                  height={service.markHeight}
-                  sizes="(max-width: 780px) 80vw, 24vw"
-                />
+                {service.id === 'ppf' ? (
+                  <PpfWordmark className="ppf-wordmark-card" />
+                ) : (
+                  <Image
+                    src={service.mark}
+                    alt={
+                      service.id === 'detail'
+                        ? 'PRO Detailing'
+                        : service.id === 'tint'
+                          ? 'PRO Tints by PRO Detailing LLC'
+                          : 'PRO Ceramic'
+                    }
+                    width={service.markWidth}
+                    height={service.markHeight}
+                    sizes="(max-width: 780px) 80vw, 24vw"
+                  />
+                )}
               </div>
               <div className="brand-card-copy">
                 <span>{systemLabels[service.id]}</span>

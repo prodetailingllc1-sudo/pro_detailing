@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
 import { useState } from 'react';
 
+import { PpfWordmark } from '@/components/site/PpfWordmark';
 import { services } from '@/lib/site-data';
 
 export function ProtectionLab() {
@@ -55,13 +56,17 @@ export function ProtectionLab() {
           <span className="lab-readout">SYSTEM / {active.step}</span>
         </div>
         <div className="lab-copy">
-          <Image
-            className="service-mark"
-            src={active.mark}
-            alt=""
-            width={active.markWidth}
-            height={active.markHeight}
-          />
+          {active.id === 'ppf' ? (
+            <PpfWordmark className="service-mark ppf-wordmark-lab" />
+          ) : (
+            <Image
+              className="service-mark"
+              src={active.mark}
+              alt=""
+              width={active.markWidth}
+              height={active.markHeight}
+            />
+          )}
           <p className="overline">Configured around your vehicle</p>
           <h3>{active.name}</h3>
           <p>{active.description}</p>

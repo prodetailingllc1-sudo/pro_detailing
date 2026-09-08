@@ -4,6 +4,7 @@ import Link from '@/components/site/SafeLink';
 import { ArrowRight, Check, Focus, Layers3, ShieldCheck } from 'lucide-react';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
+import { PpfWordmark } from '@/components/site/PpfWordmark';
 import { SectionIntro } from '@/components/site/SectionIntro';
 import {
   processSteps,
@@ -78,10 +79,10 @@ export default function PaintProtectionFilmPage() {
       <section className="service-hero ppf-service-hero">
         <div className="service-hero-media" aria-hidden="true">
           <Image
-            src="/gallery/polished-suv-front.webp"
+            src="/generated/ppf-installation.webp"
             alt=""
-            width="1800"
-            height="1200"
+            width="1536"
+            height="1024"
             priority
             sizes="100vw"
           />
@@ -89,13 +90,7 @@ export default function PaintProtectionFilmPage() {
         </div>
         <div className="shell service-hero-inner">
           <div className="service-hero-copy">
-            <Image
-              className="service-hero-mark"
-              src="/brand/pro-ppf-optimized.webp"
-              alt="PRO PPF"
-              width="1100"
-              height="207"
-            />
+            <PpfWordmark className="service-hero-mark ppf-wordmark-hero" />
             <p className="eyebrow">
               <span /> Impact protection · planned panel by panel
             </p>
@@ -196,12 +191,13 @@ export default function PaintProtectionFilmPage() {
             <Link className="button button-primary" href={quoteHref('ppf')}>
               Request an inspection <ArrowRight aria-hidden="true" />
             </Link>
-          </div>
-          <div className="coverage-diagram ppf-coverage-diagram">
+            </div>
+            <div className="coverage-diagram ppf-coverage-diagram">
             <div className="coverage-car">
               <Image
-                src="/vehicles/coupe.webp"
-                alt="Coupe used to illustrate paint protection film coverage planning"
+                className="ppf-coverage-image"
+                src="/generated/ppf-coverage.webp"
+                alt="Clear paint protection film coverage being inspected on the painted impact zones of a performance coupe"
                 width="1536"
                 height="1024"
                 sizes="(max-width: 780px) 100vw, 54vw"

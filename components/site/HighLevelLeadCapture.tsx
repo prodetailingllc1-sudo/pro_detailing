@@ -22,6 +22,20 @@ const goalOptions = [
   'I need a recommendation',
 ];
 
+const serviceGoalDefaults = {
+  tint: 'Cabin comfort & privacy',
+  ceramic: 'Easier maintenance & gloss',
+  ppf: 'Protect the paint',
+  detailing: 'Deep interior/exterior reset',
+} as const;
+
+const detailingPackageLabels = {
+  'tier-1': 'Detailing Tier 1',
+  'tier-2': 'Detailing Tier 2',
+  'tier-3': 'Detailing Tier 3',
+  'tier-4': 'Detailing Tier 4',
+} as const;
+
 type SubmitState = 'idle' | 'sending' | 'success' | 'error';
 
 function allowedService(value: string | null) {
@@ -32,6 +46,7 @@ function buildTrackedBookingUrl(
   service: string,
   vehicle: string,
   goal: string,
+  packageChoice: string,
 ) {
   const url = new URL(business.bookingUrl);
   url.searchParams.set('utm_source', 'pro_detailing_site');
@@ -40,6 +55,7 @@ function buildTrackedBookingUrl(
   url.searchParams.set('service', service);
   url.searchParams.set('vehicle', vehicle);
   url.searchParams.set('goal', goal);
+  if (packageChoice) url.searchParams.set('package', packageChoice);
   return url.toString();
 }
 
@@ -47,19 +63,35 @@ export function HighLevelLeadCapture({
   embedUrl,
   webhookEnabled,
   initialService = 'tint',
+  initialPackage = '',
 }: {
   embedUrl?: string;
   webhookEnabled: boolean;
   initialService?: string;
+  initialPackage?: string;
 }) {
-  const [service, setService] = useState(allowedService(initialService));
+  const normalizedInitialService = allowedService(initialService);
+  const [service, setService] = useState(normalizedInitialService);
   const [vehicle, setVehicle] = useState('Sedan');
-  const [goal, setGoal] = useState(goalOptions[0]);
+  const [goal, setGoal] = useState<string>(
+    serviceGoalDefaults[
+      normalizedInitialService as keyof typeof serviceGoalDefaults
+    ],
+  );
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [statusMessage, setStatusMessage] = useState('');
+  const packageChoice = Object.hasOwn(detailingPackageLabels, initialPackage)
+    ? initialPackage
+    : '';
+  const selectedPackage = service === 'detailing' ? packageChoice : '';
+  const packageLabel = selectedPackage
+    ? detailingPackageLabels[
+        selectedPackage as keyof typeof detailingPackageLabels
+      ]
+    : '';
   const bookingUrl = useMemo(
-    () => buildTrackedBookingUrl(service, vehicle, goal),
-    [goal, service, vehicle],
+    () => buildTrackedBookingUrl(service, vehicle, goal, selectedPackage),
+    [goal, selectedPackage, service, vehicle],
   );
 
   async function submitLead(
@@ -87,6 +119,7 @@ export function HighLevelLeadCapture({
           phone: form.get('phone'),
           email: form.get('email'),
           service,
+          package: selectedPackage,
           vehicle: form.get('vehicle'),
           goal: form.get('goal'),
           message: form.get('message'),
@@ -141,6 +174,11 @@ export function HighLevelLeadCapture({
           <span>VEHICLE REQUEST / CRM</span>
           <span>DIRECT TO PRO DETAILING</span>
         </div>
+        {packageLabel ? (
+          <p className="lead-package-context">
+            Selected starting point: <strong>{packageLabel}</strong>
+          </p>
+        ) : null}
         <div className="lead-form-grid">
           <label>
             <span>Full name</span>
@@ -252,7 +290,10 @@ export function HighLevelLeadCapture({
             <button
               type="button"
               className={service === value ? 'is-active' : ''}
-              onClick={() => setService(value)}
+              onClick={() => {
+                setService(value);
+                setGoal(serviceGoalDefaults[value]);
+              }}
               key={value}
             >
               {label}
@@ -286,6 +327,7 @@ export function HighLevelLeadCapture({
           <strong>Your route is ready.</strong>
           {serviceOptions.find(([value]) => value === service)?.[1]} · {vehicle}{' '}
           · {goal}
+          {packageLabel ? ` · ${packageLabel}` : ''}
         </p>
       </div>
 

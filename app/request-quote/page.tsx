@@ -44,6 +44,7 @@ function addFormAttribution(
 
   for (const key of [
     'service',
+    'package',
     'utm_source',
     'utm_medium',
     'utm_campaign',
@@ -64,6 +65,7 @@ export default async function RequestQuotePage({
 }) {
   const params = await searchParams;
   const service = firstValue(params.service) ?? 'tint';
+  const packageChoice = firstValue(params.package) ?? '';
   const embedUrl = addFormAttribution(
     safeEmbedUrl(process.env.GHL_FORM_URL),
     params,
@@ -120,6 +122,7 @@ export default async function RequestQuotePage({
             embedUrl={embedUrl}
             webhookEnabled={webhookEnabled}
             initialService={service}
+            initialPackage={packageChoice}
           />
 
           <aside className="quote-next-panel">

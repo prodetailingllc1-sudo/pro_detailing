@@ -66,6 +66,7 @@ export async function POST(request: Request) {
     phone,
     email,
     service: clean(body.service, 40),
+    package: clean(body.package, 40),
     vehicle,
     goal: clean(body.goal, 120),
     message: clean(body.message, 1_200),

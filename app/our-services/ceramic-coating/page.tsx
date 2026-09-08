@@ -27,11 +27,10 @@ function galleryItem(id: string) {
   return galleryItems.find((item) => item.id === id) ?? galleryItems[0];
 }
 
-const heroImage = galleryItem('glossy-black-coupe');
 const finishGallery = [
-  heroImage,
-  galleryItem('polished-suv-front'),
   galleryItem('grey-coupe-dusk'),
+  galleryItem('silver-sports-car-forecourt'),
+  galleryItem('dark-fastback-drive'),
 ];
 
 export const metadata: Metadata = {
@@ -172,10 +171,10 @@ export default function CeramicCoatingPage() {
       <section className="service-hero ceramic-service-hero">
         <div className="service-hero-media" aria-hidden="true">
           <Image
-            src={heroImage.src}
+            src="/generated/ceramic-application.webp"
             alt=""
-            width={heroImage.width}
-            height={heroImage.height}
+            width="1536"
+            height="1024"
             priority
             sizes="100vw"
           />
