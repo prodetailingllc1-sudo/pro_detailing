@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowUpRight, MapPin, ShieldCheck } from 'lucide-react';
+import { ArrowRight, MapPin, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 
 import Link from '@/components/site/SafeLink';
@@ -23,13 +23,11 @@ export function HeroExperience() {
           <p className="eyebrow">
             <span /> Automotive appearance & protection · Manassas, VA
           </p>
-          <h1>
-            Window tint, ceramic coating & paint protection in Manassas.
-          </h1>
+          <h1>Window tint, ceramic coating & paint protection in Manassas.</h1>
           <p className="hero-copy">
             One vehicle-protection studio for LLumar tint, Ceramic Pro coating,
-            paint protection film and meticulous detailing—configured around
-            the way your vehicle is driven, parked and maintained.
+            paint protection film and meticulous detailing—configured around the
+            way your vehicle is driven, parked and maintained.
           </p>
           <div className="hero-actions">
             <Link className="button button-primary" href="/tint-simulator">
@@ -70,29 +68,6 @@ export function HeroExperience() {
           </div>
         </div>
       </div>
-
-      <nav className="hero-service-links shell" aria-label="Explore our services">
-        <Link href="/our-services/window-tinting">
-          <small>01</small>
-          <span><strong>PRO Tints</strong>LLumar window film</span>
-          <ArrowUpRight aria-hidden="true" />
-        </Link>
-        <Link href="/our-services/ceramic-coating">
-          <small>02</small>
-          <span><strong>PRO Ceramic</strong>Ceramic Pro coating</span>
-          <ArrowUpRight aria-hidden="true" />
-        </Link>
-        <Link href="/our-services/paint-protection-film">
-          <small>03</small>
-          <span><strong>PRO PPF</strong>Paint protection film</span>
-          <ArrowUpRight aria-hidden="true" />
-        </Link>
-        <Link href="/our-services/auto-detailing">
-          <small>04</small>
-          <span><strong>PRO Detailing</strong>Interior & exterior care</span>
-          <ArrowUpRight aria-hidden="true" />
-        </Link>
-      </nav>
     </section>
   );
 }
