@@ -5435,3 +5435,41 @@ body {
     font-size: 0.46rem;
   }
 }
+
+/* V5 align every service identity to one optical frame and left edge */
+.brand-card-logo {
+  --brand-logo-height: clamp(4rem, 5.25vw, 4.75rem);
+  place-items: center start;
+}
+
+.brand-card-logo > img {
+  width: min(100%, 550px);
+  height: var(--brand-logo-height);
+  object-fit: contain;
+  object-position: left center;
+}
+
+.brand-card-logo > .ppf-wordmark-card {
+  width: min(100%, 550px);
+  height: var(--brand-logo-height);
+  justify-content: flex-start;
+  gap: clamp(0.7rem, 1.3vw, 1rem);
+}
+
+.brand-card-logo > .ppf-wordmark-card > img {
+  width: calc(var(--brand-logo-height) * 1.48);
+}
+
+.brand-card-logo > .ppf-wordmark-card .ppf-wordmark-copy {
+  gap: clamp(0.25rem, 0.45vw, 0.38rem);
+}
+
+.brand-card-logo > .ppf-wordmark-card .ppf-wordmark-copy strong {
+  font-size: calc(var(--brand-logo-height) * 0.73);
+  line-height: 0.82;
+}
+
+.brand-card-logo > .ppf-wordmark-card .ppf-wordmark-copy small {
+  font-size: clamp(0.44rem, 0.62vw, 0.58rem);
+  letter-spacing: 0.18em;
+}
