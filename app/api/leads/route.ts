@@ -1,6 +1,12 @@
 import { siteFeatures } from '@/lib/site-config';
 import { resolveQuotePackage } from '@/lib/quote-packages';
-import { resolveQuoteAddOns } from '@/lib/quote-options';
+import {
+  resolveCeramicSurfaceOfferings,
+  resolveQuoteAddOns,
+  resolveTintCoverage,
+  resolveTintLine,
+  resolveTintShade,
+} from '@/lib/quote-options';
 
 const MAX_BODY_BYTES = 20_000;
 const ALLOWED_SERVICES = new Set([
@@ -79,6 +85,18 @@ export async function POST(request: Request) {
     service === 'detailing' || service === 'mobile-detailing'
       ? resolveQuoteAddOns(body.addOnIds)
       : [];
+  const tintLine =
+    service === 'tint' ? resolveTintLine(clean(body.tintLine, 20)) : null;
+  const tintShade =
+    service === 'tint' && tintLine
+      ? resolveTintShade(tintLine.id, clean(body.tintShade, 30))
+      : null;
+  const tintCoverage =
+    service === 'tint' ? resolveTintCoverage(body.tintCoverageIds) : [];
+  const ceramicSurfaces =
+    service === 'ceramic'
+      ? resolveCeramicSurfaceOfferings(body.ceramicSurfaceIds)
+      : [];
 
   if (!name || phone.replace(/\D/g, '').length < 7 || !vehicle || !consent) {
     return json({ ok: false, error: 'missing_required_fields' }, 400);
@@ -93,6 +111,38 @@ export async function POST(request: Request) {
       .map((key) => [key, clean(attributionSource[key], 200)])
       .filter(([, value]) => Boolean(value)),
   );
+  const configurationSummary =
+    service === 'tint'
+      ? [
+          tintLine ? `LLumar ${tintLine.name}` : '',
+          tintShade
+            ? `${tintShade.label} (${tintShade.vlt}% measured VLT)`
+            : '',
+          tintCoverage.map((option) => option.label).join(', '),
+        ]
+          .filter(Boolean)
+          .join(' · ')
+      : service === 'ceramic'
+        ? [
+            packageChoice?.label ?? 'Ceramic Pro package recommendation',
+            ceramicSurfaces.length
+              ? `Specialty surfaces: ${ceramicSurfaces
+                  .map((offering) => offering.name)
+                  .join(', ')}`
+              : '',
+          ]
+            .filter(Boolean)
+            .join(' · ')
+        : service === 'detailing' || service === 'mobile-detailing'
+          ? [
+              packageChoice?.label ?? 'Package recommendation',
+              addOns.length
+                ? `Add-ons: ${addOns.map((addOn) => addOn.name).join(', ')}`
+                : '',
+            ]
+              .filter(Boolean)
+              .join(' · ')
+          : '';
 
   const payload = {
     name,
@@ -104,19 +154,46 @@ export async function POST(request: Request) {
     addOnIds: addOns.map((addOn) => addOn.id),
     addOnLabels: addOns.map((addOn) => addOn.name),
     addOnsSummary: addOns.map((addOn) => addOn.name).join(', '),
+    tintFilmLineId: tintLine?.id ?? '',
+    tintFilmLineLabel: tintLine
+      ? `LLumar ${tintLine.name} — ${tintLine.category}`
+      : '',
+    tintShadeId: tintShade?.id ?? '',
+    tintShadeLabel: tintShade?.label ?? '',
+    tintShadeVlt: tintShade?.vlt ?? '',
+    tintCoverageIds: tintCoverage.map((option) => option.id),
+    tintCoverageLabels: tintCoverage.map((option) => option.label),
+    tintCoverageSummary: tintCoverage.map((option) => option.label).join(', '),
+    ceramicSurfaceIds: ceramicSurfaces.map((offering) => offering.id),
+    ceramicSurfaceLabels: ceramicSurfaces.map((offering) => offering.name),
+    ceramicSurfacesSummary: ceramicSurfaces
+      .map((offering) => offering.name)
+      .join(', '),
+    configurationSummary,
     vehicle,
     vehicleType: clean(body.vehicleType, 40),
     goal: clean(body.goal, 120),
     message: clean(body.message, 1_200),
     consent: true,
+    consentAt: new Date().toISOString(),
     source: 'PRO Detailing website',
     sourcePage: clean(body.page, 200),
+    landingUrl: clean(body.landingUrl, 500),
     attribution,
+    utmSource: attribution.utm_source ?? '',
+    utmMedium: attribution.utm_medium ?? '',
+    utmCampaign: attribution.utm_campaign ?? '',
+    utmContent: attribution.utm_content ?? '',
+    gclid: attribution.gclid ?? '',
     tags: [
       'Website Lead',
       'PRO Site',
       `Service: ${service}`,
-      ...(packageChoice ? [`Path: ${packageChoice.label}`] : []),
+      ...(packageChoice ? [`Package: ${packageChoice.label}`] : []),
+      ...(tintLine ? [`Film: LLumar ${tintLine.name}`] : []),
+      ...(tintShade ? [`Shade: ${tintShade.label} ${tintShade.vlt}% VLT`] : []),
+      ...tintCoverage.map((option) => `Glass: ${option.label}`),
+      ...ceramicSurfaces.map((offering) => `Ceramic surface: ${offering.name}`),
       ...addOns.map((addOn) => `Add-on: ${addOn.name}`),
     ],
     submittedAt: new Date().toISOString(),

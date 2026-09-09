@@ -74,6 +74,15 @@ export const detailingAddOns = [
   { id: 'engine-bay-detail', name: 'Engine-bay detail', price: 50 },
 ] as const;
 
+export const tintCoverageOptions = [
+  { id: 'frontSides', label: 'Front side glass' },
+  { id: 'rearSides', label: 'Rear side & back glass' },
+  { id: 'windshield', label: 'Windshield brow' },
+] as const;
+
+export const defaultTintLineId = 'irx';
+export const defaultTintCoverageIds = ['frontSides', 'rearSides'] as const;
+
 export type QuoteTierOption = {
   id: string;
   name: string;
@@ -91,11 +100,61 @@ export function quoteTierOptionsForService(
 }
 
 export function resolveQuoteAddOns(value: unknown) {
-  const requested = new Set(
-    (Array.isArray(value) ? value : [])
-      .filter((id): id is string => typeof id === 'string')
-      .slice(0, detailingAddOns.length),
-  );
+  const requested = selectedIds(value, detailingAddOns.length);
 
   return detailingAddOns.filter((addOn) => requested.has(addOn.id));
 }
+
+function selectedIds(value: unknown, limit: number) {
+  const candidates = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? value.split(',')
+      : [];
+
+  return new Set(
+    candidates
+      .filter((id): id is string => typeof id === 'string')
+      .map((id) => id.trim())
+      .filter(Boolean)
+      .slice(0, limit),
+  );
+}
+
+export function resolveTintLine(value: string | undefined) {
+  if (!value) return null;
+  return filmLines.find((line) => line.id === value) ?? null;
+}
+
+export function defaultTintShadeForLine(lineId: string) {
+  const line = resolveTintLine(lineId);
+  if (!line) return null;
+  return (
+    line.shades.find((shade) => shade.id === `${line.id}-35`) ??
+    line.shades[Math.min(4, line.shades.length - 1)] ??
+    null
+  );
+}
+
+export function resolveTintShade(
+  lineId: string | undefined,
+  shadeId: string | undefined,
+) {
+  const line = resolveTintLine(lineId);
+  if (!line || !shadeId) return null;
+  return line.shades.find((shade) => shade.id === shadeId) ?? null;
+}
+
+export function resolveTintCoverage(value: unknown) {
+  const requested = selectedIds(value, tintCoverageOptions.length);
+  return tintCoverageOptions.filter((option) => requested.has(option.id));
+}
+
+export function resolveCeramicSurfaceOfferings(value: unknown) {
+  const requested = selectedIds(value, ceramicProSurfaceOfferings.length);
+  return ceramicProSurfaceOfferings.filter((offering) =>
+    requested.has(offering.id),
+  );
+}
+import { ceramicProSurfaceOfferings } from '@/lib/ceramic-pro-data';
+import { filmLines } from '@/lib/site-data';

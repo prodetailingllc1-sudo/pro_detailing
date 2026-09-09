@@ -5,6 +5,16 @@ import Link from '@/components/site/SafeLink';
 import { HighLevelLeadCapture } from '@/components/site/HighLevelLeadCapture';
 import { createPageMetadata } from '@/lib/metadata';
 import { resolveQuotePackage } from '@/lib/quote-packages';
+import {
+  defaultTintCoverageIds,
+  defaultTintLineId,
+  defaultTintShadeForLine,
+  resolveCeramicSurfaceOfferings,
+  resolveQuoteAddOns,
+  resolveTintCoverage,
+  resolveTintLine,
+  resolveTintShade,
+} from '@/lib/quote-options';
 import { siteFeatures } from '@/lib/site-config';
 import { business, SITE_ORIGIN } from '@/lib/site-data';
 
@@ -58,6 +68,13 @@ function addFormAttribution(
   for (const key of [
     'service',
     'package',
+    'film',
+    'shade',
+    'coverage',
+    'surfaces',
+    'addons',
+    'vehicle',
+    'goal',
     'utm_source',
     'utm_medium',
     'utm_campaign',
@@ -80,10 +97,42 @@ export default async function RequestQuotePage({
   const service = allowedQuoteService(firstValue(params.service));
   const packageChoice =
     resolveQuotePackage(service, firstValue(params.package))?.id ?? '';
+  const tintLine =
+    resolveTintLine(firstValue(params.film))?.id ?? defaultTintLineId;
+  const tintShade =
+    resolveTintShade(tintLine, firstValue(params.shade))?.id ??
+    defaultTintShadeForLine(tintLine)?.id ??
+    '';
+  const tintCoverage = firstValue(params.coverage)
+    ? resolveTintCoverage(firstValue(params.coverage)).map(
+        (option) => option.id,
+      )
+    : [...defaultTintCoverageIds];
+  const ceramicSurfaces = resolveCeramicSurfaceOfferings(
+    firstValue(params.surfaces),
+  ).map((offering) => offering.id);
+  const addOnIds = resolveQuoteAddOns(firstValue(params.addons)).map(
+    (addOn) => addOn.id,
+  );
   const normalizedParams: QuoteSearchParams = {
     ...params,
     service,
     package: packageChoice || undefined,
+    film: service === 'tint' ? tintLine : undefined,
+    shade: service === 'tint' ? tintShade : undefined,
+    coverage:
+      service === 'tint' && tintCoverage.length
+        ? tintCoverage.join(',')
+        : undefined,
+    surfaces:
+      service === 'ceramic' && ceramicSurfaces.length
+        ? ceramicSurfaces.join(',')
+        : undefined,
+    addons:
+      (service === 'detailing' || service === 'mobile-detailing') &&
+      addOnIds.length
+        ? addOnIds.join(',')
+        : undefined,
   };
   const embedUrl = addFormAttribution(
     safeEmbedUrl(process.env.GHL_FORM_URL),
@@ -140,10 +189,24 @@ export default async function RequestQuotePage({
       <section className="section quote-capture-section">
         <div className="shell quote-capture-layout">
           <HighLevelLeadCapture
+            key={[
+              service,
+              packageChoice,
+              tintLine,
+              tintShade,
+              tintCoverage.join(','),
+              ceramicSurfaces.join(','),
+              addOnIds.join(','),
+            ].join(':')}
             embedUrl={embedUrl}
             webhookEnabled={webhookEnabled}
             initialService={service}
             initialPackage={packageChoice}
+            initialTintLine={tintLine}
+            initialTintShade={tintShade}
+            initialTintCoverageIds={tintCoverage}
+            initialCeramicSurfaceIds={ceramicSurfaces}
+            initialAddOnIds={addOnIds}
           />
 
           <aside className="quote-next-panel">

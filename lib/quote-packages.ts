@@ -1,4 +1,5 @@
 import { additionalServices } from '@/lib/expanded-content';
+import { ceramicProPaintPackages } from '@/lib/ceramic-pro-data';
 import {
   detailingQuoteTiers,
   mobileDetailingQuoteTiers,
@@ -9,6 +10,16 @@ export function resolveQuotePackage(
   choice: string | undefined,
 ) {
   if (!choice) return null;
+
+  if (service === 'ceramic') {
+    const offering = ceramicProPaintPackages.find((item) => item.id === choice);
+    return offering
+      ? {
+          id: offering.id,
+          label: `Ceramic Pro ${offering.name}`,
+        }
+      : null;
+  }
 
   const configuredTier =
     service === 'detailing'

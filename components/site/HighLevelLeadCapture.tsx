@@ -4,12 +4,22 @@ import { ArrowRight, Check, Phone, ShieldCheck } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { SyntheticEvent } from 'react';
 
+import {
+  configurationStepCount,
+  QuoteConfigurationPicker,
+} from '@/components/site/QuoteConfigurationPicker';
 import { business } from '@/lib/site-data';
 import { siteFeatures } from '@/lib/site-config';
 import { resolveQuotePackage } from '@/lib/quote-packages';
 import {
-  detailingAddOns,
-  quoteTierOptionsForService,
+  defaultTintCoverageIds,
+  defaultTintLineId,
+  defaultTintShadeForLine,
+  resolveCeramicSurfaceOfferings,
+  resolveQuoteAddOns,
+  resolveTintCoverage,
+  resolveTintLine,
+  resolveTintShade,
 } from '@/lib/quote-options';
 
 const serviceOptions: readonly (readonly [string, string])[] = [
@@ -69,13 +79,29 @@ function allowedService(value: string | null) {
   return serviceOptions.some(([id]) => id === value) ? value! : 'tint';
 }
 
-function buildTrackedBookingUrl(
-  service: string,
-  vehicle: string,
-  goal: string,
-  packageChoice: string,
-  addOnIds: readonly string[],
-) {
+type BookingSelections = {
+  service: string;
+  vehicle: string;
+  goal: string;
+  packageChoice: string;
+  addOnIds: readonly string[];
+  tintLineId: string;
+  tintShadeId: string;
+  tintCoverageIds: readonly string[];
+  ceramicSurfaceIds: readonly string[];
+};
+
+function buildTrackedBookingUrl({
+  service,
+  vehicle,
+  goal,
+  packageChoice,
+  addOnIds,
+  tintLineId,
+  tintShadeId,
+  tintCoverageIds,
+  ceramicSurfaceIds,
+}: BookingSelections) {
   const url = new URL(business.bookingUrl);
   url.searchParams.set('utm_source', 'pro_detailing_site');
   url.searchParams.set('utm_medium', 'website');
@@ -84,143 +110,23 @@ function buildTrackedBookingUrl(
   url.searchParams.set('vehicle', vehicle);
   url.searchParams.set('goal', goal);
   if (packageChoice) url.searchParams.set('package', packageChoice);
-  if (addOnIds.length) url.searchParams.set('addons', addOnIds.join(','));
+  if (
+    (service === 'detailing' || service === 'mobile-detailing') &&
+    addOnIds.length
+  ) {
+    url.searchParams.set('addons', addOnIds.join(','));
+  }
+  if (service === 'tint') {
+    url.searchParams.set('film', tintLineId);
+    url.searchParams.set('shade', tintShadeId);
+    if (tintCoverageIds.length) {
+      url.searchParams.set('coverage', tintCoverageIds.join(','));
+    }
+  }
+  if (service === 'ceramic' && ceramicSurfaceIds.length) {
+    url.searchParams.set('surfaces', ceramicSurfaceIds.join(','));
+  }
   return url.toString();
-}
-
-function TierAndAddOnPicker({
-  service,
-  packageChoice,
-  selectedAddOnIds,
-  onPackageChange,
-  onToggleAddOn,
-}: {
-  service: string;
-  packageChoice: string;
-  selectedAddOnIds: readonly string[];
-  onPackageChange: (choice: string) => void;
-  onToggleAddOn: (id: string) => void;
-}) {
-  const tiers = quoteTierOptionsForService(service);
-  if (!tiers.length) return null;
-
-  const mobile = service === 'mobile-detailing';
-  const tierHeadingId = 'quote-tier-heading-' + service;
-
-  return (
-    <section className="lead-configuration" aria-labelledby={tierHeadingId}>
-      <div className="lead-configuration-head">
-        <span>{mobile ? '02 · MOBILE PACKAGE' : '02 · DETAILING PACKAGE'}</span>
-        <strong id={tierHeadingId}>
-          {mobile
-            ? 'Choose a mobile detailing tier.'
-            : 'Choose a detailing tier.'}
-        </strong>
-        <p>
-          {mobile
-            ? 'Select the closest service level. Final mobile scope and price are confirmed after the address and vehicle are reviewed.'
-            : 'Published starting prices are shown. Vehicle size and condition can change the final quote.'}
-        </p>
-      </div>
-
-      <fieldset className="lead-tier-fieldset">
-        <legend className="sr-only">
-          {mobile
-            ? 'Choose a mobile detailing tier'
-            : 'Choose a detailing tier'}
-        </legend>
-        <div className="lead-tier-options">
-          {tiers.map((tier) => (
-            <label
-              className={
-                packageChoice === tier.id
-                  ? 'lead-tier-option is-selected'
-                  : 'lead-tier-option'
-              }
-              key={tier.id}
-            >
-              <input
-                className="lead-choice-input"
-                type="radio"
-                name="packageChoice"
-                value={tier.id}
-                checked={packageChoice === tier.id}
-                onChange={() => onPackageChange(tier.id)}
-              />
-              <span className="lead-tier-topline">
-                <strong>{tier.name}</strong>
-                <small>{tier.label}</small>
-              </span>
-              <span className="lead-tier-description">{tier.description}</span>
-              <span className="lead-tier-meta">{tier.meta}</span>
-            </label>
-          ))}
-          <label
-            className={
-              packageChoice
-                ? 'lead-tier-option'
-                : 'lead-tier-option is-selected'
-            }
-          >
-            <input
-              className="lead-choice-input"
-              type="radio"
-              name="packageChoice"
-              value=""
-              checked={!packageChoice}
-              onChange={() => onPackageChange('')}
-            />
-            <span className="lead-tier-topline">
-              <strong>Help me choose</strong>
-              <small>Recommendation</small>
-            </span>
-            <span className="lead-tier-description">
-              Share the condition and let the team recommend the right starting
-              point.
-            </span>
-            <span className="lead-tier-meta">No tier assigned yet</span>
-          </label>
-        </div>
-      </fieldset>
-
-      <fieldset className="lead-addon-fieldset">
-        <legend>03 · Optional add-ons</legend>
-        <p>
-          {mobile
-            ? 'Request any add-ons that may be needed. Mobile availability and pricing are confirmed after the location review.'
-            : 'Add-ons are requests, not automatic charges. The team confirms whether they are already included or actually needed.'}
-        </p>
-        <div className="lead-addon-options">
-          {detailingAddOns.map((addOn) => {
-            const selected = selectedAddOnIds.includes(addOn.id);
-            return (
-              <label
-                className={
-                  selected
-                    ? 'lead-addon-option is-selected'
-                    : 'lead-addon-option'
-                }
-                key={addOn.id}
-              >
-                <input
-                  type="checkbox"
-                  name="addOnIds"
-                  value={addOn.id}
-                  checked={selected}
-                  onChange={() => onToggleAddOn(addOn.id)}
-                />
-                <span>
-                  <strong>{addOn.name}</strong>
-                  <small>{mobile ? 'Request' : '+$' + addOn.price}</small>
-                </span>
-                <Check aria-hidden="true" />
-              </label>
-            );
-          })}
-        </div>
-      </fieldset>
-    </section>
-  );
 }
 
 function ConsentField() {
@@ -245,13 +151,29 @@ export function HighLevelLeadCapture({
   webhookEnabled,
   initialService = 'tint',
   initialPackage = '',
+  initialTintLine = defaultTintLineId,
+  initialTintShade = '',
+  initialTintCoverageIds = defaultTintCoverageIds,
+  initialCeramicSurfaceIds = [],
+  initialAddOnIds = [],
 }: {
   embedUrl?: string;
   webhookEnabled: boolean;
   initialService?: string;
   initialPackage?: string;
+  initialTintLine?: string;
+  initialTintShade?: string;
+  initialTintCoverageIds?: readonly string[];
+  initialCeramicSurfaceIds?: readonly string[];
+  initialAddOnIds?: readonly string[];
 }) {
   const normalizedInitialService = allowedService(initialService);
+  const normalizedInitialTintLine =
+    resolveTintLine(initialTintLine)?.id ?? defaultTintLineId;
+  const normalizedInitialTintShade =
+    resolveTintShade(normalizedInitialTintLine, initialTintShade)?.id ??
+    defaultTintShadeForLine(normalizedInitialTintLine)?.id ??
+    '';
   const [service, setService] = useState(normalizedInitialService);
   const [vehicle, setVehicle] = useState(
     normalizedInitialService === 'residential-tint'
@@ -266,31 +188,110 @@ export function HighLevelLeadCapture({
   const [packageChoice, setPackageChoice] = useState(
     resolveQuotePackage(normalizedInitialService, initialPackage)?.id ?? '',
   );
-  const [selectedAddOnIds, setSelectedAddOnIds] = useState<string[]>([]);
+  const [selectedAddOnIds, setSelectedAddOnIds] = useState<string[]>(
+    normalizedInitialService === 'detailing' ||
+      normalizedInitialService === 'mobile-detailing'
+      ? resolveQuoteAddOns(initialAddOnIds).map((addOn) => addOn.id)
+      : [],
+  );
+  const [tintLineId, setTintLineId] = useState(normalizedInitialTintLine);
+  const [tintShadeId, setTintShadeId] = useState(normalizedInitialTintShade);
+  const [selectedTintCoverageIds, setSelectedTintCoverageIds] = useState<
+    string[]
+  >(resolveTintCoverage(initialTintCoverageIds).map((option) => option.id));
+  const [selectedCeramicSurfaceIds, setSelectedCeramicSurfaceIds] = useState<
+    string[]
+  >(
+    normalizedInitialService === 'ceramic'
+      ? resolveCeramicSurfaceOfferings(initialCeramicSurfaceIds).map(
+          (offering) => offering.id,
+        )
+      : [],
+  );
   const selectedPackage = resolveQuotePackage(service, packageChoice);
   const selectedPackageId = selectedPackage?.id ?? '';
   const packageLabel = selectedPackage?.label ?? '';
-  const selectedAddOns = detailingAddOns.filter((addOn) =>
-    selectedAddOnIds.includes(addOn.id),
+  const selectedAddOns = resolveQuoteAddOns(selectedAddOnIds);
+  const selectedTintLine =
+    resolveTintLine(tintLineId) ?? resolveTintLine(defaultTintLineId)!;
+  const selectedTintShade =
+    resolveTintShade(selectedTintLine.id, tintShadeId) ??
+    defaultTintShadeForLine(selectedTintLine.id)!;
+  const selectedTintCoverage = resolveTintCoverage(selectedTintCoverageIds);
+  const selectedCeramicSurfaces = resolveCeramicSurfaceOfferings(
+    selectedCeramicSurfaceIds,
   );
-  const showsDetailOptions =
-    service === 'detailing' || service === 'mobile-detailing';
+  const configurationSteps = configurationStepCount(service);
+  const vehicleStep = String(2 + configurationSteps).padStart(2, '0');
+  const priorityStep = String(3 + configurationSteps).padStart(2, '0');
+  const configurationSummary =
+    service === 'tint'
+      ? [
+          `LLumar ${selectedTintLine.name}`,
+          `${selectedTintShade.label} (${selectedTintShade.vlt}% measured VLT)`,
+          selectedTintCoverage.map((option) => option.label).join(', ') ||
+            'Glass areas to confirm',
+        ].join(' · ')
+      : service === 'ceramic'
+        ? [
+            packageLabel || 'Ceramic Pro package recommendation',
+            selectedCeramicSurfaces.length
+              ? `Specialty surfaces: ${selectedCeramicSurfaces
+                  .map((offering) => offering.name)
+                  .join(', ')}`
+              : '',
+          ]
+            .filter(Boolean)
+            .join(' · ')
+        : service === 'detailing' || service === 'mobile-detailing'
+          ? [
+              packageLabel || 'Package recommendation',
+              selectedAddOns.length
+                ? `Add-ons: ${selectedAddOns
+                    .map((addOn) => addOn.name)
+                    .join(', ')}`
+                : '',
+            ]
+              .filter(Boolean)
+              .join(' · ')
+          : '';
   const bookingUrl = useMemo(
     () =>
-      buildTrackedBookingUrl(
+      buildTrackedBookingUrl({
         service,
         vehicle,
         goal,
-        selectedPackageId,
-        selectedAddOnIds,
-      ),
-    [goal, selectedAddOnIds, selectedPackageId, service, vehicle],
+        packageChoice: selectedPackageId,
+        addOnIds: selectedAddOnIds,
+        tintLineId: selectedTintLine.id,
+        tintShadeId: selectedTintShade.id,
+        tintCoverageIds: selectedTintCoverageIds,
+        ceramicSurfaceIds: selectedCeramicSurfaceIds,
+      }),
+    [
+      goal,
+      selectedAddOnIds,
+      selectedCeramicSurfaceIds,
+      selectedPackageId,
+      selectedTintCoverageIds,
+      selectedTintLine.id,
+      selectedTintShade.id,
+      service,
+      vehicle,
+    ],
   );
 
   function chooseService(nextService: string) {
+    if (nextService === service) return;
     setService(nextService);
     setPackageChoice('');
     setSelectedAddOnIds([]);
+    setSelectedCeramicSurfaceIds([]);
+    if (nextService === 'tint') {
+      setTintLineId(defaultTintLineId);
+      setTintShadeId(defaultTintShadeForLine(defaultTintLineId)?.id ?? '');
+      setSelectedTintCoverageIds([...defaultTintCoverageIds]);
+    }
     setVehicle(
       nextService === 'residential-tint' ? 'Home / property glass' : 'Sedan',
     );
@@ -301,6 +302,29 @@ export function HighLevelLeadCapture({
 
   function toggleAddOn(id: string) {
     setSelectedAddOnIds((current) =>
+      current.includes(id)
+        ? current.filter((currentId) => currentId !== id)
+        : [...current, id],
+    );
+  }
+
+  function selectTintLine(nextLineId: string) {
+    const line =
+      resolveTintLine(nextLineId) ?? resolveTintLine(defaultTintLineId)!;
+    setTintLineId(line.id);
+    setTintShadeId(defaultTintShadeForLine(line.id)?.id ?? line.shades[0].id);
+  }
+
+  function toggleTintCoverage(id: string) {
+    setSelectedTintCoverageIds((current) =>
+      current.includes(id)
+        ? current.filter((currentId) => currentId !== id)
+        : [...current, id],
+    );
+  }
+
+  function toggleCeramicSurface(id: string) {
+    setSelectedCeramicSurfaceIds((current) =>
       current.includes(id)
         ? current.filter((currentId) => currentId !== id)
         : [...current, id],
@@ -333,8 +357,11 @@ export function HighLevelLeadCapture({
           email: form.get('email'),
           service,
           package: selectedPackageId,
-          packageLabel,
           addOnIds: selectedAddOnIds,
+          tintLine: selectedTintLine.id,
+          tintShade: selectedTintShade.id,
+          tintCoverageIds: selectedTintCoverageIds,
+          ceramicSurfaceIds: selectedCeramicSurfaceIds,
           vehicle: form.get('vehicle'),
           vehicleType: vehicle,
           goal,
@@ -343,6 +370,7 @@ export function HighLevelLeadCapture({
           website: form.get('website'),
           startedAt: Math.round(performance.timeOrigin),
           page: window.location.pathname,
+          landingUrl: window.location.href,
           attribution,
         }),
       });
@@ -361,6 +389,24 @@ export function HighLevelLeadCapture({
       );
     }
   }
+
+  const configurationPicker = (
+    <QuoteConfigurationPicker
+      service={service}
+      packageChoice={selectedPackageId}
+      selectedAddOnIds={selectedAddOnIds}
+      tintLineId={selectedTintLine.id}
+      tintShadeId={selectedTintShade.id}
+      selectedTintCoverageIds={selectedTintCoverageIds}
+      selectedCeramicSurfaceIds={selectedCeramicSurfaceIds}
+      onPackageChange={setPackageChoice}
+      onToggleAddOn={toggleAddOn}
+      onTintLineChange={selectTintLine}
+      onTintShadeChange={setTintShadeId}
+      onToggleTintCoverage={toggleTintCoverage}
+      onToggleCeramicSurface={toggleCeramicSurface}
+    />
+  );
 
   if (embedUrl) {
     return (
@@ -390,13 +436,9 @@ export function HighLevelLeadCapture({
           <span>SERVICE REQUEST / CRM</span>
           <span>DIRECT TO PRO DETAILING</span>
         </div>
-        {packageLabel || selectedAddOns.length ? (
+        {configurationSummary ? (
           <p className="lead-package-context">
-            Selected starting point:{' '}
-            <strong>{packageLabel || 'Recommendation requested'}</strong>
-            {selectedAddOns.length
-              ? ' · ' + selectedAddOns.map((addOn) => addOn.name).join(', ')
-              : ''}
+            Selected configuration: <strong>{configurationSummary}</strong>
           </p>
         ) : null}
         <div className="lead-form-grid">
@@ -471,13 +513,7 @@ export function HighLevelLeadCapture({
             </select>
           </label>
         </div>
-        <TierAndAddOnPicker
-          service={service}
-          packageChoice={selectedPackageId}
-          selectedAddOnIds={selectedAddOnIds}
-          onPackageChange={setPackageChoice}
-          onToggleAddOn={toggleAddOn}
-        />
+        {configurationPicker}
         <label className="lead-message-field">
           <span>What should we know?</span>
           <textarea
@@ -536,21 +572,11 @@ export function HighLevelLeadCapture({
         </fieldset>
       </div>
 
-      <TierAndAddOnPicker
-        service={service}
-        packageChoice={selectedPackageId}
-        selectedAddOnIds={selectedAddOnIds}
-        onPackageChange={setPackageChoice}
-        onToggleAddOn={toggleAddOn}
-      />
+      {configurationPicker}
 
       <div className="lead-router-grid">
         <label>
-          <span>
-            {showsDetailOptions
-              ? '04 · Vehicle / property'
-              : '02 · Vehicle / property'}
-          </span>
+          <span>{vehicleStep} · Vehicle / property</span>
           <select value={vehicle} onChange={(e) => setVehicle(e.target.value)}>
             {vehicleOptions.map((option) => (
               <option key={option}>{option}</option>
@@ -558,9 +584,7 @@ export function HighLevelLeadCapture({
           </select>
         </label>
         <label>
-          <span>
-            {showsDetailOptions ? '05 · Main priority' : '03 · Main priority'}
-          </span>
+          <span>{priorityStep} · Main priority</span>
           <select value={goal} onChange={(e) => setGoal(e.target.value)}>
             {goalOptions.map((option) => (
               <option key={option}>{option}</option>
@@ -569,19 +593,19 @@ export function HighLevelLeadCapture({
         </label>
       </div>
 
-      <div className="lead-route-summary">
+      <output
+        className="lead-route-summary"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         <ShieldCheck aria-hidden="true" />
         <p>
           <strong>Your route is ready.</strong>
           {serviceOptions.find(([value]) => value === service)?.[1]} · {vehicle}{' '}
           · {goal}
-          {packageLabel ? ' · ' + packageLabel : ''}
-          {selectedAddOns.length
-            ? ' · Add-ons: ' +
-              selectedAddOns.map((addOn) => addOn.name).join(', ')
-            : ''}
+          {configurationSummary ? ' · ' + configurationSummary : ''}
         </p>
-      </div>
+      </output>
 
       <div className="lead-router-actions">
         <a className="button button-primary" href={bookingUrl}>

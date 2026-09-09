@@ -6196,6 +6196,12 @@ body {
   border-color: rgba(156, 245, 0, 0.38);
 }
 
+.lead-service-options button:focus-visible,
+.lead-addon-option:has(input:focus-visible) {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+
 .lead-service-options button.is-active {
   border-color: var(--lime);
   color: var(--ink);
@@ -6313,9 +6319,11 @@ body {
 }
 
 .lead-tier-topline small {
+  max-width: 52%;
   color: var(--lime);
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.68rem;
+  line-height: 1.35;
   text-align: right;
 }
 
@@ -6406,9 +6414,12 @@ body {
 
 .lead-addon-option small {
   flex: 0 0 auto;
+  max-width: 50%;
   color: var(--lime);
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.66rem;
+  line-height: 1.35;
+  text-align: right;
 }
 
 .lead-addon-option > svg {
@@ -7033,6 +7044,15 @@ body {
 
   .lead-service-options {
     grid-template-columns: 1fr;
+  }
+
+  .lead-tier-options,
+  .lead-addon-options {
+    grid-template-columns: 1fr;
+  }
+
+  .lead-tier-option {
+    min-height: 0;
   }
 
   .brand-card-logo {
