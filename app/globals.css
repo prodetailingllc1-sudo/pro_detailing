@@ -10180,9 +10180,14 @@ body {
   background: #b89b38;
 }
 
-.service-brand-mark-auto-glass .service-brand-wording strong {
+.service-brand-mark-wide .service-brand-wording strong {
   font-size: clamp(1.85rem, 3.35vw, 3.25rem);
   letter-spacing: -0.055em;
+}
+
+.service-brand-mark-extra-wide .service-brand-wording strong {
+  font-size: clamp(1.4rem, 2.5vw, 2.45rem);
+  letter-spacing: -0.045em;
 }
 
 .service-brand-mark-ppf {
@@ -10238,8 +10243,12 @@ body {
     letter-spacing: 0.16em;
   }
 
-  .service-brand-mark-auto-glass .service-brand-wording strong {
+  .service-brand-mark-wide .service-brand-wording strong {
     font-size: clamp(1.55rem, 7vw, 2.3rem);
+  }
+
+  .service-brand-mark-extra-wide .service-brand-wording strong {
+    font-size: clamp(1.25rem, 5.5vw, 1.75rem);
   }
 }
 
@@ -10269,11 +10278,16 @@ body {
   font-size: clamp(1.42rem, 1.85vw, 1.8rem);
 }
 
-.home-service-card-brand.service-brand-mark-auto-glass
-  .service-brand-wording
-  strong {
+.home-service-card-brand.service-brand-mark-wide .service-brand-wording strong {
   font-size: clamp(1rem, 1.28vw, 1.2rem);
   letter-spacing: -0.045em;
+}
+
+.home-service-card-brand.service-brand-mark-extra-wide
+  .service-brand-wording
+  strong {
+  font-size: clamp(0.76rem, 1vw, 0.96rem);
+  letter-spacing: -0.035em;
 }
 
 .home-service-card-brand .service-brand-wording small {
@@ -10316,9 +10330,15 @@ body {
     font-size: clamp(1.5rem, 7vw, 2rem);
   }
 
-  .home-service-card-brand.service-brand-mark-auto-glass
+  .home-service-card-brand.service-brand-mark-wide
     .service-brand-wording
     strong {
     font-size: clamp(1.08rem, 5vw, 1.45rem);
+  }
+
+  .home-service-card-brand.service-brand-mark-extra-wide
+    .service-brand-wording
+    strong {
+    font-size: clamp(0.88rem, 4.1vw, 1.2rem);
   }
 }

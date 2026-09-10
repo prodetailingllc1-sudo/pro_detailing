@@ -23,12 +23,73 @@ const imageMarks = {
   },
 } as const;
 
-const secondaryServiceLabels: Record<string, string> = {
-  'mobile-detailing': 'Mobile detailing',
-  'residential-window-tinting': 'Residential window tint',
-  'maintenance-oil-change': 'Maintenance & oil service',
-  'tire-service': 'Tire service',
-  'key-replacement': 'Automotive locksmith & keys',
+const specialistWordmarks: Record<
+  string,
+  {
+    accessibleLabel: string;
+    lead: readonly string[];
+    accent: string;
+    rest: string;
+    subtitle: string;
+    density: 'standard' | 'wide' | 'extra-wide';
+  }
+> = {
+  'vehicle-wraps': {
+    accessibleLabel: 'PRO Wraps — Vehicle Restyling and Graphics',
+    lead: ['PRO'],
+    accent: 'W',
+    rest: 'RAPS',
+    subtitle: 'Vehicle Restyling & Graphics',
+    density: 'standard',
+  },
+  'auto-glass': {
+    accessibleLabel: 'PRO Auto Glass — Glass Repair and Replacement',
+    lead: ['PRO', 'AUTO'],
+    accent: 'G',
+    rest: 'LASS',
+    subtitle: 'Glass Repair & Replacement',
+    density: 'wide',
+  },
+  'maintenance-oil-change': {
+    accessibleLabel: 'PRO Auto Care — Maintenance and Oil Service',
+    lead: ['PRO', 'AUTO'],
+    accent: 'C',
+    rest: 'ARE',
+    subtitle: 'Automotive Maintenance & Repair',
+    density: 'wide',
+  },
+  'tire-service': {
+    accessibleLabel: 'PRO Tires — Change, Rotation and Flat Repair',
+    lead: ['PRO'],
+    accent: 'T',
+    rest: 'IRES',
+    subtitle: 'Tire Service · Rotation · Flat Repair',
+    density: 'standard',
+  },
+  'key-replacement': {
+    accessibleLabel: 'PRO Locksmith — Keys, Lockouts and Fob Programming',
+    lead: ['PRO'],
+    accent: 'L',
+    rest: 'OCKSMITH',
+    subtitle: 'Lockouts · Keys · Fob Programming',
+    density: 'wide',
+  },
+  'mobile-detailing': {
+    accessibleLabel: 'PRO Mobile Detailing — Interior and Exterior Service',
+    lead: ['PRO', 'MOBILE'],
+    accent: 'D',
+    rest: 'ETAILING',
+    subtitle: 'Mobile Interior & Exterior Care',
+    density: 'extra-wide',
+  },
+  'residential-window-tinting': {
+    accessibleLabel: 'PRO Home Tints — Residential Window Film',
+    lead: ['PRO', 'HOME'],
+    accent: 'T',
+    rest: 'INTS',
+    subtitle: 'Residential Window Film',
+    density: 'wide',
+  },
 };
 
 type ServiceBrandMarkProps = {
@@ -68,24 +129,18 @@ export function ServiceBrandMark({
     );
   }
 
-  if (service === 'vehicle-wraps' || service === 'auto-glass') {
-    const isAutoGlass = service === 'auto-glass';
+  const specialistWordmark = specialistWordmarks[service];
 
+  if (specialistWordmark) {
     return (
       <span
         className={[
           classes,
           'service-brand-mark-specialist',
-          isAutoGlass
-            ? 'service-brand-mark-auto-glass'
-            : 'service-brand-mark-wraps',
+          `service-brand-mark-${specialistWordmark.density}`,
         ].join(' ')}
       >
-        <span className="sr-only">
-          {isAutoGlass
-            ? 'PRO Auto Glass — Glass Repair and Replacement'
-            : 'PRO Wraps — Vehicle Restyling and Graphics'}
-        </span>
+        <span className="sr-only">{specialistWordmark.accessibleLabel}</span>
         <Image
           className="service-brand-symbol"
           src="/pro-mark.png"
@@ -97,19 +152,16 @@ export function ServiceBrandMark({
         <span className="service-brand-divider" aria-hidden="true" />
         <span className="service-brand-wording" aria-hidden="true">
           <strong>
-            <span>PRO</span>
-            {isAutoGlass ? <span>AUTO</span> : null}
+            {specialistWordmark.lead.map((word) => (
+              <span key={word}>{word}</span>
+            ))}
             <span>
-              <b>{isAutoGlass ? 'G' : 'W'}</b>
-              {isAutoGlass ? 'LASS' : 'RAPS'}
+              <b>{specialistWordmark.accent}</b>
+              {specialistWordmark.rest}
             </span>
           </strong>
           <small>
-            <span>
-              {isAutoGlass
-                ? 'Glass Repair & Replacement'
-                : 'Vehicle Restyling & Graphics'}
-            </span>
+            <span>{specialistWordmark.subtitle}</span>
           </small>
         </span>
       </span>
@@ -128,7 +180,7 @@ export function ServiceBrandMark({
       />
       <span className="service-brand-context">
         <span aria-hidden="true" />
-        {secondaryServiceLabels[service] ?? 'Specialist automotive service'}
+        Specialist automotive service
       </span>
     </span>
   );
