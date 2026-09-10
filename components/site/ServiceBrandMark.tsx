@@ -28,18 +28,19 @@ const secondaryServiceLabels: Record<string, string> = {
   'residential-window-tinting': 'Residential window tint',
   'maintenance-oil-change': 'Maintenance & oil service',
   'tire-service': 'Tire service',
-  'auto-glass': 'Auto glass repair & replacement',
   'key-replacement': 'Automotive locksmith & keys',
 };
 
 type ServiceBrandMarkProps = {
   service: string;
   className?: string;
+  priority?: boolean;
 };
 
 export function ServiceBrandMark({
   service,
   className = '',
+  priority = true,
 }: ServiceBrandMarkProps) {
   const imageMark = imageMarks[service as keyof typeof imageMarks];
   const classes = `service-brand-mark ${className}`.trim();
@@ -53,7 +54,7 @@ export function ServiceBrandMark({
           width={imageMark.width}
           height={imageMark.height}
           sizes="(max-width: 620px) 88vw, 680px"
-          priority
+          priority={priority}
         />
       </span>
     );
@@ -67,11 +68,23 @@ export function ServiceBrandMark({
     );
   }
 
-  if (service === 'vehicle-wraps') {
+  if (service === 'vehicle-wraps' || service === 'auto-glass') {
+    const isAutoGlass = service === 'auto-glass';
+
     return (
-      <span className={`${classes} service-brand-mark-wraps`}>
+      <span
+        className={[
+          classes,
+          'service-brand-mark-specialist',
+          isAutoGlass
+            ? 'service-brand-mark-auto-glass'
+            : 'service-brand-mark-wraps',
+        ].join(' ')}
+      >
         <span className="sr-only">
-          PRO Wraps — Vehicle Restyling and Graphics
+          {isAutoGlass
+            ? 'PRO Auto Glass — Glass Repair and Replacement'
+            : 'PRO Wraps — Vehicle Restyling and Graphics'}
         </span>
         <Image
           className="service-brand-symbol"
@@ -79,18 +92,24 @@ export function ServiceBrandMark({
           alt=""
           width={400}
           height={400}
-          priority
+          priority={priority}
         />
         <span className="service-brand-divider" aria-hidden="true" />
         <span className="service-brand-wording" aria-hidden="true">
           <strong>
             <span>PRO</span>
+            {isAutoGlass ? <span>AUTO</span> : null}
             <span>
-              <b>W</b>RAPS
+              <b>{isAutoGlass ? 'G' : 'W'}</b>
+              {isAutoGlass ? 'LASS' : 'RAPS'}
             </span>
           </strong>
           <small>
-            <span>Vehicle Restyling & Graphics</span>
+            <span>
+              {isAutoGlass
+                ? 'Glass Repair & Replacement'
+                : 'Vehicle Restyling & Graphics'}
+            </span>
           </small>
         </span>
       </span>
@@ -105,7 +124,7 @@ export function ServiceBrandMark({
         width={1100}
         height={154}
         sizes="(max-width: 620px) 88vw, 680px"
-        priority
+        priority={priority}
       />
       <span className="service-brand-context">
         <span aria-hidden="true" />

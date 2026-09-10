@@ -26,6 +26,7 @@ import { HeroExperience } from '@/components/site/HeroExperience';
 import { ProtectionLab } from '@/components/site/ProtectionLab';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { ServiceBrandMark } from '@/components/site/ServiceBrandMark';
 import { TintStudio } from '@/components/site/TintStudio';
 import { featuredArticles } from '@/lib/blog-data';
 import {
@@ -211,6 +212,11 @@ export default function Home() {
                     <span>{String(index + 5).padStart(2, '0')}</span>
                     <Icon aria-hidden="true" />
                   </div>
+                  <ServiceBrandMark
+                    service={service.slug}
+                    className="home-service-card-brand"
+                    priority={false}
+                  />
                   <h3>{service.name}</h3>
                   <p>{service.description}</p>
                   <strong>

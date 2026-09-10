@@ -10109,7 +10109,7 @@ body {
   box-shadow: 0 0 12px rgba(156, 245, 0, 0.36);
 }
 
-.service-brand-mark-wraps {
+.service-brand-mark-specialist {
   gap: clamp(0.8rem, 1.45vw, 1.2rem);
 }
 
@@ -10180,6 +10180,11 @@ body {
   background: #b89b38;
 }
 
+.service-brand-mark-auto-glass .service-brand-wording strong {
+  font-size: clamp(1.85rem, 3.35vw, 3.25rem);
+  letter-spacing: -0.055em;
+}
+
 .service-brand-mark-ppf {
   height: var(--service-brand-height);
 }
@@ -10218,7 +10223,7 @@ body {
     max-height: 3.65rem;
   }
 
-  .service-brand-mark-wraps {
+  .service-brand-mark-specialist {
     gap: 0.65rem;
   }
 
@@ -10231,5 +10236,89 @@ body {
   .service-brand-mark-ppf .ppf-wordmark-copy small {
     font-size: 0.46rem;
     letter-spacing: 0.16em;
+  }
+
+  .service-brand-mark-auto-glass .service-brand-wording strong {
+    font-size: clamp(1.55rem, 7vw, 2.3rem);
+  }
+}
+
+/* V16: carry the service identities into the homepage #all-services cards */
+.home-service-card-brand {
+  --service-brand-height: clamp(2.55rem, 3.2vw, 3.2rem);
+  width: 100%;
+  min-height: var(--service-brand-height);
+  margin: 1rem 0 0.15rem;
+  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.42))
+    drop-shadow(0 0 12px rgba(156, 245, 0, 0.06));
+}
+
+.home-service-card-brand.service-brand-mark-specialist {
+  gap: 0.58rem;
+}
+
+.home-service-card-brand .service-brand-divider {
+  height: calc(var(--service-brand-height) * 0.72);
+}
+
+.home-service-card-brand .service-brand-wording {
+  gap: 0.3rem;
+}
+
+.home-service-card-brand .service-brand-wording strong {
+  font-size: clamp(1.42rem, 1.85vw, 1.8rem);
+}
+
+.home-service-card-brand.service-brand-mark-auto-glass
+  .service-brand-wording
+  strong {
+  font-size: clamp(1rem, 1.28vw, 1.2rem);
+  letter-spacing: -0.045em;
+}
+
+.home-service-card-brand .service-brand-wording small {
+  font-size: 0.42rem;
+  letter-spacing: 0.13em;
+}
+
+.home-service-card-brand.service-brand-mark-secondary {
+  gap: 0.45rem;
+}
+
+.home-service-card-brand.service-brand-mark-secondary > img {
+  width: min(100%, 270px);
+  height: auto;
+  max-height: 2.45rem;
+}
+
+.home-service-card-brand .service-brand-context {
+  gap: 0.42rem;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+.home-service-card-brand .service-brand-context > span {
+  width: 18px;
+}
+
+.home-service-network-grid h3 {
+  margin-top: 0.82rem;
+}
+
+@media (max-width: 620px) {
+  .home-service-card-brand {
+    --service-brand-height: clamp(2.75rem, 14vw, 3.5rem);
+    width: 100%;
+    margin-bottom: 0.15rem;
+  }
+
+  .home-service-card-brand .service-brand-wording strong {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+
+  .home-service-card-brand.service-brand-mark-auto-glass
+    .service-brand-wording
+    strong {
+    font-size: clamp(1.08rem, 5vw, 1.45rem);
   }
 }
