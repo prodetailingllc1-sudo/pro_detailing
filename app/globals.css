@@ -9951,3 +9951,98 @@ body {
     transform: none;
   }
 }
+
+/* V14: photo-registered PRO Wrap Studio — preserve body lighting and trim */
+.wrap-vehicle-composite .vehicle-detail-layer {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.74;
+  filter: grayscale(1) contrast(1.46) brightness(0.96);
+  mix-blend-mode: soft-light;
+  transition: opacity 0.28s ease;
+}
+
+.wrap-vehicle-composite.is-new-wrap-coupe {
+  inset: 2% 1% 0;
+  width: auto;
+  height: auto;
+}
+
+.wrap-color-mask {
+  opacity: 0.97;
+  background: linear-gradient(
+    148deg,
+    color-mix(in srgb, var(--wrap-highlight) 22%, var(--wrap-color)) 0%,
+    var(--wrap-color) 48%,
+    color-mix(in srgb, var(--wrap-color) 76%, #050706) 100%
+  );
+  mix-blend-mode: multiply;
+}
+
+.wrap-finish-mask {
+  opacity: 0.24;
+  background:
+    linear-gradient(
+      112deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.2) 30%,
+      transparent 39%
+    ),
+    radial-gradient(
+      circle at 63% 39%,
+      rgba(255, 255, 255, 0.12),
+      transparent 24%
+    );
+  mix-blend-mode: soft-light;
+}
+
+.wrap-finish-mask.finish-satin {
+  opacity: 0.12;
+  filter: blur(4px);
+}
+
+.wrap-finish-mask.finish-matte {
+  opacity: 0.2;
+  background: linear-gradient(
+    145deg,
+    rgba(18, 21, 19, 0.08),
+    rgba(2, 4, 3, 0.26)
+  );
+  filter: none;
+  mix-blend-mode: multiply;
+}
+
+.wrap-finish-gloss .vehicle-detail-layer {
+  opacity: 0.88;
+  filter: grayscale(1) contrast(1.56) brightness(1.02);
+}
+
+.wrap-finish-satin .vehicle-detail-layer {
+  opacity: 0.74;
+  filter: grayscale(1) contrast(1.42) brightness(0.96);
+}
+
+.wrap-finish-matte .vehicle-detail-layer {
+  opacity: 0.52;
+  filter: grayscale(1) contrast(1.16) brightness(0.9) blur(0.25px);
+}
+
+.show-before .vehicle-detail-layer {
+  opacity: 0;
+}
+
+.wrap-finish-options label > span {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+}
+
+.wrap-finish-options label.is-active > span {
+  color: #071009;
+}

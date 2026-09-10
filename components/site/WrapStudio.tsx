@@ -6,8 +6,8 @@ import type { CSSProperties } from 'react';
 import { useState } from 'react';
 
 const vehicles = [
+  ['wrap-coupe-v2', '2026 Coupe'],
   ['sedan', 'Sedan'],
-  ['coupe', 'Coupe'],
   ['suv', 'SUV'],
   ['tesla', 'EV'],
   ['truck', 'Truck'],
@@ -18,38 +18,38 @@ const wrapColors = [
   {
     id: 'obsidian',
     label: 'Obsidian',
-    value: '#111412',
-    highlight: '#424943',
+    value: '#15191a',
+    highlight: '#303638',
   },
   {
     id: 'graphite',
     label: 'Graphite',
-    value: '#5d6561',
-    highlight: '#a7afaa',
+    value: '#596164',
+    highlight: '#8d9699',
   },
   {
     id: 'racing-green',
     label: 'Racing green',
-    value: '#17452e',
-    highlight: '#3d8c61',
+    value: '#063b29',
+    highlight: '#174f38',
   },
   {
     id: 'velocity-blue',
     label: 'Velocity blue',
-    value: '#164f88',
-    highlight: '#3c91d3',
+    value: '#0b4f96',
+    highlight: '#2d73b7',
   },
   {
     id: 'carmine',
     label: 'Carmine',
-    value: '#78171f',
-    highlight: '#c9444d',
+    value: '#851627',
+    highlight: '#b93343',
   },
   {
     id: 'satin-bronze',
     label: 'Bronze',
-    value: '#77572e',
-    highlight: '#c89d5d',
+    value: '#795631',
+    highlight: '#a97d49',
   },
 ] as const;
 
@@ -60,7 +60,8 @@ const finishes = [
 ] as const;
 
 export function WrapStudio() {
-  const [vehicle, setVehicle] = useState<(typeof vehicles)[number][0]>('coupe');
+  const [vehicle, setVehicle] =
+    useState<(typeof vehicles)[number][0]>('wrap-coupe-v2');
   const [colorId, setColorId] =
     useState<(typeof wrapColors)[number]['id']>('racing-green');
   const [finish, setFinish] = useState<(typeof finishes)[number][0]>('satin');
@@ -74,6 +75,7 @@ export function WrapStudio() {
   const finishLabel =
     finishes.find(([id]) => id === finish)?.[1] ?? finishes[0][1];
   const buildText = `${vehicleLabel} · ${color.label} · ${finishLabel} color-wrap concept`;
+  const vehicleImage = `/vehicles/${vehicle}.webp`;
   const maskStyle = {
     '--wrap-color': color.value,
     '--wrap-highlight': color.highlight,
@@ -92,7 +94,7 @@ export function WrapStudio() {
   }
 
   function reset() {
-    setVehicle('coupe');
+    setVehicle('wrap-coupe-v2');
     setColorId('racing-green');
     setFinish('satin');
     setBefore(false);
@@ -110,10 +112,14 @@ export function WrapStudio() {
         </div>
         <div className={`vehicle-stage ${before ? 'show-before' : ''}`}>
           <div className="stage-light" aria-hidden="true" />
-          <div className="vehicle-composite">
+          <div
+            className={`vehicle-composite wrap-vehicle-composite wrap-finish-${finish} ${
+              vehicle === 'wrap-coupe-v2' ? 'is-new-wrap-coupe' : ''
+            }`}
+          >
             <Image
               className="vehicle-base"
-              src={`/vehicles/${vehicle}.webp`}
+              src={vehicleImage}
               alt={`${vehicleLabel} color-wrap appearance preview`}
               width="1536"
               height="1024"
@@ -128,6 +134,16 @@ export function WrapStudio() {
               className={`wrap-paint-mask wrap-finish-mask finish-${finish}`}
               aria-hidden="true"
               style={maskStyle}
+            />
+            <Image
+              className="vehicle-detail-layer"
+              src={vehicleImage}
+              alt=""
+              aria-hidden="true"
+              width="1536"
+              height="1024"
+              sizes="(max-width: 780px) 112vw, 62vw"
+              draggable={false}
             />
           </div>
           <div className="stage-floor" aria-hidden="true" />

@@ -300,3 +300,14 @@ Shared clear-companion prompt: Using the approved tinted master, change only eve
 Output: `public/generated/pro-wrap-installation.webp`
 
 Final prompt: A professional installer applying a large sheet of satin deep racing-green vinyl to the hood and front quarter of a clean, brand-neutral high-performance coupe in a premium dark detailing showroom with linear inspection lights. Make the paint-to-wrap boundary and realistic two-hand squeegee technique clear. Use a black and charcoal environment with restrained electric-lime reflections; no text, logos, badges, identifiable trademarks, watermarks, duplicated hands or malformed tools.
+
+# PRO Wrap Studio registered coupe V2
+
+Outputs:
+
+- `public/vehicles/wrap-coupe-v2.webp`
+- `public/vehicles/masks/wrap-coupe-v2-paint.png`
+
+Vehicle prompt: Create a completely new, contemporary 2026-era brand-neutral premium performance coupe for an interactive vehicle-wrap simulator. Show one low, wide two-door coupe in pearl white, front three-quarter view facing right, fully visible on a genuinely transparent background. Use narrow original LED lamps, clean sculpted panels, black glass and trim, dark multi-spoke wheels, realistic tires, and broad softbox reflections that clearly describe every body curve. Keep all painted panels separate from glass, lamps, grille, wheels and trim. No logos, badges, plate, text, watermark, recognizable production-car identity, people, tools, showroom or extra objects.
+
+Registration-mask prompt: Convert the generated coupe into a strict black-and-white semantic mask on the identical canvas and registration. Fill pure white only on exterior painted panels that wrap film would cover, and pure black on all glass, lamps, grille openings, wheels, tires, brakes, mirrors, handles, vents, black lower trim, splitters, carbon pieces, background and contact shadow. Preserve the exact perspective and boundaries; no movement, redesign, crop, labels or watermark. The delivered mask was converted to alpha and slightly eroded before website use so the live color remains inside body-panel edges.
