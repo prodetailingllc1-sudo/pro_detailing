@@ -1,8 +1,16 @@
 import Image from 'next/image';
 import Link from '@/components/site/SafeLink';
-import { ArrowRight, Check, Focus, Layers3, ShieldCheck } from 'lucide-react';
+import {
+  ArrowRight,
+  Check,
+  Focus,
+  Layers3,
+  ShieldCheck,
+  Sparkles,
+} from 'lucide-react';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
+import { PpfCoverageComparison } from '@/components/site/PpfCoverageComparison';
 import { PpfWordmark } from '@/components/site/PpfWordmark';
 import { SectionIntro } from '@/components/site/SectionIntro';
 import { ceramicProPpfCompatibility } from '@/lib/ceramic-pro-data';
@@ -191,21 +199,26 @@ export default function PaintProtectionFilmPage() {
                 in the quote
               </li>
             </ul>
+            <aside className="ppf-coating-addon">
+              <Sparkles aria-hidden="true" />
+              <div>
+                <p className="overline">Optional PPF add-on</p>
+                <h3>Ceramic Pro PPF & Vinyl coating</h3>
+                <p>{ceramicProPpfCompatibility}</p>
+                <Link
+                  className="text-link"
+                  href={`${quoteHref('ppf')}&addons=ceramic-pro-ppf-vinyl`}
+                >
+                  Add it to my PPF request <ArrowRight aria-hidden="true" />
+                </Link>
+              </div>
+            </aside>
             <Link className="button button-primary" href={quoteHref('ppf')}>
               Request an inspection <ArrowRight aria-hidden="true" />
             </Link>
           </div>
           <div className="coverage-diagram ppf-coverage-diagram">
-            <div className="coverage-car">
-              <Image
-                className="ppf-coverage-image"
-                src="/generated/ppf-finished-clear-v2.webp"
-                alt="Silver performance coupe after a smooth, optically clear paint protection film installation"
-                width="1536"
-                height="1024"
-                sizes="(max-width: 780px) 100vw, 54vw"
-              />
-            </div>
+            <PpfCoverageComparison />
             <div className="coverage-cards">
               {coverage.map(([title, copy], index) => (
                 <article key={title}>
@@ -360,6 +373,26 @@ export default function PaintProtectionFilmPage() {
                 <p>{answer}</p>
               </details>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section ppf-vehicle-library-section">
+        <div className="shell ppf-vehicle-library-card">
+          <div>
+            <p className="overline">360° vehicle library</p>
+            <h2>Browse Ceramic Pro’s currently supported 3D vehicles.</h2>
+          </div>
+          <div>
+            <p>
+              Open Ceramic Pro’s hosted SHIFT VISION tool to choose any
+              currently supported make and model, rotate it and compare color
+              PPF finishes. SHIFT previews are separate from the LLumar clear
+              PPF service quoted on this page.
+            </p>
+            <Link className="button button-primary" href="/vehicle-visualizer">
+              Explore all supported vehicles <ArrowRight aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>

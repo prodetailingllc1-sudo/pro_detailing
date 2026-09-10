@@ -4,8 +4,7 @@ import { galleryItems } from '@/lib/site-data';
 
 export const metadata = createPageMetadata({
   title: 'Vehicle Gallery Manassas, VA | PRO Detailing',
-  description:
-    'Browse 72 PRO Detailing vehicle and service images, including cars, SUVs, trucks, tint, coating, detailing, maintenance, glass and mobile care.',
+  description: `Browse ${galleryItems.length} PRO Detailing vehicle and service images, including cars, SUVs, trucks, tint, coating, wraps, detailing, maintenance, glass and mobile care.`,
   keywords: [
     'premium auto detailing gallery',
     'auto detailing Manassas VA',
@@ -30,10 +29,11 @@ export default function GalleryPage() {
           PRO Detailing Vehicle Gallery
         </h1>
         <p className="mt-6 max-w-3xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-          A 72-image collection of cars, SUVs, trucks and performance vehicles
-          from the PRO Detailing and owner-provided library, plus clearly
-          labeled service visualizations for the work customers want to see.
-          Captions never assign an unverified service to a customer vehicle.
+          A {galleryItems.length}-image collection of cars, SUVs, trucks and
+          performance vehicles from the PRO Detailing and owner-provided
+          library, plus clearly labeled service visualizations for the work
+          customers want to see. Captions never assign an unverified service to
+          a customer vehicle.
         </p>
       </header>
 

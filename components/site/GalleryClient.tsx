@@ -20,9 +20,7 @@ type GalleryClientProps = {
 };
 
 export function GalleryClient({ items }: GalleryClientProps) {
-  const [visibleCount, setVisibleCount] = useState(() =>
-    Math.min(PAGE_SIZE, items.length),
-  );
+  const [visibleCount, setVisibleCount] = useState(() => items.length);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const lastTriggerRef = useRef<HTMLButtonElement | null>(null);
   const swipeStartRef = useRef<{ x: number; y: number } | null>(null);

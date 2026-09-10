@@ -1,9 +1,17 @@
 'use client';
 
-import { Check, Copy, RotateCcw, SunMedium } from 'lucide-react';
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  RotateCcw,
+  SunMedium,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
 
+import Link from '@/components/site/SafeLink';
 import { filmLines } from '@/lib/site-data';
 
 const vehicles = [
@@ -13,6 +21,83 @@ const vehicles = [
   ['tesla', 'EV'],
   ['truck', 'Truck'],
   ['van', 'Van'],
+] as const;
+
+type VehicleId = (typeof vehicles)[number][0];
+const defaultVehicleId: VehicleId = 'sedan';
+
+type RegisteredTintPair = {
+  clearSrc: string;
+  tintedSrc: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
+const registeredTintPairs = {
+  sedan: {
+    clearSrc: '/generated/pro-tints-c63-side-clear-v1.webp',
+    tintedSrc: '/generated/pro-tints-c63-side-tinted-v1.webp',
+    alt: "the owner's white Mercedes-AMG C63",
+    width: 1448,
+    height: 1086,
+  },
+  coupe: {
+    clearSrc: '/generated/pro-tints-coupe-clear-v1.webp',
+    tintedSrc: '/generated/pro-tints-coupe-tinted-v1.webp',
+    alt: 'a white performance coupe',
+    width: 1448,
+    height: 1086,
+  },
+  suv: {
+    clearSrc: '/generated/pro-tints-suv-clear-v1.webp',
+    tintedSrc: '/generated/pro-tints-suv-tinted-v1.webp',
+    alt: 'a white three-row performance SUV',
+    width: 1448,
+    height: 1086,
+  },
+  tesla: {
+    clearSrc: '/generated/pro-tints-ev-clear-v1.webp',
+    tintedSrc: '/generated/pro-tints-ev-tinted-v1.webp',
+    alt: 'a white electric fastback',
+    width: 1448,
+    height: 1086,
+  },
+  truck: {
+    clearSrc: '/generated/pro-tints-truck-clear-v1.webp',
+    tintedSrc: '/generated/pro-tints-truck-tinted-v1.webp',
+    alt: 'a white crew-cab pickup truck',
+    width: 1448,
+    height: 1086,
+  },
+  van: {
+    clearSrc: '/generated/pro-tints-van-clear-v1.webp',
+    tintedSrc: '/generated/pro-tints-van-tinted-v1.webp',
+    alt: 'a white premium passenger van',
+    width: 1448,
+    height: 1086,
+  },
+} as const satisfies Record<VehicleId, RegisteredTintPair>;
+
+const sedanAngles = [
+  {
+    id: 'rear',
+    label: 'Rear three-quarter',
+    shortLabel: 'Rear',
+    src: '/generated/pro-tints-c63-rear-three-quarter-v1.webp',
+  },
+  {
+    id: 'side',
+    label: 'Side profile',
+    shortLabel: 'Side',
+    src: '/generated/pro-tints-c63-side-tinted-v1.webp',
+  },
+  {
+    id: 'front',
+    label: 'Front three-quarter',
+    shortLabel: 'Front',
+    src: '/generated/pro-tints-c63-front-three-quarter-v1.webp',
+  },
 ] as const;
 
 const states = [
@@ -101,7 +186,7 @@ export function TintStudio({
   const initialShade =
     initialLine.shades.find((item) => item.id === `${initialLine.id}-35`) ??
     initialLine.shades[Math.min(4, initialLine.shades.length - 1)];
-  const [vehicle, setVehicle] = useState<(typeof vehicles)[number][0]>('sedan');
+  const [vehicle, setVehicle] = useState<VehicleId>(defaultVehicleId);
   const [lineId, setLineId] = useState(initialLine.id);
   const [shadeId, setShadeId] = useState(initialShade.id);
   const [state, setState] = useState('Virginia');
@@ -110,7 +195,8 @@ export function TintStudio({
     rearSides: true,
     windshield: false,
   });
-  const [before, setBefore] = useState(false);
+  const [comparisonSplit, setComparisonSplit] = useState(50);
+  const [sedanAngleIndex, setSedanAngleIndex] = useState(1);
   const [copied, setCopied] = useState(false);
 
   const line = filmLines.find((item) => item.id === lineId) ?? filmLines[1];
@@ -118,6 +204,19 @@ export function TintStudio({
     line.shades.find((item) => item.id === shadeId) ?? line.shades[0];
   const tintOpacity = Math.max(0, Math.min(0.95, 1 - shade.vlt / 100));
   const tintTone = tintTones[line.id];
+  const tintClip = `inset(0 0 0 ${comparisonSplit}%)`;
+  const sedanAngle = sedanAngles[sedanAngleIndex];
+  const isSedanAngleView = vehicle === 'sedan' && sedanAngle.id !== 'side';
+  const registeredTintPair = registeredTintPairs[vehicle];
+  const hasFullSideSelection =
+    zones.frontSides &&
+    (vehicle === 'coupe' || zones.rearSides) &&
+    !zones.windshield;
+  const usesRegisteredTintPair = !isSedanAngleView && hasFullSideSelection;
+  const registeredTintStrength = Math.max(
+    0.04,
+    Math.min(1, (84 - shade.vlt) / 78),
+  );
   const activeZoneLabel = [
     zones.frontSides ? 'front' : null,
     zones.rearSides && vehicle !== 'coupe' ? 'rear' : null,
@@ -125,6 +224,8 @@ export function TintStudio({
   ]
     .filter(Boolean)
     .join(' + ');
+  const hasActiveZone = Boolean(activeZoneLabel);
+  const showTintComparison = hasActiveZone && !isSedanAngleView;
   const supportedState =
     state === 'Virginia' ||
     state === 'Maryland' ||
@@ -152,10 +253,12 @@ export function TintStudio({
     const next = filmLines.find((item) => item.id === nextLine) ?? filmLines[0];
     setLineId(next.id);
     setShadeId(next.shades[Math.min(4, next.shades.length - 1)].id);
+    setSedanAngleIndex(1);
   }
 
-  function selectVehicle(nextVehicle: (typeof vehicles)[number][0]) {
+  function selectVehicle(nextVehicle: VehicleId) {
     setVehicle(nextVehicle);
+    setSedanAngleIndex(1);
     if (nextVehicle === 'coupe') {
       setZones((current) => ({ ...current, rearSides: false }));
     } else if (vehicle === 'coupe') {
@@ -164,13 +267,20 @@ export function TintStudio({
   }
 
   function reset() {
-    setVehicle('sedan');
+    setVehicle(defaultVehicleId);
     setLineId('irx');
     setShadeId('irx-35');
     setState('Virginia');
     setZones({ frontSides: true, rearSides: true, windshield: false });
-    setBefore(false);
+    setComparisonSplit(50);
+    setSedanAngleIndex(1);
     setCopied(false);
+  }
+
+  function stepSedanAngle(direction: -1 | 1) {
+    setSedanAngleIndex((current) =>
+      Math.max(0, Math.min(sedanAngles.length - 1, current + direction)),
+    );
   }
 
   async function copyBuild() {
@@ -191,78 +301,234 @@ export function TintStudio({
         <div className="studio-hud" aria-hidden="true">
           <span>LIVE PREVIEW</span>
           <span>
-            {activeZoneLabel || 'no zones'} · VLT {shade.vlt}%
+            {isSedanAngleView
+              ? `${sedanAngle.label} · angle preview`
+              : `${activeZoneLabel || 'no zones'} · VLT ${shade.vlt}%`}
           </span>
         </div>
-        <div className={`vehicle-stage ${before ? 'show-before' : ''}`}>
+        <div className="vehicle-stage tint-comparison-stage">
           <div className="stage-light" aria-hidden="true" />
-          <div className="vehicle-composite">
-            <Image
-              className="vehicle-base"
-              src={`/vehicles/${vehicle}.webp`}
-              alt={`${vehicles.find(([id]) => id === vehicle)?.[1]} tint appearance preview`}
-              width="1536"
-              height="1024"
-              sizes="(max-width: 780px) 112vw, 62vw"
-              priority={!compact}
-            />
-            {zones.frontSides ? (
-              <span
-                className="tint-mask"
-                aria-hidden="true"
-                style={{
-                  opacity: before ? 0 : tintOpacity,
-                  background: `linear-gradient(145deg, ${tintTone.highlight}, ${tintTone.core} 58%, ${tintTone.lowlight})`,
-                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
-                  maskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
-                }}
+          <div
+            className={`vehicle-composite ${
+              usesRegisteredTintPair || isSedanAngleView
+                ? 'is-registered-photo-comparison'
+                : 'has-showroom-background'
+            }`}
+          >
+            {isSedanAngleView ? (
+              <Image
+                className="vehicle-base registered-angle-photo"
+                src={sedanAngle.src}
+                alt={`${sedanAngle.label} view of the owner's white Mercedes-AMG C63 inside the PRO Tints showroom`}
+                width="1448"
+                height="1086"
+                sizes="(max-width: 780px) 100vw, 62vw"
+                priority={!compact}
+                draggable={false}
               />
-            ) : null}
-            {zones.rearSides && vehicle !== 'coupe' ? (
-              <span
-                className="tint-mask"
-                aria-hidden="true"
-                style={{
-                  opacity: before ? 0 : tintOpacity,
-                  background: `linear-gradient(145deg, ${tintTone.highlight}, ${tintTone.core} 58%, ${tintTone.lowlight})`,
-                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
-                  maskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
-                }}
+            ) : usesRegisteredTintPair ? (
+              <>
+                <Image
+                  className="vehicle-base registered-tint-photo"
+                  src={registeredTintPair.clearSrc}
+                  alt={`Photo-registered ${shade.label} tint service visualization featuring ${registeredTintPair.alt} inside the PRO Tints showroom`}
+                  width={registeredTintPair.width}
+                  height={registeredTintPair.height}
+                  sizes="(max-width: 780px) 100vw, 62vw"
+                  priority={!compact}
+                  draggable={false}
+                />
+                <span
+                  className="registered-tint-after"
+                  aria-hidden="true"
+                  style={{
+                    opacity: registeredTintStrength,
+                    clipPath: tintClip,
+                    WebkitClipPath: tintClip,
+                  }}
+                >
+                  <Image
+                    src={registeredTintPair.tintedSrc}
+                    alt=""
+                    width={registeredTintPair.width}
+                    height={registeredTintPair.height}
+                    sizes="(max-width: 780px) 100vw, 62vw"
+                    draggable={false}
+                  />
+                </span>
+              </>
+            ) : (
+              <>
+                <Image
+                  className="vehicle-base"
+                  src={`/vehicles/${vehicle}.webp`}
+                  alt={`${vehicles.find(([id]) => id === vehicle)?.[1]} tint appearance preview`}
+                  width="1536"
+                  height="1024"
+                  sizes="(max-width: 780px) 112vw, 62vw"
+                  priority={!compact}
+                  draggable={false}
+                />
+                {zones.frontSides ? (
+                  <span
+                    className="tint-mask"
+                    aria-hidden="true"
+                    style={{
+                      opacity: tintOpacity,
+                      background: `linear-gradient(145deg, ${tintTone.highlight}, ${tintTone.core} 58%, ${tintTone.lowlight})`,
+                      clipPath: tintClip,
+                      WebkitClipPath: tintClip,
+                      WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
+                      maskImage: `url(/vehicles/masks/${vehicle}-glass-frontSides.png)`,
+                    }}
+                  />
+                ) : null}
+                {zones.rearSides && vehicle !== 'coupe' ? (
+                  <span
+                    className="tint-mask"
+                    aria-hidden="true"
+                    style={{
+                      opacity: tintOpacity,
+                      background: `linear-gradient(145deg, ${tintTone.highlight}, ${tintTone.core} 58%, ${tintTone.lowlight})`,
+                      clipPath: tintClip,
+                      WebkitClipPath: tintClip,
+                      WebkitMaskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
+                      maskImage: `url(/vehicles/masks/${vehicle}-glass-rearSides.png)`,
+                    }}
+                  />
+                ) : null}
+                {zones.windshield ? (
+                  <span
+                    className="tint-mask"
+                    aria-hidden="true"
+                    style={{
+                      opacity: tintOpacity,
+                      background: `linear-gradient(145deg, ${tintTone.highlight}, ${tintTone.core} 58%, ${tintTone.lowlight})`,
+                      clipPath: tintClip,
+                      WebkitClipPath: tintClip,
+                      WebkitMaskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
+                      maskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
+                    }}
+                  />
+                ) : null}
+              </>
+            )}
+            <span className="registered-showroom-mark" aria-hidden="true">
+              <Image
+                src="/brand/pro-tints-optimized.webp"
+                alt=""
+                width="1100"
+                height="204"
+                draggable={false}
               />
-            ) : null}
-            {zones.windshield ? (
-              <span
-                className="tint-mask"
-                aria-hidden="true"
-                style={{
-                  opacity: before ? 0 : tintOpacity,
-                  background: `linear-gradient(145deg, ${tintTone.highlight}, ${tintTone.core} 58%, ${tintTone.lowlight})`,
-                  WebkitMaskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
-                  maskImage: `url(/vehicles/masks/${vehicle}-strip-windshield.png)`,
-                }}
-              />
-            ) : null}
+            </span>
+            {showTintComparison ? (
+              <>
+                <span
+                  className="tint-comparison-label tint-comparison-label-clear"
+                  aria-hidden="true"
+                >
+                  Before · base glass
+                </span>
+                <span
+                  className="tint-comparison-label tint-comparison-label-tinted"
+                  aria-hidden="true"
+                >
+                  Tinted · {shade.vlt}% VLT
+                </span>
+                <span
+                  className="tint-comparison-divider"
+                  aria-hidden="true"
+                  style={{ left: `${comparisonSplit}%` }}
+                />
+              </>
+            ) : isSedanAngleView ? (
+              <span className="tint-angle-view-label" aria-hidden="true">
+                {sedanAngle.label}
+              </span>
+            ) : (
+              <span className="tint-comparison-label tint-comparison-empty">
+                Select a glass area to preview
+              </span>
+            )}
           </div>
+          {showTintComparison ? (
+            <input
+              className="tint-comparison-slider"
+              type="range"
+              min="0"
+              max="100"
+              step="1"
+              value={comparisonSplit}
+              aria-label="Compare the base glass with the selected tint"
+              aria-describedby="tint-studio-preview-note"
+              aria-valuetext={`${comparisonSplit}% base glass, ${100 - comparisonSplit}% ${shade.vlt}% VLT tint preview`}
+              onInput={(event) =>
+                setComparisonSplit(Number(event.currentTarget.value))
+              }
+            />
+          ) : null}
           <div className="stage-floor" aria-hidden="true" />
         </div>
-        <button
-          className="before-button"
-          type="button"
-          onPointerDown={() => setBefore(true)}
-          onPointerUp={() => setBefore(false)}
-          onPointerCancel={() => setBefore(false)}
-          onPointerLeave={() => setBefore(false)}
-          onBlur={() => setBefore(false)}
-          onKeyDown={(event) => {
-            if (event.key === ' ' || event.key === 'Enter') setBefore(true);
-          }}
-          onKeyUp={() => setBefore(false)}
-        >
-          Hold for before
-        </button>
-        <p className="preview-note">
-          Appearance preview only. Actual shade varies with factory glass,
-          lighting and interior color.
+        {vehicle === 'sedan' ? (
+          <fieldset className="tint-angle-toolbar">
+            <legend className="sr-only">
+              Rotate the Mercedes-AMG C63 preview
+            </legend>
+            <button
+              className="tint-angle-step"
+              type="button"
+              aria-label="Show previous car angle"
+              disabled={sedanAngleIndex === 0}
+              onClick={() => stepSedanAngle(-1)}
+            >
+              <ChevronLeft aria-hidden="true" />
+            </button>
+            <label className="tint-angle-scrubber">
+              <span className="tint-angle-title">
+                <span>Drag to rotate</span>
+                <strong>{sedanAngle.label}</strong>
+              </span>
+              <input
+                className="tint-angle-range"
+                type="range"
+                min="0"
+                max={sedanAngles.length - 1}
+                step="1"
+                value={sedanAngleIndex}
+                aria-label="Mercedes-AMG C63 viewing angle"
+                aria-valuetext={sedanAngle.label}
+                onInput={(event) =>
+                  setSedanAngleIndex(Number(event.currentTarget.value))
+                }
+              />
+              <span className="tint-angle-ticks" aria-hidden="true">
+                {sedanAngles.map((angle) => (
+                  <span key={angle.id}>{angle.shortLabel}</span>
+                ))}
+              </span>
+            </label>
+            <button
+              className="tint-angle-step"
+              type="button"
+              aria-label="Show next car angle"
+              disabled={sedanAngleIndex === sedanAngles.length - 1}
+              onClick={() => stepSedanAngle(1)}
+            >
+              <ChevronRight aria-hidden="true" />
+            </button>
+          </fieldset>
+        ) : showTintComparison ? (
+          <p className="tint-comparison-help" aria-hidden="true">
+            <span>↔</span> Drag to compare base and tinted glass
+          </p>
+        ) : null}
+        <p className="preview-note" id="tint-studio-preview-note">
+          {isSedanAngleView
+            ? 'Angle preview only. Return to Side to compare the selected VLT; a full smooth 360° requires a complete multi-frame photo capture.'
+            : usesRegisteredTintPair
+              ? `Photo-matched clear and tinted ${vehicles.find(([id]) => id === vehicle)?.[1]} showroom views. Drag the divider on the car to compare; actual measured VLT varies with factory glass, lighting and interior color.`
+              : 'Body-style appearance preview. Actual shade varies with factory glass, lighting and interior color.'}
         </p>
       </div>
 
@@ -289,6 +555,14 @@ export function TintStudio({
                 <span>{label}</span>
               </label>
             ))}
+          </div>
+          <div className="vehicle-selector-footer">
+            <p>
+              <span>Default</span> Your white Mercedes-Benz C 63 AMG
+            </p>
+            <Link href="/vehicle-visualizer">
+              Choose more 3D vehicles <ChevronRight aria-hidden="true" />
+            </Link>
           </div>
         </div>
 
@@ -330,7 +604,10 @@ export function TintStudio({
                       value={item.id}
                       checked={shadeId === item.id}
                       aria-label={`${item.label}, ${item.vlt}% measured VLT`}
-                      onChange={() => setShadeId(item.id)}
+                      onChange={() => {
+                        setShadeId(item.id);
+                        setSedanAngleIndex(1);
+                      }}
                     />
                     <span
                       className="shade-option-swatch"
@@ -368,17 +645,18 @@ export function TintStudio({
                   type="checkbox"
                   checked={zones[id]}
                   disabled={id === 'rearSides' && vehicle === 'coupe'}
-                  onChange={(event) =>
+                  onChange={(event) => {
                     setZones((current) => ({
                       ...current,
                       [id]: event.target.checked,
-                    }))
-                  }
+                    }));
+                    setSedanAngleIndex(1);
+                  }}
                 />
                 <span>
                   <Check aria-hidden="true" /> {label}
                   {id === 'rearSides' && vehicle === 'coupe'
-                    ? ' · included in side mask'
+                    ? ' · included in side-glass preview'
                     : ''}
                 </span>
               </label>

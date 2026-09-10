@@ -8,10 +8,13 @@ import {
 } from '@/lib/ceramic-pro-data';
 import {
   detailingAddOns,
+  ppfQuoteAddOns,
   quoteTierOptionsForService,
   resolveTintLine,
   tintCoverageOptions,
+  wrapQuoteAddOns,
 } from '@/lib/quote-options';
+import { vehicleWrapService } from '@/lib/expanded-content';
 import { filmLines } from '@/lib/site-data';
 
 type QuoteConfigurationPickerProps = {
@@ -294,6 +297,65 @@ function CeramicConfigurationPicker({
   );
 }
 
+function PpfConfigurationPicker({
+  selectedAddOnIds,
+  onToggleAddOn,
+}: {
+  selectedAddOnIds: readonly string[];
+  onToggleAddOn: (id: string) => void;
+}) {
+  return (
+    <section
+      className="lead-configuration"
+      aria-labelledby="ppf-config-heading"
+    >
+      <div className="lead-configuration-head">
+        <span>02 · OPTIONAL PPF SURFACE COATING</span>
+        <strong id="ppf-config-heading">
+          Add Ceramic Pro PPF & Vinyl coating for review.
+        </strong>
+        <p>
+          This is an optional coating over the confirmed LLumar film—not a
+          replacement for PPF. Compatibility, preparation and warranty terms are
+          reviewed before installation.
+        </p>
+      </div>
+
+      <fieldset className="lead-addon-fieldset">
+        <legend className="sr-only">Choose optional PPF add-ons</legend>
+        <div className="lead-addon-options">
+          {ppfQuoteAddOns.map((addOn) => {
+            const selected = selectedAddOnIds.includes(addOn.id);
+            return (
+              <label
+                className={
+                  selected
+                    ? 'lead-addon-option is-selected'
+                    : 'lead-addon-option'
+                }
+                key={addOn.id}
+              >
+                <input
+                  type="checkbox"
+                  name="addOnIds"
+                  value={addOn.id}
+                  checked={selected}
+                  onChange={() => onToggleAddOn(addOn.id)}
+                />
+                <span>
+                  <strong>{addOn.name}</strong>
+                  <small>Request with PPF</small>
+                </span>
+                <Check aria-hidden="true" />
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
+    </section>
+  );
+}
+
 function DetailingConfigurationPicker({
   service,
   packageChoice,
@@ -427,6 +489,133 @@ function DetailingConfigurationPicker({
   );
 }
 
+function WrapConfigurationPicker({
+  packageChoice,
+  selectedAddOnIds,
+  onPackageChange,
+  onToggleAddOn,
+}: {
+  packageChoice: string;
+  selectedAddOnIds: readonly string[];
+  onPackageChange: (choice: string) => void;
+  onToggleAddOn: (id: string) => void;
+}) {
+  return (
+    <section
+      className="lead-configuration"
+      aria-labelledby="wrap-config-heading"
+    >
+      <div className="lead-configuration-head">
+        <span>02 · WRAP SCOPE</span>
+        <strong id="wrap-config-heading">
+          Choose the closest wrap direction.
+        </strong>
+        <p>
+          This starts the conversation. Paint condition, exact material,
+          coverage, design work, timing and price are confirmed after review.
+        </p>
+      </div>
+
+      <fieldset className="lead-tier-fieldset">
+        <legend className="sr-only">Choose a wrap service path</legend>
+        <div className="lead-tier-options">
+          {vehicleWrapService.pathways.map((pathway, index) => {
+            const id = 'path-' + (index + 1);
+            return (
+              <label
+                className={
+                  packageChoice === id
+                    ? 'lead-tier-option is-selected'
+                    : 'lead-tier-option'
+                }
+                key={pathway.name}
+              >
+                <input
+                  className="lead-choice-input"
+                  type="radio"
+                  name="packageChoice"
+                  value={id}
+                  checked={packageChoice === id}
+                  onChange={() => onPackageChange(id)}
+                />
+                <span className="lead-tier-topline">
+                  <strong>{pathway.name}</strong>
+                  <small>{pathway.label}</small>
+                </span>
+                <span className="lead-tier-description">{pathway.copy}</span>
+                <span className="lead-tier-meta">
+                  {pathway.includes.join(' · ')}
+                </span>
+              </label>
+            );
+          })}
+          <label
+            className={
+              packageChoice
+                ? 'lead-tier-option'
+                : 'lead-tier-option is-selected'
+            }
+          >
+            <input
+              className="lead-choice-input"
+              type="radio"
+              name="packageChoice"
+              value=""
+              checked={!packageChoice}
+              onChange={() => onPackageChange('')}
+            />
+            <span className="lead-tier-topline">
+              <strong>Help me choose</strong>
+              <small>Recommendation</small>
+            </span>
+            <span className="lead-tier-description">
+              Share the vehicle, current finish and desired outcome so the team
+              can recommend the right path.
+            </span>
+            <span className="lead-tier-meta">No wrap scope assigned yet</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset className="lead-addon-fieldset">
+        <legend>03 · Optional finish protection</legend>
+        <p>
+          Compatibility and the effect on gloss, satin or matte appearance are
+          reviewed before this add-on is approved.
+        </p>
+        <div className="lead-addon-options">
+          {wrapQuoteAddOns.map((addOn) => {
+            const selected = selectedAddOnIds.includes(addOn.id);
+            return (
+              <label
+                className={
+                  selected
+                    ? 'lead-addon-option is-selected'
+                    : 'lead-addon-option'
+                }
+                key={addOn.id}
+              >
+                <input
+                  type="checkbox"
+                  name="addOnIds"
+                  value={addOn.id}
+                  checked={selected}
+                  onChange={() => onToggleAddOn(addOn.id)}
+                />
+                <span>
+                  <strong>{addOn.name}</strong>
+                  <small>Request with wrap</small>
+                </span>
+                <Check aria-hidden="true" />
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
+    </section>
+  );
+}
+
 export function QuoteConfigurationPicker({
   service,
   packageChoice,
@@ -466,6 +655,26 @@ export function QuoteConfigurationPicker({
     );
   }
 
+  if (service === 'ppf') {
+    return (
+      <PpfConfigurationPicker
+        selectedAddOnIds={selectedAddOnIds}
+        onToggleAddOn={onToggleAddOn}
+      />
+    );
+  }
+
+  if (service === 'wrap') {
+    return (
+      <WrapConfigurationPicker
+        packageChoice={packageChoice}
+        selectedAddOnIds={selectedAddOnIds}
+        onPackageChange={onPackageChange}
+        onToggleAddOn={onToggleAddOn}
+      />
+    );
+  }
+
   if (service === 'detailing' || service === 'mobile-detailing') {
     return (
       <DetailingConfigurationPicker
@@ -483,6 +692,8 @@ export function QuoteConfigurationPicker({
 
 export function configurationStepCount(service: string) {
   if (service === 'tint') return 3;
+  if (service === 'ppf') return 1;
+  if (service === 'wrap') return 2;
   if (
     service === 'ceramic' ||
     service === 'detailing' ||

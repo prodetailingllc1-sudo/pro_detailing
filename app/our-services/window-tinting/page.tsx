@@ -10,7 +10,9 @@ import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { TintCoverageComparison } from '@/components/site/TintCoverageComparison';
 import { TintStudio } from '@/components/site/TintStudio';
+import { localTintImages } from '@/lib/local-tint-data';
 import { createPageMetadata } from '@/lib/metadata';
 import {
   filmLines,
@@ -47,6 +49,24 @@ const faqs = [
     'How do I get an exact tint quote?',
     'Send the year, make and model of your vehicle, the glass areas you want tinted and your comfort or appearance priority. The studio will confirm availability and pricing.',
   ],
+] as const;
+
+const tintVehiclePhotos = [
+  ...localTintImages,
+  {
+    src: '/gallery/pro-service-suv-window-tint.webp',
+    alt: 'Black luxury SUV outside with dark rear privacy glass.',
+    caption: 'SUV glass and shade planning · service visualization.',
+    width: 1200,
+    height: 800,
+  },
+  {
+    src: '/gallery/pro-service-truck-window-tint.webp',
+    alt: 'Dark pickup truck presented inside a window-film studio.',
+    caption: 'Truck glass and shade planning · service visualization.',
+    width: 1200,
+    height: 800,
+  },
 ] as const;
 
 type TintSearchParams = { film?: string | string[] };
@@ -252,14 +272,40 @@ export default async function WindowTintingPage({
           <div className="studio-section-head">
             <SectionIntro
               eyebrow="Interactive appearance lab"
-              title="Build a more informed tint conversation."
-              copy="Choose a vehicle profile, film, measured VLT and glass zones. The preview is approximate; your studio recommendation is based on the actual vehicle."
+              title="Swipe from base glass to selected tint."
+              copy="Drag the comparison line across the vehicle, then choose a vehicle profile, film, measured VLT and glass zones. The preview is approximate; your studio recommendation is based on the actual vehicle."
             />
             <Link className="text-link" href="/tint-simulator">
               Open full-screen studio <ArrowRight aria-hidden="true" />
             </Link>
           </div>
           <TintStudio compact initialLineId={initialFilm} />
+        </div>
+      </section>
+
+      <section className="section tint-vehicle-gallery-section">
+        <div className="shell">
+          <SectionIntro
+            eyebrow="More vehicles"
+            title="See tint across more body styles."
+            copy="Explore sedans, an EV, an SUV and a truck. Customer photographs are presented separately from clearly labelled service visualizations."
+          />
+          <div className="tint-vehicle-gallery">
+            {tintVehiclePhotos.map((photo, index) => (
+              <figure key={photo.src} className={index === 0 ? 'is-wide' : ''}>
+                <div>
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    width={photo.width}
+                    height={photo.height}
+                    sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                  />
+                </div>
+                <figcaption>{photo.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -276,15 +322,7 @@ export default async function WindowTintingPage({
             </Link>
           </div>
           <div className="coverage-diagram">
-            <div className="coverage-car">
-              <Image
-                src="/vehicles/sedan.webp"
-                alt="Sedan glass-zone diagram"
-                width="1536"
-                height="1024"
-                sizes="(max-width: 780px) 100vw, 54vw"
-              />
-            </div>
+            <TintCoverageComparison />
             <div className="coverage-cards">
               <article>
                 <span>01</span>

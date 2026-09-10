@@ -74,6 +74,22 @@ export const detailingAddOns = [
   { id: 'engine-bay-detail', name: 'Engine-bay detail', price: 50 },
 ] as const;
 
+export const ppfQuoteAddOns = [
+  {
+    id: 'ceramic-pro-ppf-vinyl',
+    name: 'Ceramic Pro PPF & Vinyl coating',
+    price: null,
+  },
+] as const;
+
+export const wrapQuoteAddOns = [
+  {
+    id: 'ceramic-pro-ppf-vinyl',
+    name: 'Ceramic Pro PPF & Vinyl coating',
+    price: null,
+  },
+] as const;
+
 export const tintCoverageOptions = [
   { id: 'frontSides', label: 'Front side glass' },
   { id: 'rearSides', label: 'Rear side & back glass' },
@@ -99,25 +115,41 @@ export function quoteTierOptionsForService(
   return [];
 }
 
-export function resolveQuoteAddOns(value: unknown) {
-  const requested = selectedIds(value, detailingAddOns.length);
-
-  return detailingAddOns.filter((addOn) => requested.has(addOn.id));
+export function quoteAddOnsForService(service: string) {
+  if (service === 'ppf') return ppfQuoteAddOns;
+  if (service === 'wrap') return wrapQuoteAddOns;
+  if (service === 'detailing' || service === 'mobile-detailing') {
+    return detailingAddOns;
+  }
+  return [];
 }
 
-function selectedIds(value: unknown, limit: number) {
+export function resolveQuoteAddOns(value: unknown, service = 'detailing') {
+  const options = quoteAddOnsForService(service);
+  const requested = selectedIds(
+    value,
+    options.map((option) => option.id),
+  );
+
+  return options.filter((addOn) => requested.has(addOn.id));
+}
+
+function selectedIds(value: unknown, allowedIds: readonly string[]) {
   const candidates = Array.isArray(value)
     ? value
     : typeof value === 'string'
       ? value.split(',')
       : [];
 
+  const allowed = new Set(allowedIds);
+
   return new Set(
     candidates
       .filter((id): id is string => typeof id === 'string')
       .map((id) => id.trim())
       .filter(Boolean)
-      .slice(0, limit),
+      .filter((id) => allowed.has(id))
+      .slice(0, allowedIds.length),
   );
 }
 
@@ -146,12 +178,18 @@ export function resolveTintShade(
 }
 
 export function resolveTintCoverage(value: unknown) {
-  const requested = selectedIds(value, tintCoverageOptions.length);
+  const requested = selectedIds(
+    value,
+    tintCoverageOptions.map((option) => option.id),
+  );
   return tintCoverageOptions.filter((option) => requested.has(option.id));
 }
 
 export function resolveCeramicSurfaceOfferings(value: unknown) {
-  const requested = selectedIds(value, ceramicProSurfaceOfferings.length);
+  const requested = selectedIds(
+    value,
+    ceramicProSurfaceOfferings.map((offering) => offering.id),
+  );
   return ceramicProSurfaceOfferings.filter((offering) =>
     requested.has(offering.id),
   );

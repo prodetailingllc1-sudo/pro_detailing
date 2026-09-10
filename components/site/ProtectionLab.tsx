@@ -12,43 +12,55 @@ import { services } from '@/lib/site-data';
 const comparisons = {
   tint: {
     mode: 'tint',
-    vehicle: 'sedan',
-    baseSrc: '/vehicles/sedan.webp',
+    baseSrc: '/gallery/local-tint-white-sedan-night-clear.webp',
+    afterSrc: '/gallery/local-tint-white-sedan-night.webp',
     beforeAlt:
-      'Interactive registered comparison of clear and tinted glass on a white sedan',
+      'Interactive comparison of clear and tinted side glass on the same white sedan at night',
     afterLabel: 'Tinted side glass',
     beforeLabel: 'Clear glass',
     ariaLabel: 'Adjust the clear and tinted glass comparison',
-    note: 'Registered glass-mask preview. Actual shade varies with factory glass and lighting.',
-    masks: ['glass-frontSides', 'glass-rearSides'],
-    width: 1536,
-    height: 1024,
+    note: 'Same vehicle and view. Actual shade still varies with factory glass, lighting and interior color.',
+    width: 1600,
+    height: 1200,
   },
   ceramic: {
     mode: 'ceramic',
-    vehicle: 'coupe',
-    baseSrc: '/vehicles/coupe.webp',
+    baseSrc: '/generated/ceramic-application-comparison.webp',
+    afterSrc: '/generated/ceramic-completed-comparison.webp',
     beforeAlt:
-      'Interactive registered comparison of untreated and Ceramic Pro-finished paint on the same coupe',
-    afterLabel: 'Ceramic Pro finish',
-    beforeLabel: 'Untreated finish',
-    ariaLabel: 'Adjust the untreated and Ceramic Pro finish preview',
-    note: 'Same vehicle, same paint color. The effect previews gloss only; condition and preparation determine the result.',
-    masks: ['paint'],
+      'Interactive service visualization comparing ceramic coating application and the completed finish on the same black luxury sedan',
+    afterLabel: 'Completed finish',
+    beforeLabel: 'Coating application',
+    ariaLabel:
+      'Adjust the ceramic coating application and completed finish comparison',
+    note: 'Original service visualization—not a customer vehicle. Paint condition and preparation determine the final result.',
     width: 1536,
     height: 1024,
   },
   ppf: {
     mode: 'ppf',
-    vehicle: 'coupe',
-    baseSrc: '/vehicles/coupe.webp',
+    baseSrc: '/generated/ppf-installation-comparison.webp',
+    afterSrc: '/generated/ppf-completed-comparison.webp',
     beforeAlt:
-      'Interactive registered comparison of unprotected paint and clear full-front paint protection film on the same coupe',
-    afterLabel: 'Full-front clear PPF',
-    beforeLabel: 'Unprotected paint',
-    ariaLabel: 'Adjust the unprotected paint and clear PPF comparison',
-    note: 'LLumar clear-PPF coverage preview—not a color wrap. The vehicle color stays unchanged.',
-    masks: ['ppf-hood', 'ppf-fenders', 'ppf-bumper', 'ppf-mirrors'],
+      'Interactive service visualization comparing paint protection film installation and the completed clear finish on the same graphite sports coupe',
+    afterLabel: 'Completed clear PPF',
+    beforeLabel: 'Film installation',
+    ariaLabel:
+      'Adjust the paint protection film installation and completed finish comparison',
+    note: 'Original service visualization—not a customer vehicle. Clear PPF remains visually subtle after installation.',
+    width: 1536,
+    height: 1024,
+  },
+  detail: {
+    mode: 'detail',
+    baseSrc: '/generated/detailing-before-comparison.webp',
+    afterSrc: '/generated/detailing-completed-comparison.webp',
+    beforeAlt:
+      'Interactive service visualization comparing a neglected and professionally detailed version of the same luxury vehicle cabin',
+    afterLabel: 'Detail completed',
+    beforeLabel: 'Before detail',
+    ariaLabel: 'Adjust the before and completed interior detailing comparison',
+    note: 'Original service visualization—not a customer vehicle. Results depend on materials, condition and the agreed scope.',
     width: 1536,
     height: 1024,
   },
@@ -60,7 +72,7 @@ export function ProtectionLab() {
   const [comparisonSplit, setComparisonSplit] = useState(50);
   const active =
     services.find((service) => service.id === activeId) ?? services[0];
-  const comparison = active.id === 'detail' ? null : comparisons[active.id];
+  const comparison = comparisons[active.id];
   const comparisonRevealStyle = {
     '--lab-comparison-split': `${comparisonSplit}%`,
   } as CSSProperties & Record<'--lab-comparison-split', string>;
@@ -89,7 +101,7 @@ export function ProtectionLab() {
         >
           {comparison ? (
             <div
-              className={`lab-comparison-reveal lab-comparison-${comparison.mode}`}
+              className={`lab-comparison-reveal lab-comparison-${comparison.mode} lab-comparison-photo-pair`}
               style={comparisonRevealStyle}
             >
               <div className="lab-comparison-visual">
@@ -105,23 +117,13 @@ export function ProtectionLab() {
                 <span className="lab-comparison-after" aria-hidden="true">
                   <Image
                     className="lab-registered-after"
-                    src={comparison.baseSrc}
+                    src={comparison.afterSrc}
                     alt=""
                     width={comparison.width}
                     height={comparison.height}
                     draggable={false}
                     sizes="(max-width: 780px) 100vw, 65vw"
                   />
-                  {comparison.masks.map((mask) => (
-                    <span
-                      className={`lab-surface-mask lab-surface-mask-${comparison.mode}`}
-                      key={mask}
-                      style={{
-                        WebkitMaskImage: `url(/vehicles/masks/${comparison.vehicle}-${mask}.png)`,
-                        maskImage: `url(/vehicles/masks/${comparison.vehicle}-${mask}.png)`,
-                      }}
-                    />
-                  ))}
                 </span>
               </div>
               <span

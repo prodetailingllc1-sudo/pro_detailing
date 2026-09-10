@@ -104,6 +104,9 @@ export default function TintSimulatorPage() {
                 color-wrap service and material are available.
               </p>
             </div>
+            <Link className="text-link" href="/our-services/vehicle-wraps">
+              Explore PRO Wraps <ArrowRight aria-hidden="true" />
+            </Link>
           </div>
           <WrapStudio />
         </div>

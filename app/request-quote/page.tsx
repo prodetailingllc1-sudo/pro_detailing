@@ -21,8 +21,8 @@ import { business, SITE_ORIGIN } from '@/lib/site-data';
 export const metadata = createPageMetadata({
   title: 'Request a Service Quote | PRO Detailing',
   description: siteFeatures.mobileDetailing
-    ? 'Start a quote for automotive appearance, protection, maintenance, tire, glass, key, mobile detailing or residential tint service in Northern Virginia.'
-    : 'Start a quote for automotive appearance, protection, maintenance, tire, glass, key or residential tint service in Northern Virginia.',
+    ? 'Start a quote for automotive appearance, wraps, protection, maintenance, tire, glass, key, mobile detailing or residential tint service in Northern Virginia.'
+    : 'Start a quote for automotive appearance, wraps, protection, maintenance, tire, glass, key or residential tint service in Northern Virginia.',
   path: '/request-quote',
 });
 
@@ -47,6 +47,7 @@ function allowedQuoteService(value: string | undefined) {
     'tint',
     'ceramic',
     'ppf',
+    'wrap',
     'detailing',
     ...(siteFeatures.mobileDetailing ? ['mobile-detailing'] : []),
     'residential-tint',
@@ -111,7 +112,7 @@ export default async function RequestQuotePage({
   const ceramicSurfaces = resolveCeramicSurfaceOfferings(
     firstValue(params.surfaces),
   ).map((offering) => offering.id);
-  const addOnIds = resolveQuoteAddOns(firstValue(params.addons)).map(
+  const addOnIds = resolveQuoteAddOns(firstValue(params.addons), service).map(
     (addOn) => addOn.id,
   );
   const normalizedParams: QuoteSearchParams = {
@@ -129,7 +130,10 @@ export default async function RequestQuotePage({
         ? ceramicSurfaces.join(',')
         : undefined,
     addons:
-      (service === 'detailing' || service === 'mobile-detailing') &&
+      (service === 'detailing' ||
+        service === 'mobile-detailing' ||
+        service === 'ppf' ||
+        service === 'wrap') &&
       addOnIds.length
         ? addOnIds.join(',')
         : undefined,

@@ -27,6 +27,7 @@ const appearanceServiceLinks = [
     href: '/our-services/paint-protection-film',
     label: 'Paint protection film',
   },
+  { href: '/our-services/vehicle-wraps', label: 'PRO Wraps & graphics' },
   { href: '/our-services/auto-detailing', label: 'Auto detailing' },
 ];
 
@@ -194,15 +195,23 @@ export function SiteHeader() {
                 ))}
               </div>
               <div className="desktop-services-specialty">
-                <span>Specialty care</span>
-                <a
-                  href="https://proaviationcare.com/"
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => setServicesOpen(false)}
-                >
-                  Aircraft detailing <span aria-hidden="true">↗</span>
-                </a>
+                <span>Tools & specialty</span>
+                <div>
+                  <Link
+                    href="/vehicle-visualizer"
+                    onClick={() => setServicesOpen(false)}
+                  >
+                    More 3D vehicles <span aria-hidden="true">↗</span>
+                  </Link>
+                  <a
+                    href="https://proaviationcare.com/"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setServicesOpen(false)}
+                  >
+                    Aircraft detailing <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
               </div>
             </div>
           ) : null}
@@ -257,6 +266,10 @@ export function SiteHeader() {
                   <span aria-hidden="true">↗</span>
                 </Link>
               ))}
+              <Link href="/vehicle-visualizer" onClick={() => setOpen(false)}>
+                More vehicles · Ceramic Pro 3D
+                <span aria-hidden="true">↗</span>
+              </Link>
               <a
                 href="https://proaviationcare.com/"
                 target="_blank"

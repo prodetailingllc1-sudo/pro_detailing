@@ -4,9 +4,9 @@ import {
   CarFront,
   Check,
   CircleGauge,
-  ExternalLink,
   House,
   KeyRound,
+  Palette,
   PanelsTopLeft,
   ShieldCheck,
   Wrench,
@@ -16,10 +16,12 @@ import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { WrapStudio } from '@/components/site/WrapStudio';
 import type { ExtendedService } from '@/lib/expanded-content';
 import { quoteHref, SITE_ORIGIN } from '@/lib/site-data';
 
 const serviceIcons: Record<string, LucideIcon> = {
+  'vehicle-wraps': Palette,
   'mobile-detailing': CarFront,
   'residential-window-tinting': House,
   'maintenance-oil-change': Wrench,
@@ -37,6 +39,7 @@ export function AdditionalServicePage({
   const isMaintenancePackage =
     service.slug === 'maintenance-oil-change' ||
     service.slug === 'tire-service';
+  const isWrapService = service.slug === 'vehicle-wraps';
   const serviceUrl = `${SITE_ORIGIN}/our-services/${service.slug}`;
   const schema = {
     '@context': 'https://schema.org',
@@ -48,6 +51,10 @@ export function AdditionalServicePage({
         provider: { '@id': `${SITE_ORIGIN}/#business` },
         areaServed: ['Manassas', 'Northern Virginia'],
         url: serviceUrl,
+        image: [
+          service.image,
+          ...(service.media?.map((item) => item.src) ?? []),
+        ].map((src) => `${SITE_ORIGIN}${src}`),
       },
       {
         '@type': 'FAQPage',
@@ -78,8 +85,11 @@ export function AdditionalServicePage({
               >
                 Request a service quote <ArrowRight aria-hidden="true" />
               </Link>
-              <a className="button button-ghost" href="#pathways">
-                Explore service paths
+              <a
+                className="button button-ghost"
+                href={isWrapService ? '#wrap-studio' : '#pathways'}
+              >
+                {isWrapService ? 'Open color studio' : 'Explore service paths'}
               </a>
             </div>
           </div>
@@ -132,6 +142,69 @@ export function AdditionalServicePage({
           ))}
         </div>
       </section>
+
+      {isWrapService ? (
+        <section
+          className="section studio-full-section wrap-studio-section wrap-service-studio"
+          id="wrap-studio"
+        >
+          <div className="shell">
+            <div className="studio-section-head">
+              <SectionIntro
+                eyebrow="PRO Wrap Studio"
+                title="Explore color on the body—not across the glass."
+                copy="Choose a vehicle profile, color direction and finish, then hold the comparison control to return to the original paint. The visual is a planning aid; approve the exact film from a physical sample."
+              />
+              <Link
+                className="text-link"
+                href={quoteHref(service.quoteService)}
+              >
+                Bring this direction to the team{' '}
+                <ArrowRight aria-hidden="true" />
+              </Link>
+            </div>
+            <WrapStudio />
+          </div>
+        </section>
+      ) : null}
+
+      {service.media?.length ? (
+        <section className="section extended-service-media-section">
+          <div className="shell">
+            <SectionIntro
+              eyebrow="Inside the service"
+              title={`See ${service.shortName.toLowerCase()} in clear, specific stages.`}
+              copy="Review the individual work—not one generic vehicle photo—before choosing the service path that fits your concern."
+            />
+            <div className="extended-service-media-grid">
+              {service.media.map((item, index) => (
+                <figure key={item.src}>
+                  <div className="extended-service-media-frame">
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      sizes="(max-width: 780px) 100vw, 50vw"
+                    />
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                  </div>
+                  <figcaption>
+                    <p>{item.eyebrow}</p>
+                    <h3>{item.title}</h3>
+                    <p>{item.copy}</p>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <p className="extended-service-media-note">
+              These original service visualizations illustrate typical work
+              stages; they are not customer-vehicle photos. Vehicle condition,
+              parts, repairability, equipment and final scope are confirmed
+              after inspection.
+            </p>
+          </div>
+        </section>
+      ) : null}
 
       {service.capabilities ? (
         <section className="section capability-index-section">
@@ -232,23 +305,11 @@ export function AdditionalServicePage({
               eyebrow={`${service.shortName} FAQ`}
               title="Know what will be confirmed before the appointment."
             />
-            {service.sourceUrl ? (
-              <a
-                className="text-link"
-                href={service.sourceUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Review the current service source{' '}
-                <ExternalLink aria-hidden="true" />
-              </a>
-            ) : (
-              <p className="new-service-note">
-                Architectural-film products, glass compatibility and installer
-                availability are confirmed by PRO Detailing before an
-                appointment is accepted.
-              </p>
-            )}
+            <p className="new-service-note">
+              This service scope is hosted in the new PRO Detailing app.
+              Products, parts, compatibility and availability are confirmed
+              before an appointment is accepted.
+            </p>
           </div>
           <div className="faq-list">
             {service.faqs.map(([question, answer], index) => (

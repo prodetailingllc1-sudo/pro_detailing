@@ -1,0 +1,16 @@
+node_modules
+.git
+.agents
+.codex
+.next
+.vinext
+.wrangler
+dist
+coverage
+outputs
+work
+.env
+.env.*
+!.env.example
+*.log
+npm-debug.log*

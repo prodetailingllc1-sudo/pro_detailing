@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
+import { DetailingComparison } from '@/components/site/DetailingComparison';
 import { SectionIntro } from '@/components/site/SectionIntro';
 import { createPageMetadata } from '@/lib/metadata';
 import {
@@ -351,6 +352,20 @@ export default function AutoDetailingPage() {
         </div>
       </section>
 
+      <section
+        className="section detailing-comparison-section"
+        id="detailing-comparison"
+      >
+        <div className="shell">
+          <SectionIntro
+            eyebrow="Interactive detailing comparison"
+            title="Drag from arrival condition to completed cabin."
+            copy="Use the same left-to-right comparison found on the home page. The vehicle and camera angle stay fixed so the visible change is easier to understand."
+          />
+          <DetailingComparison />
+        </div>
+      </section>
+
       <section className="section interior-visual-section">
         <div className="shell">
           <SectionIntro
@@ -502,7 +517,7 @@ export default function AutoDetailingPage() {
           </div>
 
           <p className="package-source-note">
-            Menu reviewed from the current pro-detailing.co car-detailing page.
+            Menu consolidated from the current PRO Detailing service catalog.
             Vehicle size, condition and requested work can change the final
             quote. Add-on availability is confirmed by the studio.
           </p>

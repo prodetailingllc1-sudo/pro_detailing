@@ -4,6 +4,8 @@ import { ArrowRight, Check, Phone, ShieldCheck } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { SyntheticEvent } from 'react';
 
+import Link from '@/components/site/SafeLink';
+
 import {
   configurationStepCount,
   QuoteConfigurationPicker,
@@ -26,6 +28,7 @@ const serviceOptions: readonly (readonly [string, string])[] = [
   ['tint', 'LLumar tint'],
   ['ceramic', 'Ceramic coating'],
   ['ppf', 'Paint protection film'],
+  ['wrap', 'PRO Wraps & vehicle graphics'],
   ['detailing', 'Auto detailing'],
   ['maintenance', 'Maintenance & oil change'],
   ['tires', 'Tire change, rotation & flat repair'],
@@ -50,6 +53,7 @@ const vehicleOptions = [
 const goalOptions = [
   'Cabin comfort & privacy',
   'Protect the paint',
+  'Change the vehicle color or add graphics',
   'Easier maintenance & gloss',
   'Deep interior/exterior reset',
   'Routine maintenance or oil service',
@@ -64,6 +68,7 @@ const serviceGoalDefaults: Record<string, string> = {
   tint: 'Cabin comfort & privacy',
   ceramic: 'Easier maintenance & gloss',
   ppf: 'Protect the paint',
+  wrap: 'Change the vehicle color or add graphics',
   detailing: 'Deep interior/exterior reset',
   'mobile-detailing': 'Deep interior/exterior reset',
   'residential-tint': 'Home heat, glare or privacy',
@@ -102,31 +107,35 @@ function buildTrackedBookingUrl({
   tintCoverageIds,
   ceramicSurfaceIds,
 }: BookingSelections) {
-  const url = new URL(business.bookingUrl);
-  url.searchParams.set('utm_source', 'pro_detailing_site');
-  url.searchParams.set('utm_medium', 'website');
-  url.searchParams.set('utm_campaign', 'vehicle_quote');
-  url.searchParams.set('service', service);
-  url.searchParams.set('vehicle', vehicle);
-  url.searchParams.set('goal', goal);
-  if (packageChoice) url.searchParams.set('package', packageChoice);
+  const params = new URLSearchParams({
+    utm_source: 'pro_detailing_site',
+    utm_medium: 'website',
+    utm_campaign: 'vehicle_quote',
+    service,
+    vehicle,
+    goal,
+  });
+  if (packageChoice) params.set('package', packageChoice);
   if (
-    (service === 'detailing' || service === 'mobile-detailing') &&
+    (service === 'detailing' ||
+      service === 'mobile-detailing' ||
+      service === 'ppf' ||
+      service === 'wrap') &&
     addOnIds.length
   ) {
-    url.searchParams.set('addons', addOnIds.join(','));
+    params.set('addons', addOnIds.join(','));
   }
   if (service === 'tint') {
-    url.searchParams.set('film', tintLineId);
-    url.searchParams.set('shade', tintShadeId);
+    params.set('film', tintLineId);
+    params.set('shade', tintShadeId);
     if (tintCoverageIds.length) {
-      url.searchParams.set('coverage', tintCoverageIds.join(','));
+      params.set('coverage', tintCoverageIds.join(','));
     }
   }
   if (service === 'ceramic' && ceramicSurfaceIds.length) {
-    url.searchParams.set('surfaces', ceramicSurfaceIds.join(','));
+    params.set('surfaces', ceramicSurfaceIds.join(','));
   }
-  return url.toString();
+  return `${business.bookingUrl}?${params.toString()}`;
 }
 
 function ConsentField() {
@@ -136,11 +145,7 @@ function ConsentField() {
       <span>
         I agree that PRO Detailing may contact me by phone, text or email about
         this request. Message and data rates may apply; reply STOP to opt out.
-        View the{' '}
-        <a href={business.privacyUrl} target="_blank" rel="noreferrer">
-          privacy policy
-        </a>
-        .
+        View the <Link href={business.privacyUrl}>privacy policy</Link>.
       </span>
     </label>
   );
@@ -190,8 +195,12 @@ export function HighLevelLeadCapture({
   );
   const [selectedAddOnIds, setSelectedAddOnIds] = useState<string[]>(
     normalizedInitialService === 'detailing' ||
-      normalizedInitialService === 'mobile-detailing'
-      ? resolveQuoteAddOns(initialAddOnIds).map((addOn) => addOn.id)
+      normalizedInitialService === 'mobile-detailing' ||
+      normalizedInitialService === 'ppf' ||
+      normalizedInitialService === 'wrap'
+      ? resolveQuoteAddOns(initialAddOnIds, normalizedInitialService).map(
+          (addOn) => addOn.id,
+        )
       : [],
   );
   const [tintLineId, setTintLineId] = useState(normalizedInitialTintLine);
@@ -211,7 +220,7 @@ export function HighLevelLeadCapture({
   const selectedPackage = resolveQuotePackage(service, packageChoice);
   const selectedPackageId = selectedPackage?.id ?? '';
   const packageLabel = selectedPackage?.label ?? '';
-  const selectedAddOns = resolveQuoteAddOns(selectedAddOnIds);
+  const selectedAddOns = resolveQuoteAddOns(selectedAddOnIds, service);
   const selectedTintLine =
     resolveTintLine(tintLineId) ?? resolveTintLine(defaultTintLineId)!;
   const selectedTintShade =
@@ -243,18 +252,34 @@ export function HighLevelLeadCapture({
           ]
             .filter(Boolean)
             .join(' · ')
-        : service === 'detailing' || service === 'mobile-detailing'
-          ? [
-              packageLabel || 'Package recommendation',
-              selectedAddOns.length
-                ? `Add-ons: ${selectedAddOns
-                    .map((addOn) => addOn.name)
-                    .join(', ')}`
-                : '',
-            ]
-              .filter(Boolean)
-              .join(' · ')
-          : '';
+        : service === 'ppf'
+          ? selectedAddOns.length
+            ? `Optional add-on: ${selectedAddOns
+                .map((addOn) => addOn.name)
+                .join(', ')}`
+            : 'PPF coverage and finish review'
+          : service === 'wrap'
+            ? [
+                packageLabel || 'Wrap scope recommendation',
+                selectedAddOns.length
+                  ? 'Optional add-on: ' +
+                    selectedAddOns.map((addOn) => addOn.name).join(', ')
+                  : '',
+              ]
+                .filter(Boolean)
+                .join(' · ')
+            : service === 'detailing' || service === 'mobile-detailing'
+              ? [
+                  packageLabel || 'Package recommendation',
+                  selectedAddOns.length
+                    ? `Add-ons: ${selectedAddOns
+                        .map((addOn) => addOn.name)
+                        .join(', ')}`
+                    : '',
+                ]
+                  .filter(Boolean)
+                  .join(' · ')
+              : '';
   const bookingUrl = useMemo(
     () =>
       buildTrackedBookingUrl({

@@ -13,6 +13,7 @@ const ALLOWED_SERVICES = new Set([
   'tint',
   'ceramic',
   'ppf',
+  'wrap',
   'detailing',
   ...(siteFeatures.mobileDetailing ? ['mobile-detailing'] : []),
   'residential-tint',
@@ -82,8 +83,11 @@ export async function POST(request: Request) {
     : 'other';
   const packageChoice = resolveQuotePackage(service, clean(body.package, 40));
   const addOns =
-    service === 'detailing' || service === 'mobile-detailing'
-      ? resolveQuoteAddOns(body.addOnIds)
+    service === 'detailing' ||
+    service === 'mobile-detailing' ||
+    service === 'ppf' ||
+    service === 'wrap'
+      ? resolveQuoteAddOns(body.addOnIds, service)
       : [];
   const tintLine =
     service === 'tint' ? resolveTintLine(clean(body.tintLine, 20)) : null;
@@ -133,16 +137,30 @@ export async function POST(request: Request) {
           ]
             .filter(Boolean)
             .join(' · ')
-        : service === 'detailing' || service === 'mobile-detailing'
-          ? [
-              packageChoice?.label ?? 'Package recommendation',
-              addOns.length
-                ? `Add-ons: ${addOns.map((addOn) => addOn.name).join(', ')}`
-                : '',
-            ]
-              .filter(Boolean)
-              .join(' · ')
-          : '';
+        : service === 'ppf'
+          ? addOns.length
+            ? `Optional add-on: ${addOns.map((addOn) => addOn.name).join(', ')}`
+            : 'PPF coverage and finish review'
+          : service === 'wrap'
+            ? [
+                packageChoice?.label ?? 'Wrap scope recommendation',
+                addOns.length
+                  ? 'Optional add-on: ' +
+                    addOns.map((addOn) => addOn.name).join(', ')
+                  : '',
+              ]
+                .filter(Boolean)
+                .join(' · ')
+            : service === 'detailing' || service === 'mobile-detailing'
+              ? [
+                  packageChoice?.label ?? 'Package recommendation',
+                  addOns.length
+                    ? `Add-ons: ${addOns.map((addOn) => addOn.name).join(', ')}`
+                    : '',
+                ]
+                  .filter(Boolean)
+                  .join(' · ')
+              : '';
 
   const payload = {
     name,

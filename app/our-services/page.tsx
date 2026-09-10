@@ -4,6 +4,7 @@ import {
   CircleGauge,
   House,
   KeyRound,
+  Palette,
   PanelsTopLeft,
   Plane,
   ShieldCheck,
@@ -24,13 +25,14 @@ import { createPageMetadata } from '@/lib/metadata';
 export const metadata = createPageMetadata({
   title: 'Automotive Services Manassas, VA | PRO Detailing',
   description: siteFeatures.mobileDetailing
-    ? 'Explore tint, Ceramic Pro, PPF, detailing, maintenance, tire change and repair, auto glass, locksmith, mobile detailing and home tint in Northern Virginia.'
-    : 'Explore tint, Ceramic Pro, PPF, detailing, maintenance, tire change and repair, auto glass, automotive locksmith and home tint in Northern Virginia.',
+    ? 'Explore tint, Ceramic Pro, PPF, PRO Wraps, detailing, maintenance, tire, auto glass, locksmith, mobile detailing and home tint in Northern Virginia.'
+    : 'Explore tint, Ceramic Pro, PPF, PRO Wraps, detailing, maintenance, tire, auto glass, automotive locksmith and home tint in Northern Virginia.',
   path: '/our-services',
 });
 
-const coreIcons = [SunMedium, Sparkles, ShieldCheck, CarFront];
+const coreIcons = [SunMedium, Sparkles, ShieldCheck, CarFront, Palette];
 const additionalIcons: Record<string, typeof CarFront> = {
+  'vehicle-wraps': Palette,
   'mobile-detailing': CarFront,
   'residential-window-tinting': House,
   'maintenance-oil-change': Wrench,
@@ -55,8 +57,13 @@ export default function ServicesPage() {
     const service = availableAdditional.find((item) => item.slug === slug);
     return service ? [service] : [];
   });
+  const wrapServices = availableAdditional.filter(
+    (service) => service.slug === 'vehicle-wraps',
+  );
+  const appearanceServices = [...services, ...wrapServices];
   const specialtyServices = availableAdditional.filter(
     (service) =>
+      service.slug !== 'vehicle-wraps' &&
       !vehicleCareOrder.includes(
         service.slug as (typeof vehicleCareOrder)[number],
       ),
@@ -69,8 +76,8 @@ export default function ServicesPage() {
       name: service.name,
       group: 'Vehicle care',
     })),
-    ...services.map((service) => ({
-      href: service.href,
+    ...appearanceServices.map((service) => ({
+      href: 'href' in service ? service.href : '/our-services/' + service.slug,
       name: service.name,
       group: 'Appearance & protection',
     })),
@@ -97,8 +104,9 @@ export default function ServicesPage() {
             </p>
             <h1>Every service. One PRO standard.</h1>
             <p>
-              Find appearance, protection, maintenance, tire, glass, locksmith,
-              mobile and property services without hunting through the site.
+              Find appearance, protection, wraps, maintenance, tire, glass,
+              locksmith, mobile and property services without hunting through
+              the site.
             </p>
             <Link className="button button-primary" href={quoteHref()}>
               Start a service request <ArrowRight aria-hidden="true" />
@@ -145,13 +153,20 @@ export default function ServicesPage() {
         <div className="shell">
           <SectionIntro
             eyebrow="Appearance & protection"
-            title="Four core systems for the surfaces you see and use every day."
+            title="Five appearance systems for the surfaces you see and use every day."
           />
           <div className="service-network-grid core-service-grid">
-            {services.map((service, index) => {
+            {appearanceServices.map((service, index) => {
               const Icon = coreIcons[index];
+              const href =
+                'href' in service
+                  ? service.href
+                  : '/our-services/' + service.slug;
               return (
-                <Link href={service.href} key={service.id}>
+                <Link
+                  href={href}
+                  key={'id' in service ? service.id : service.slug}
+                >
                   <div className="service-network-card-media">
                     <Image
                       src={service.image}
@@ -159,7 +174,7 @@ export default function ServicesPage() {
                       fill
                       sizes="(min-width: 1050px) 30vw, (min-width: 520px) 46vw, 92vw"
                     />
-                    <span>SYSTEM / {service.step}</span>
+                    <span>SYSTEM / {String(index + 1).padStart(2, '0')}</span>
                   </div>
                   <Icon aria-hidden="true" />
                   <h2>{service.name}</h2>
@@ -196,7 +211,13 @@ export default function ServicesPage() {
                       fill
                       sizes="(min-width: 1050px) 30vw, (min-width: 520px) 46vw, 92vw"
                     />
-                    <span>SYSTEM / {String(index + 5).padStart(2, '0')}</span>
+                    <span>
+                      SYSTEM /{' '}
+                      {String(index + appearanceServices.length + 1).padStart(
+                        2,
+                        '0',
+                      )}
+                    </span>
                   </div>
                   <Icon aria-hidden="true" />
                   <h2>{service.name}</h2>
@@ -221,7 +242,9 @@ export default function ServicesPage() {
                 />
                 <span>
                   SYSTEM /{' '}
-                  {String(visibleAdditional.length + 5).padStart(2, '0')}
+                  {String(
+                    visibleAdditional.length + appearanceServices.length + 1,
+                  ).padStart(2, '0')}
                 </span>
               </div>
               <Plane aria-hidden="true" />

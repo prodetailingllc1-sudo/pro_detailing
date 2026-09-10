@@ -1,8 +1,9 @@
 'use client';
 
 import { Droplets, ShieldCheck, Sparkles } from 'lucide-react';
-import Image from 'next/image';
 import { useState } from 'react';
+
+import { BeforeAfterComparison } from '@/components/site/BeforeAfterComparison';
 
 const steps = [
   {
@@ -33,63 +34,22 @@ const steps = [
 
 export function CeramicLab() {
   const [active, setActive] = useState<(typeof steps)[number]['id']>('prepare');
-  const [finish, setFinish] = useState(68);
   const current = steps.find((step) => step.id === active) ?? steps[0];
 
   return (
     <div className="ceramic-lab">
-      <div className="ceramic-visual">
-        <Image
-          className="ceramic-vehicle-before"
-          src="/vehicles/coupe.webp"
-          alt="Interactive registered comparison of untreated and Ceramic Pro-finished paint on the same coupe"
-          width="1536"
-          height="1024"
-          sizes="(max-width: 780px) 100vw, 60vw"
-        />
-        <div
-          className="ceramic-reveal"
-          style={{ clipPath: `inset(0 ${100 - finish}% 0 0)` }}
-          aria-hidden="true"
-        >
-          <Image
-            className="ceramic-vehicle-after"
-            src="/vehicles/coupe.webp"
-            alt=""
-            width="1536"
-            height="1024"
-            sizes="(max-width: 780px) 100vw, 60vw"
-          />
-          <span
-            className="ceramic-paint-mask"
-            style={{
-              WebkitMaskImage: 'url(/vehicles/masks/coupe-paint.png)',
-              maskImage: 'url(/vehicles/masks/coupe-paint.png)',
-            }}
-          />
-        </div>
-        <div
-          className="ceramic-divider"
-          style={{ left: `${finish}%` }}
-          aria-hidden="true"
-        />
-        <label className="ceramic-slider">
-          <span className="sr-only">
-            Adjust untreated and Ceramic Pro finish comparison
-          </span>
-          <input
-            type="range"
-            min="12"
-            max="88"
-            value={finish}
-            aria-valuetext={`${100 - finish}% untreated paint, ${finish}% Ceramic Pro finish`}
-            onChange={(event) => setFinish(Number(event.target.value))}
-          />
-        </label>
-        <span className="demo-label">
-          Same vehicle · untreated ↔ coated finish
-        </span>
-      </div>
+      <BeforeAfterComparison
+        className="ceramic-visual ceramic-finish-comparison"
+        beforeSrc="/vehicles/coupe.webp"
+        afterSrc="/vehicles/coupe.webp"
+        beforeAlt="Interactive paint-only appearance comparison on the same white Mercedes-AMG coupe before and after a simulated Ceramic Pro finish"
+        beforeLabel="Prepared paint"
+        afterLabel="Ceramic Pro finish"
+        ariaLabel="Compare prepared paint and the simulated Ceramic Pro finish on the white Mercedes-AMG coupe"
+        note="Same Mercedes-AMG coupe and angle · paint-only appearance preview"
+        afterOverlayClassName="ceramic-coating-sheen"
+        sizes="(max-width: 780px) 100vw, 60vw"
+      />
       <div className="ceramic-controls">
         <p className="overline">Preparation protocol</p>
         <h3>Coating starts before the bottle opens.</h3>

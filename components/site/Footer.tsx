@@ -47,6 +47,10 @@ export function Footer() {
           <Link href="/our-services/paint-protection-film">
             Paint protection film
           </Link>
+          <Link href="/our-services/vehicle-wraps">
+            PRO Wraps &amp; vehicle graphics
+          </Link>
+          <Link href="/vehicle-visualizer">More 3D vehicle choices</Link>
           <Link href="/our-services/auto-detailing">Auto detailing</Link>
           <Link href="/tint-simulator">PRO Tints Studio</Link>
           <Link href="/gallery">Real work gallery</Link>
@@ -94,12 +98,8 @@ export function Footer() {
             {serviceAreas.slice(0, 6).join(' · ')} and surrounding Northern
             Virginia communities.
           </p>
-          <a href={business.privacyUrl} target="_blank" rel="noreferrer">
-            Privacy policy
-          </a>
-          <a href={business.termsUrl} target="_blank" rel="noreferrer">
-            Terms &amp; conditions
-          </a>
+          <Link href={business.privacyUrl}>Privacy policy</Link>
+          <Link href={business.termsUrl}>Terms &amp; conditions</Link>
           <a
             className="aircraft-link"
             href="https://proaviationcare.com/"
@@ -116,7 +116,9 @@ export function Footer() {
           © {new Date().getFullYear()} PRO Detailing LLC. All rights reserved.
         </p>
         <p>
-          PRO Tints and PRO Ceramic are service identities of PRO Detailing LLC.
+          PRO Tints, PRO Ceramic and PRO Wraps are service identities of PRO
+          Detailing LLC.
+          <span className="footer-credit">Designed by Pro Tech Hub Agency</span>
         </p>
       </div>
     </footer>

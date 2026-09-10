@@ -15,9 +15,9 @@ export const business = {
   address: '7501 Gary Rd, Manassas, VA 20109',
   mapsUrl:
     'https://www.google.com/maps/search/?api=1&query=7501+Gary+Rd%2C+Manassas%2C+VA+20109',
-  bookingUrl: 'https://pro-detailing.co/booking/',
-  privacyUrl: 'https://pro-detailing.co/privacy-policy/',
-  termsUrl: 'https://pro-detailing.co/terms-conditions/',
+  bookingUrl: '/booking',
+  privacyUrl: '/privacy-policy',
+  termsUrl: '/terms-conditions',
   instagram: 'https://www.instagram.com/pro_detailingcrew',
   facebook: 'https://www.facebook.com/prodetailingcrew',
   google:
@@ -272,6 +272,15 @@ const interiorVisualizationGallery: GalleryItem[] = [
 ];
 
 const expandedServiceVisualizationGallery: GalleryItem[] = [
+  {
+    id: 'pro-wrap-installation',
+    src: '/generated/pro-wrap-installation.webp',
+    alt: 'Professional installer applying satin racing-green vinyl to a performance coupe in a dark automotive studio.',
+    caption: 'Original service visualization · precision vehicle-wrap installation.',
+    width: 1536,
+    height: 1024,
+    group: 'service-visualization',
+  },
   {
     id: 'ceramic-application-v2',
     src: '/generated/ceramic-application-v2.webp',

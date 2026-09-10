@@ -9,6 +9,13 @@ export type ExtendedService = {
   quoteService: string;
   image: string;
   imageAlt: string;
+  media?: readonly {
+    src: string;
+    alt: string;
+    eyebrow: string;
+    title: string;
+    copy: string;
+  }[];
   sourceUrl?: string;
   highlights: readonly {
     title: string;
@@ -31,7 +38,148 @@ export type ExtendedService = {
   faqs: readonly (readonly [string, string])[];
 };
 
+export const vehicleWrapService: ExtendedService = {
+  slug: 'vehicle-wraps',
+  name: 'PRO Wraps & Vehicle Graphics',
+  shortName: 'PRO Wraps',
+  eyebrow: 'PRO WRAPS · vehicle restyling',
+  title: 'A New Finish, Fitted Panel by Panel',
+  description:
+    'Plan a full color change, a selective accent or business-ready vehicle graphics around the exact vehicle. Every project begins with a paint inspection, physical material review and panel-specific coverage plan.',
+  serviceType: 'Vehicle vinyl wrap and graphics consultation',
+  quoteService: 'wrap',
+  image: '/generated/pro-wrap-installation.webp',
+  imageAlt:
+    'Professional installer applying satin racing-green vinyl to a performance coupe in a dark automotive studio.',
+  highlights: [
+    {
+      title: 'Color changes with a real plan',
+      copy: 'Compare finish directions in the visualizer, then approve the actual film with a physical sample before material is ordered.',
+    },
+    {
+      title: 'Edges matter as much as panels',
+      copy: 'Coverage, seams, trim access, badges and panel transitions are reviewed around the vehicle—not guessed from a generic package.',
+    },
+    {
+      title: 'Paint condition comes first',
+      copy: 'Chips, repairs, failing clear coat, texture and existing film can affect appearance, adhesion and removal, so the surface is inspected first.',
+    },
+  ],
+  capabilities: [
+    {
+      group: 'Color & accent wraps',
+      items: [
+        'Full color-change consultation',
+        'Roof, hood, mirror and trim accents',
+        'Chrome-delete and blackout planning',
+        'Gloss, satin, matte and specialty finish review',
+      ],
+    },
+    {
+      group: 'Graphics & identity',
+      items: [
+        'Business and fleet graphics consultation',
+        'Spot graphics, stripes and selective branding',
+        'Design-file and placement review',
+        'Vehicle-specific measurement and proof approval',
+      ],
+    },
+    {
+      group: 'Finish support',
+      items: [
+        'Existing-wrap removal assessment',
+        'Edge and finish inspection',
+        'Film-specific wash and care guidance',
+        'Optional Ceramic Pro PPF & Vinyl coating review',
+      ],
+    },
+  ],
+  pathways: [
+    {
+      name: 'Full Color Change',
+      label: 'Complete restyle',
+      copy: 'For a coordinated new finish across the primary exterior painted panels.',
+      includes: [
+        'Paint and prior-repair inspection',
+        'Physical color and finish approval',
+        'Panel, edge and trim coverage plan',
+      ],
+    },
+    {
+      name: 'Accents & Blackout',
+      label: 'Selective change',
+      copy: 'For roofs, hoods, mirrors, trim, stripes or other focused restyling areas.',
+      includes: [
+        'Selected-panel measurement',
+        'Finish and transition review',
+        'Removal-access planning',
+      ],
+    },
+    {
+      name: 'Commercial Graphics',
+      label: 'Business visibility',
+      copy: 'For spot graphics, branded layouts or a repeatable fleet-vehicle direction.',
+      includes: [
+        'Vehicle and design-file review',
+        'Placement proof before production',
+        'Single-vehicle or fleet scope confirmation',
+      ],
+    },
+    {
+      name: 'Removal & Refresh',
+      label: 'Existing film',
+      copy: 'For evaluating aging graphics or wrap before removal, replacement or a new design.',
+      includes: [
+        'Film and edge-condition assessment',
+        'Underlying-paint risk review',
+        'Removal and next-finish recommendation',
+      ],
+    },
+  ],
+  process: [
+    {
+      title: 'Inspect',
+      copy: 'Document paint, repairs, damage, trim and any existing film before recommending a wrap path.',
+    },
+    {
+      title: 'Approve',
+      copy: 'Confirm the coverage, physical material sample, finish direction and placement proof.',
+    },
+    {
+      title: 'Prepare & install',
+      copy: 'Clean and prepare the approved surfaces, then install the film panel by panel in a controlled studio.',
+    },
+    {
+      title: 'Inspect & hand off',
+      copy: 'Review edges and finish, document the completed scope and explain film-specific aftercare.',
+    },
+  ],
+  faqs: [
+    [
+      'Is a color wrap the same as paint protection film?',
+      'No. A color wrap is selected primarily for appearance and personalization. Clear paint protection film is the protection-first option for impact-prone areas.',
+    ],
+    [
+      'Will a wrap hide chips, dents or failing paint?',
+      'Not reliably. Surface texture and defects can remain visible, and unstable paint can create installation or removal risks. The vehicle is inspected before material is approved.',
+    ],
+    [
+      'Can I approve the color from the online visualizer?',
+      'Use the visualizer to narrow the direction. Screens, lighting and viewing angle change how a finish appears, so the final choice is confirmed with a physical material sample.',
+    ],
+    [
+      'Can you remove an existing wrap?',
+      'Removal can be evaluated after the team checks the film age, edges, underlying paint and any prior repairs. The scope and risks are confirmed before work begins.',
+    ],
+    [
+      'Can Ceramic Pro be applied over a vinyl wrap?',
+      'Ceramic Pro PPF & Vinyl coating can be reviewed as an optional add-on for compatible film. The selected finish, product instructions and underlying-film warranty are confirmed first.',
+    ],
+  ],
+};
+
 export const additionalServices: readonly ExtendedService[] = [
+  vehicleWrapService,
   {
     slug: 'mobile-detailing',
     name: 'Mobile Auto Detailing',
@@ -231,6 +379,29 @@ export const additionalServices: readonly ExtendedService[] = [
     image: '/generated/service-maintenance-oil-change.webp',
     imageAlt:
       'Technician inspecting a modern luxury sedan with its hood open in a spotless service bay.',
+    media: [
+      {
+        src: '/gallery/pro-service-oil-change.webp',
+        alt: 'Golden engine oil being poured carefully into an open engine bay.',
+        eyebrow: 'Oil & filter',
+        title: 'Correct oil starts with the vehicle.',
+        copy: 'Capacity, viscosity, specification and filter fit are confirmed for the exact vehicle before service begins.',
+      },
+      {
+        src: '/gallery/pro-service-oil-fluid-check.webp',
+        alt: 'Technician adding the correct service fluid beneath the open hood of a vehicle.',
+        eyebrow: 'Fluid service',
+        title: 'Condition and specification both matter.',
+        copy: 'Coolant, brake, transmission and other fluid needs are reviewed by system instead of treated as one generic add-on.',
+      },
+      {
+        src: '/generated/brake-inspection-service.webp',
+        alt: 'Technician measuring brake-pad thickness on an exposed front brake assembly while the vehicle is safely supported on a lift.',
+        eyebrow: 'Brake inspection',
+        title: 'Measure wear before recommending parts.',
+        copy: 'Pad thickness, rotor condition and related symptoms are inspected before pads, rotors or fluid service are proposed.',
+      },
+    ],
     sourceUrl: 'https://pro-detailing.co/our-services/maintenance-oil-change/',
     highlights: [
       {
@@ -368,6 +539,36 @@ export const additionalServices: readonly ExtendedService[] = [
     image: '/generated/service-tire-service.webp',
     imageAlt:
       'Technician safely torquing a performance wheel on a luxury vehicle in a professional service bay.',
+    media: [
+      {
+        src: '/generated/tire-rotation-service.webp',
+        alt: 'Technician repositioning a wheel during a tire rotation while a luxury sedan is safely supported on a two-post lift.',
+        eyebrow: 'Tire rotation',
+        title: 'Rotate only when the fitment allows it.',
+        copy: 'Directionality, staggered sizing, tread condition and manufacturer guidance determine the correct rotation path.',
+      },
+      {
+        src: '/generated/tire-replacement-service.webp',
+        alt: 'Technician mounting a new unbranded performance tire onto an alloy wheel with a professional tire machine.',
+        eyebrow: 'Tire replacement',
+        title: 'Fitment is checked before mounting.',
+        copy: 'Size, load rating, condition and availability are confirmed before a replacement tire is installed and checked.',
+      },
+      {
+        src: '/generated/flat-repair-inspection.webp',
+        alt: 'Technician inspecting and marking a small puncture in the central tread area of a removed tire.',
+        eyebrow: 'Flat repair assessment',
+        title: 'Repairability starts at the puncture.',
+        copy: 'Damage location, size, age and overall tire condition determine whether repair is appropriate or replacement is safer.',
+      },
+      {
+        src: '/gallery/pro-service-tire-pressure.webp',
+        alt: 'Technician checking tire pressure on a black vehicle outdoors.',
+        eyebrow: 'Pressure & condition',
+        title: 'Finish with the checks that affect the road.',
+        copy: 'Pressure, visible tread and wheel condition are reviewed before the approved tire service is handed back.',
+      },
+    ],
     sourceUrl: 'https://pro-detailing.co/our-services/maintenance-oil-change/',
     highlights: [
       {
@@ -484,6 +685,29 @@ export const additionalServices: readonly ExtendedService[] = [
     image: '/generated/service-auto-glass.webp',
     imageAlt:
       'Auto-glass technician using a precision resin bridge to repair a windshield chip.',
+    media: [
+      {
+        src: '/gallery/pro-service-windshield-repair.webp',
+        alt: 'White luxury sedan positioned outside an auto-glass service bay.',
+        eyebrow: 'Chip & crack assessment',
+        title: 'Assess the damage before choosing repair.',
+        copy: 'Size, depth, contamination, edge distance and camera location help determine whether the windshield may be repaired.',
+      },
+      {
+        src: '/gallery/pro-service-windshield-replacement.webp',
+        alt: 'Two technicians working together across the windshield of a white electric sedan.',
+        eyebrow: 'Windshield replacement',
+        title: 'Replace with the correct glass and setup.',
+        copy: 'Fitment, moldings, sensors, adhesive requirements, cure time and any calibration needs are confirmed together.',
+      },
+      {
+        src: '/generated/side-window-replacement.webp',
+        alt: 'Technician positioning an intact replacement side-window panel into the channels of an open luxury-car door.',
+        eyebrow: 'Door glass',
+        title: 'Restore the glass, channel and door operation.',
+        copy: 'Side-window work can include glass identification, interior debris review, regulator checks and careful alignment.',
+      },
+    ],
     sourceUrl: 'https://pro-detailing.co/windshield-repair-vs-replacement/',
     highlights: [
       {
@@ -582,6 +806,36 @@ export const additionalServices: readonly ExtendedService[] = [
     image: '/generated/service-key-replacement.webp',
     imageAlt:
       'Automotive locksmith programming a modern smart key beside a luxury sedan.',
+    media: [
+      {
+        src: '/generated/door-lock-cylinder-service.webp',
+        alt: 'Technician servicing a mechanical door-lock cylinder at the protected handle area of an open luxury-car door.',
+        eyebrow: 'Door lock service',
+        title: 'Service the lock hardware without forcing entry.',
+        copy: 'Lock-cylinder and door-hardware requests are identified by vehicle, concern and ownership before work is approved.',
+      },
+      {
+        src: '/generated/automotive-key-cutting.webp',
+        alt: 'Technician cutting one unbranded emergency key blade in a guarded precision automotive key machine.',
+        eyebrow: 'Key cutting',
+        title: 'Cut the correct blade for the verified vehicle.',
+        copy: 'Blade type, key availability and proof of ownership are confirmed before a duplicate or replacement is produced.',
+      },
+      {
+        src: '/generated/key-fob-programming.webp',
+        alt: 'Technician holding an unbranded replacement key fob beside a connected diagnostic programming tablet inside a premium vehicle.',
+        eyebrow: 'Fob programming',
+        title: 'Pair electronics only after compatibility is confirmed.',
+        copy: 'Remote, smart-key, proximity and push-to-start support varies by vehicle and must be verified before scheduling.',
+      },
+      {
+        src: '/gallery/pro-service-key-programming.webp',
+        alt: 'Automotive technician holding a modern key fob beside diagnostic equipment.',
+        eyebrow: 'Function verification',
+        title: 'Test the key and remote before handoff.',
+        copy: 'The approved service finishes with available lock, unlock, start and emergency-blade functions checked for the vehicle.',
+      },
+    ],
     sourceUrl: 'https://pro-detailing.co/our-services/key-replacement/',
     highlights: [
       {
@@ -667,7 +921,7 @@ export const additionalServices: readonly ExtendedService[] = [
 export const specialistMarques = [
   'Mercedes-AMG',
   'BMW',
-  'Mercedes-Benz',
+  'Rolls-Royce',
   'Porsche',
   'Lamborghini',
   'McLaren',

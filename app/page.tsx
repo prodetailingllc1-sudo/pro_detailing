@@ -8,6 +8,7 @@ import {
   House,
   KeyRound,
   MapPin,
+  Palette,
   PanelsTopLeft,
   Plane,
   Phone,
@@ -44,9 +45,9 @@ import {
 } from '@/lib/site-data';
 
 export const metadata = createPageMetadata({
-  title: 'Window Tint & Ceramic Coating Manassas, VA | PRO Detailing',
+  title: 'Window Tint, Ceramic Coating & Vehicle Wraps | PRO Detailing',
   description:
-    'Visit PRO Detailing in Manassas for LLumar window tint, Ceramic Pro coating and professional auto detailing. Preview tint options and request a quote.',
+    'Visit PRO Detailing in Manassas for LLumar window tint, Ceramic Pro coating, paint protection film, PRO Wraps and professional auto detailing.',
   path: '/',
 });
 
@@ -62,6 +63,10 @@ const faqs = [
   [
     'Do you offer Ceramic Pro coatings?',
     'Yes. Ceramic Pro coating options are selected after the paint is inspected. Preparation needs, coating details and aftercare are confirmed in your written recommendation.',
+  ],
+  [
+    'Do you offer vehicle wraps?',
+    'Yes. PRO Wrap requests can cover a full color change, selective accents, blackout details, business graphics or existing-wrap removal. The team confirms paint condition, exact material, coverage and price before scheduling.',
   ],
   [
     'Can I get a price online?',
@@ -90,6 +95,7 @@ const homeGallery = homeGalleryIds.flatMap((id) => {
 });
 
 const additionalServiceIcons: Record<string, typeof CarFront> = {
+  'vehicle-wraps': Palette,
   'mobile-detailing': CarFront,
   'residential-window-tinting': House,
   'maintenance-oil-change': Wrench,
@@ -99,6 +105,7 @@ const additionalServiceIcons: Record<string, typeof CarFront> = {
 };
 
 const homeServiceOrder = [
+  'vehicle-wraps',
   'maintenance-oil-change',
   'tire-service',
   'auto-glass',
@@ -174,8 +181,8 @@ export default function Home() {
               title={`All ${completeServiceCount} services, clearly organized.`}
               copy={
                 siteFeatures.mobileDetailing
-                  ? 'Choose maintenance, tire service, auto glass, automotive locksmith, mobile detailing or residential tint. Aircraft care opens through the dedicated Pro Aviation Care site.'
-                  : 'Choose maintenance, tire service, auto glass, automotive locksmith or residential tint. Aircraft care opens through the dedicated Pro Aviation Care site.'
+                  ? 'Choose PRO Wraps, maintenance, tire service, auto glass, automotive locksmith, mobile detailing or residential tint. Aircraft care opens through the dedicated Pro Aviation Care site.'
+                  : 'Choose PRO Wraps, maintenance, tire service, auto glass, automotive locksmith or residential tint. Aircraft care opens through the dedicated Pro Aviation Care site.'
               }
             />
             <Link className="button button-ghost" href="/our-services">
@@ -468,7 +475,7 @@ export default function Home() {
             <SectionIntro
               eyebrow="PRO knowledge library"
               title="Useful answers before the appointment."
-              copy="The rebuilt library starts with nine current guides and keeps the complete 67-article source archive connected."
+              copy="Nine current decision guides lead a complete 67-article library now hosted inside this application."
             />
             <Link className="button button-ghost" href="/blog">
               Browse all guides <ArrowRight aria-hidden="true" />

@@ -1,3 +1,5 @@
+import importedLegacyArticles from '@/lib/legacy-blog-content.json';
+
 export type BlogArticle = {
   slug: string;
   title: string;
@@ -12,6 +14,25 @@ export type BlogArticle = {
     body: string;
   }[];
   takeaways: readonly string[];
+};
+
+export type LegacyBlogBlock =
+  | { type: 'heading' | 'paragraph'; text: string }
+  | { type: 'list'; items: string[] };
+
+export type LegacyBlogArticle = {
+  id: number;
+  slug: string;
+  title: string;
+  category: string;
+  description: string;
+  datePublished: string;
+  dateModified: string;
+  sourceUrl: string;
+  relatedHref: string;
+  relatedLabel: string;
+  image: string;
+  blocks: LegacyBlogBlock[];
 };
 
 export const featuredArticles: readonly BlogArticle[] = [
@@ -548,3 +569,12 @@ export const allSourceArticles = [
   ),
   ...legacyBlogLinks,
 ];
+
+export const legacyArticles =
+  importedLegacyArticles as unknown as readonly LegacyBlogArticle[];
+
+export const allBlogArticles = [...featuredArticles, ...legacyArticles];
+
+export function findBlogArticle(slug: string) {
+  return allBlogArticles.find((article) => article.slug === slug);
+}
