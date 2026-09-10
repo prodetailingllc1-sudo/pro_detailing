@@ -10,6 +10,7 @@ import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { ServiceBrandMark } from '@/components/site/ServiceBrandMark';
 import { TintCoverageComparison } from '@/components/site/TintCoverageComparison';
 import { TintStudio } from '@/components/site/TintStudio';
 import { localTintImages } from '@/lib/local-tint-data';
@@ -120,13 +121,7 @@ export default async function WindowTintingPage({
         </div>
         <div className="shell service-hero-inner">
           <div className="service-hero-copy">
-            <Image
-              className="service-hero-mark"
-              src="/brand/pro-tints-optimized.webp"
-              alt="PRO Tints"
-              width="1100"
-              height="204"
-            />
+            <ServiceBrandMark service="window-tinting" />
             <p className="eyebrow">
               <span /> PRO Tints by PRO Detailing LLC
             </p>

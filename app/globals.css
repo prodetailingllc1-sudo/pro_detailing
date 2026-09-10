@@ -10046,3 +10046,190 @@ body {
 .wrap-finish-options label.is-active > span {
   color: #071009;
 }
+
+/* V15: one optical logo system across every service hero */
+.service-brand-mark {
+  --service-brand-height: clamp(4.15rem, 5.8vw, 5.8rem);
+  width: min(100%, 680px);
+  min-height: var(--service-brand-height);
+  margin: 0 0 clamp(1.7rem, 3.2vw, 3rem);
+  display: flex;
+  align-items: center;
+  color: #f8fbf8;
+  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 0 18px rgba(156, 245, 0, 0.07));
+}
+
+.service-brand-mark-image {
+  height: var(--service-brand-height);
+}
+
+.service-brand-mark-image > img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.service-brand-mark-secondary {
+  min-height: 0;
+  display: grid;
+  justify-items: start;
+  gap: 0.72rem;
+}
+
+.service-brand-mark-secondary > img {
+  width: auto;
+  height: clamp(3.15rem, 4.55vw, 4.55rem);
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.service-brand-context {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--lime);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(0.62rem, 0.82vw, 0.76rem);
+  font-weight: 760;
+  letter-spacing: 0.13em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.service-brand-context > span {
+  width: 28px;
+  height: 1px;
+  flex: 0 0 auto;
+  background: var(--lime);
+  box-shadow: 0 0 12px rgba(156, 245, 0, 0.36);
+}
+
+.service-brand-mark-wraps {
+  gap: clamp(0.8rem, 1.45vw, 1.2rem);
+}
+
+.service-brand-symbol {
+  width: var(--service-brand-height);
+  height: var(--service-brand-height);
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.service-brand-divider {
+  width: 1px;
+  height: calc(var(--service-brand-height) * 0.76);
+  flex: 0 0 auto;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    #c3a13e 16%,
+    #c3a13e 84%,
+    transparent
+  );
+}
+
+.service-brand-wording {
+  min-width: 0;
+  display: grid;
+  gap: 0.42rem;
+}
+
+.service-brand-wording strong {
+  display: flex;
+  align-items: baseline;
+  gap: 0.17em;
+  color: #f7faf7;
+  font-size: clamp(2.65rem, 5vw, 4.85rem);
+  font-style: italic;
+  font-weight: 920;
+  letter-spacing: -0.07em;
+  line-height: 0.78;
+  white-space: nowrap;
+}
+
+.service-brand-wording strong b {
+  color: var(--lime);
+  font: inherit;
+}
+
+.service-brand-wording small {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #b9c0ba;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(0.48rem, 0.72vw, 0.65rem);
+  font-weight: 720;
+  letter-spacing: 0.23em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.service-brand-wording small::before,
+.service-brand-wording small::after {
+  content: '';
+  width: clamp(12px, 2vw, 30px);
+  height: 1px;
+  flex: 0 0 auto;
+  background: #b89b38;
+}
+
+.service-brand-mark-ppf {
+  height: var(--service-brand-height);
+}
+
+.service-brand-mark-ppf .service-brand-ppf-lockup {
+  width: min(100%, 680px);
+  height: 100%;
+}
+
+.service-brand-mark-ppf .service-brand-ppf-lockup > img {
+  width: var(--service-brand-height);
+  height: var(--service-brand-height);
+}
+
+.service-brand-mark-ppf .service-brand-ppf-lockup .ppf-wordmark-divider {
+  height: 76%;
+}
+
+.service-brand-mark-ppf .ppf-wordmark-copy strong {
+  font-size: clamp(2.65rem, 5vw, 4.85rem);
+}
+
+.service-brand-mark-ppf .ppf-wordmark-copy small {
+  font-size: clamp(0.48rem, 0.72vw, 0.65rem);
+}
+
+@media (max-width: 620px) {
+  .service-brand-mark {
+    --service-brand-height: clamp(3.5rem, 18vw, 4.45rem);
+    width: min(100%, 92vw);
+    margin-bottom: 1.7rem;
+  }
+
+  .service-brand-mark-secondary > img {
+    height: auto;
+    max-height: 3.65rem;
+  }
+
+  .service-brand-mark-wraps {
+    gap: 0.65rem;
+  }
+
+  .service-brand-wording strong,
+  .service-brand-mark-ppf .ppf-wordmark-copy strong {
+    font-size: clamp(2.15rem, 10vw, 3.2rem);
+  }
+
+  .service-brand-wording small,
+  .service-brand-mark-ppf .ppf-wordmark-copy small {
+    font-size: 0.46rem;
+    letter-spacing: 0.16em;
+  }
+}

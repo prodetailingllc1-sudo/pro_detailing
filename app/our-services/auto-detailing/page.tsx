@@ -12,6 +12,7 @@ import {
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { DetailingComparison } from '@/components/site/DetailingComparison';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { ServiceBrandMark } from '@/components/site/ServiceBrandMark';
 import { createPageMetadata } from '@/lib/metadata';
 import {
   business,
@@ -294,13 +295,7 @@ export default function AutoDetailingPage() {
         </div>
         <div className="shell service-hero-inner">
           <div className="service-hero-copy">
-            <Image
-              className="service-hero-mark"
-              src="/brand/pro-detailing-optimized.webp"
-              alt="PRO Detailing"
-              width="1100"
-              height="154"
-            />
+            <ServiceBrandMark service="auto-detailing" />
             <p className="eyebrow">
               <span /> Interior · exterior · finish
             </p>

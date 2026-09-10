@@ -16,6 +16,7 @@ import Link from '@/components/site/SafeLink';
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { ServiceBrandMark } from '@/components/site/ServiceBrandMark';
 import { WrapStudio } from '@/components/site/WrapStudio';
 import type { ExtendedService } from '@/lib/expanded-content';
 import { quoteHref, SITE_ORIGIN } from '@/lib/site-data';
@@ -73,6 +74,10 @@ export function AdditionalServicePage({
         <div className="extended-service-grid" aria-hidden="true" />
         <div className="shell extended-service-hero-layout">
           <div className="extended-service-hero-copy">
+            <ServiceBrandMark
+              service={service.slug}
+              className="extended-service-brand-mark"
+            />
             <p className="eyebrow">
               <span /> {service.eyebrow}
             </p>
