@@ -15,6 +15,7 @@ import {
 import { CeramicLab } from '@/components/site/CeramicLab';
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { ServiceBrandMark } from '@/components/site/ServiceBrandMark';
 import {
   ceramicProDealerStatus,
   ceramicProPaintPackages,
@@ -202,13 +203,7 @@ export default function CeramicCoatingPage() {
         </div>
         <div className="shell service-hero-inner">
           <div className="service-hero-copy">
-            <Image
-              className="service-hero-mark"
-              src="/brand/pro-ceramic-optimized.webp"
-              alt="PRO ceramic coating service"
-              width="1100"
-              height="174"
-            />
+            <ServiceBrandMark service="ceramic-coating" />
             <p className="eyebrow">
               <BadgeCheck aria-hidden="true" /> {ceramicProDealerStatus.primary}
             </p>

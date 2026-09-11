@@ -11,8 +11,8 @@ import {
 
 import { QuoteBand } from '@/components/site/QuoteBand';
 import { PpfCoverageComparison } from '@/components/site/PpfCoverageComparison';
-import { PpfWordmark } from '@/components/site/PpfWordmark';
 import { SectionIntro } from '@/components/site/SectionIntro';
+import { ServiceBrandMark } from '@/components/site/ServiceBrandMark';
 import { ceramicProPpfCompatibility } from '@/lib/ceramic-pro-data';
 import { createPageMetadata } from '@/lib/metadata';
 import { processSteps, quoteHref, SITE_ORIGIN } from '@/lib/site-data';
@@ -101,7 +101,7 @@ export default function PaintProtectionFilmPage() {
         </div>
         <div className="shell service-hero-inner">
           <div className="service-hero-copy">
-            <PpfWordmark className="service-hero-mark ppf-wordmark-hero" />
+            <ServiceBrandMark service="paint-protection-film" />
             <p className="eyebrow">
               <span /> Impact protection · planned panel by panel
             </p>
